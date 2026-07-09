@@ -131,3 +131,14 @@ class Store:
     def count_active(self) -> int:
         return self.conn.execute(
             "SELECT COUNT(*) FROM listings WHERE is_active=1").fetchone()[0]
+
+    def latest_batch_ids(self) -> set[str]:
+        """가장 최근에 처음 발견된 배치의 article_no 집합(재생성 시 NEW 표시용)."""
+        row = self.conn.execute(
+            "SELECT MAX(first_seen_at) FROM listings WHERE is_active=1").fetchone()
+        if not row or not row[0]:
+            return set()
+        cur = self.conn.execute(
+            "SELECT article_no FROM listings WHERE is_active=1 AND first_seen_at=?",
+            (row[0],))
+        return {r[0] for r in cur.fetchall()}

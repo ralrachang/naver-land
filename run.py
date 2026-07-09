@@ -36,6 +36,8 @@ def main(argv=None):
     ap.add_argument("--config", default=None)
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--rebuild-regions", action="store_true")
+    ap.add_argument("--regenerate", action="store_true",
+                    help="크롤 없이 기존 DB로 사이트만 재생성+배포(템플릿 변경 즉시 반영)")
     args = ap.parse_args(argv)
 
     cfg = config_mod.load(args.config)
@@ -43,8 +45,11 @@ def main(argv=None):
     log = logging.getLogger("naver_land.run")
     log.info("=== 실행 시작 (%s KST) ===", datetime.now(KST).strftime("%Y-%m-%d %H:%M:%S"))
     try:
-        summary = pipeline.run_pipeline(cfg, rebuild_regions=args.rebuild_regions,
-                                        dry_run=args.dry_run)
+        if args.regenerate:
+            summary = pipeline.regenerate(cfg, dry_run=args.dry_run)
+        else:
+            summary = pipeline.run_pipeline(cfg, rebuild_regions=args.rebuild_regions,
+                                            dry_run=args.dry_run)
     except Exception as e:
         log.exception("치명적 오류: %s", e)
         return 2

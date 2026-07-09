@@ -82,6 +82,24 @@ def run_pipeline(cfg, rebuild_regions: bool = False, dry_run: bool | None = None
         st.close()
 
 
+def regenerate(cfg, dry_run: bool | None = None) -> dict:
+    """크롤 없이 기존 DB로 사이트만 재생성 + 배포(템플릿 변경 즉시 반영용)."""
+    now = datetime.now(KST)
+    st = store.Store(cfg.db_path)
+    try:
+        new_ids = st.latest_batch_ids()
+        rows = st.active_listings(new_ids=new_ids)
+        generated = generate.generate(cfg, rows, len(new_ids), run_dt=now)
+        if generated:
+            deploy.deploy(cfg, dry_run=dry_run)
+        total = st.count_active()
+        log.info("재생성 완료: 총 %d건 (최근배치 %d건 NEW)", total, len(new_ids))
+        return {"ok": True, "new_count": len(new_ids), "total": total,
+                "note": "regenerated" if generated else "skip_empty"}
+    finally:
+        st.close()
+
+
 def _record(cfg, run_ts: str, summary: dict):
     try:
         st = store.Store(cfg.db_path)
