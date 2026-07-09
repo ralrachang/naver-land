@@ -1,0 +1,2089 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - heading "네이버 부동산 매매 매물 (토지·건물)" [level=1] [ref=e3]
+    - generic [ref=e4]: 서울 전체 · 하루 2회 자동 수집
+  - generic [ref=e5]:
+    - generic [ref=e6]: 마지막 수집 2026-07-09 10:54 KST
+    - generic [ref=e7]: 표시 191건 / 전체 665건
+    - generic [ref=e8]: 이번 신규 665건
+  - generic [ref=e9]: 💡 네이버가 지번(번지)은 공개하지 않아 주소는 동 단위입니다. 매물을 눌러 네이버에서 지도 위치·사진·중개업소를 확인하세요.
+  - generic [ref=e10]:
+    - button "전체 665" [ref=e2968] [cursor=pointer]
+    - button "강남구 250" [ref=e2969] [cursor=pointer]
+    - button "서초구 191" [ref=e2970] [cursor=pointer]
+    - button "송파구 224" [ref=e2971] [cursor=pointer]
+  - main [ref=e15]:
+    - link "서울특별시 서초구 서초동NEW 건물 확인 2026.07.09 530억 네이버에서 보기 ›" [ref=e2972] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636885287
+      - generic [ref=e2973]:
+        - generic [ref=e2974]: 서울특별시 서초구 서초동NEW
+        - generic [ref=e2975]:
+          - generic [ref=e2976]: 건물
+          - generic [ref=e2977]: 확인 2026.07.09
+      - generic [ref=e2978]:
+        - generic [ref=e2979]: 530억
+        - generic [ref=e2980]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 서초동NEW 건물 확인 2026.07.09 서초구 대로변 수익형 사옥용 쇼윈도우 매장 추천 450억 네이버에서 보기 ›" [ref=e2981] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636879805
+      - generic [ref=e2982]:
+        - generic [ref=e2983]: 서울특별시 서초구 서초동NEW
+        - generic [ref=e2984]:
+          - generic [ref=e2985]: 건물
+          - generic [ref=e2986]: 확인 2026.07.09
+        - generic [ref=e2987]: 서초구 대로변 수익형 사옥용 쇼윈도우 매장 추천
+      - generic [ref=e2988]:
+        - generic [ref=e2989]: 450억
+        - generic [ref=e2990]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 반포동NEW 건물 확인 2026.07.08 서래마을 카페거리 메인 사거리 코너 건물 400억 네이버에서 보기 ›" [ref=e2991] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636800380
+      - generic [ref=e2992]:
+        - generic [ref=e2993]: 서울특별시 서초구 반포동NEW
+        - generic [ref=e2994]:
+          - generic [ref=e2995]: 건물
+          - generic [ref=e2996]: 확인 2026.07.08
+        - generic [ref=e2997]: 서래마을 카페거리 메인 사거리 코너 건물
+      - generic [ref=e2998]:
+        - generic [ref=e2999]: 400억
+        - generic [ref=e3000]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 잠원동NEW 건물 확인 2026.07.08 시작. 소유주 직접 I 대로변코너 I 공실없는건물 I 395억 네이버에서 보기 ›" [ref=e3001] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636751843
+      - generic [ref=e3002]:
+        - generic [ref=e3003]: 서울특별시 서초구 잠원동NEW
+        - generic [ref=e3004]:
+          - generic [ref=e3005]: 건물
+          - generic [ref=e3006]: 확인 2026.07.08
+        - generic [ref=e3007]: 시작. 소유주 직접 I 대로변코너 I 공실없는건물 I
+      - generic [ref=e3008]:
+        - generic [ref=e3009]: 395억
+        - generic [ref=e3010]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 서초동NEW 건물 확인 2026.07.09 소유주 직접 컨텍하고 있는 건물입니다. 390억 네이버에서 보기 ›" [ref=e3011] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636891571
+      - generic [ref=e3012]:
+        - generic [ref=e3013]: 서울특별시 서초구 서초동NEW
+        - generic [ref=e3014]:
+          - generic [ref=e3015]: 건물
+          - generic [ref=e3016]: 확인 2026.07.09
+        - generic [ref=e3017]: 소유주 직접 컨텍하고 있는 건물입니다.
+      - generic [ref=e3018]:
+        - generic [ref=e3019]: 390억
+        - generic [ref=e3020]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 서초동NEW 건물 확인 2026.07.09 서초대로변 이면 신축빌딩 380억 매도 380억 네이버에서 보기 ›" [ref=e3021] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636881556
+      - generic [ref=e3022]:
+        - generic [ref=e3023]: 서울특별시 서초구 서초동NEW
+        - generic [ref=e3024]:
+          - generic [ref=e3025]: 건물
+          - generic [ref=e3026]: 확인 2026.07.09
+        - generic [ref=e3027]: 서초대로변 이면 신축빌딩 380억 매도
+      - generic [ref=e3028]:
+        - generic [ref=e3029]: 380억
+        - generic [ref=e3030]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 방배동NEW 건물 확인 2026.07.09 356억 네이버에서 보기 ›" [ref=e3031] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636885375
+      - generic [ref=e3032]:
+        - generic [ref=e3033]: 서울특별시 서초구 방배동NEW
+        - generic [ref=e3034]:
+          - generic [ref=e3035]: 건물
+          - generic [ref=e3036]: 확인 2026.07.09
+      - generic [ref=e3037]:
+        - generic [ref=e3038]: 356억
+        - generic [ref=e3039]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 반포동NEW 건물 확인 2026.07.08 실매물만 안내드립니다. 310억 네이버에서 보기 ›" [ref=e3040] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636792867
+      - generic [ref=e3041]:
+        - generic [ref=e3042]: 서울특별시 서초구 반포동NEW
+        - generic [ref=e3043]:
+          - generic [ref=e3044]: 건물
+          - generic [ref=e3045]: 확인 2026.07.08
+        - generic [ref=e3046]: 실매물만 안내드립니다.
+      - generic [ref=e3047]:
+        - generic [ref=e3048]: 310억
+        - generic [ref=e3049]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 서초동NEW 건물 확인 2026.07.09 경부고속도로 지하화 호재 직접적으로 수혜 가능한 서초동 근생 빌딩 300억 네이버에서 보기 ›" [ref=e3050] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636885307
+      - generic [ref=e3051]:
+        - generic [ref=e3052]: 서울특별시 서초구 서초동NEW
+        - generic [ref=e3053]:
+          - generic [ref=e3054]: 건물
+          - generic [ref=e3055]: 확인 2026.07.09
+        - generic [ref=e3056]: 경부고속도로 지하화 호재 직접적으로 수혜 가능한 서초동 근생 빌딩
+      - generic [ref=e3057]:
+        - generic [ref=e3058]: 300억
+        - generic [ref=e3059]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 서초동NEW 건물 확인 2026.07.09 300억 네이버에서 보기 ›" [ref=e3060] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636885775
+      - generic [ref=e3061]:
+        - generic [ref=e3062]: 서울특별시 서초구 서초동NEW
+        - generic [ref=e3063]:
+          - generic [ref=e3064]: 건물
+          - generic [ref=e3065]: 확인 2026.07.09
+      - generic [ref=e3066]:
+        - generic [ref=e3067]: 300억
+        - generic [ref=e3068]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 서초동NEW 건물 확인 2026.07.09 300억 네이버에서 보기 ›" [ref=e3069] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636884100
+      - generic [ref=e3070]:
+        - generic [ref=e3071]: 서울특별시 서초구 서초동NEW
+        - generic [ref=e3072]:
+          - generic [ref=e3073]: 건물
+          - generic [ref=e3074]: 확인 2026.07.09
+      - generic [ref=e3075]:
+        - generic [ref=e3076]: 300억
+        - generic [ref=e3077]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 반포동NEW 건물 확인 2026.07.08 실매물만 안내드립니다. 290억 네이버에서 보기 ›" [ref=e3078] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636783511
+      - generic [ref=e3079]:
+        - generic [ref=e3080]: 서울특별시 서초구 반포동NEW
+        - generic [ref=e3081]:
+          - generic [ref=e3082]: 건물
+          - generic [ref=e3083]: 확인 2026.07.08
+        - generic [ref=e3084]: 실매물만 안내드립니다.
+      - generic [ref=e3085]:
+        - generic [ref=e3086]: 290억
+        - generic [ref=e3087]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 서초동NEW 건물 확인 2026.07.09 근생건물 285억 네이버에서 보기 ›" [ref=e3088] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636894463
+      - generic [ref=e3089]:
+        - generic [ref=e3090]: 서울특별시 서초구 서초동NEW
+        - generic [ref=e3091]:
+          - generic [ref=e3092]: 건물
+          - generic [ref=e3093]: 확인 2026.07.09
+        - generic [ref=e3094]: 근생건물
+      - generic [ref=e3095]:
+        - generic [ref=e3096]: 285억
+        - generic [ref=e3097]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 잠원동NEW 건물 확인 2026.07.09 논현역 더블역세권 넓은 도로 접한 건물 매매 280억 네이버에서 보기 ›" [ref=e3098] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636865147
+      - generic [ref=e3099]:
+        - generic [ref=e3100]: 서울특별시 서초구 잠원동NEW
+        - generic [ref=e3101]:
+          - generic [ref=e3102]: 건물
+          - generic [ref=e3103]: 확인 2026.07.09
+        - generic [ref=e3104]: 논현역 더블역세권 넓은 도로 접한 건물 매매
+      - generic [ref=e3105]:
+        - generic [ref=e3106]: 280억
+        - generic [ref=e3107]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 반포동NEW 건물 확인 2026.07.09 30M 대로변, 2023년 리모델링 완료 230억 네이버에서 보기 ›" [ref=e3108] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636815530
+      - generic [ref=e3109]:
+        - generic [ref=e3110]: 서울특별시 서초구 반포동NEW
+        - generic [ref=e3111]:
+          - generic [ref=e3112]: 건물
+          - generic [ref=e3113]: 확인 2026.07.09
+        - generic [ref=e3114]: 30M 대로변, 2023년 리모델링 완료
+      - generic [ref=e3115]:
+        - generic [ref=e3116]: 230억
+        - generic [ref=e3117]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 반포동NEW 건물 확인 2026.07.08 서래마을 중심거리 알짜건물 대로변 코너 수익형빌딩 230억 네이버에서 보기 ›" [ref=e3118] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636805546
+      - generic [ref=e3119]:
+        - generic [ref=e3120]: 서울특별시 서초구 반포동NEW
+        - generic [ref=e3121]:
+          - generic [ref=e3122]: 건물
+          - generic [ref=e3123]: 확인 2026.07.08
+        - generic [ref=e3124]: 서래마을 중심거리 알짜건물 대로변 코너 수익형빌딩
+      - generic [ref=e3125]:
+        - generic [ref=e3126]: 230억
+        - generic [ref=e3127]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 양재동NEW 건물 확인 2026.07.09 213억 네이버에서 보기 ›" [ref=e3128] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636892186
+      - generic [ref=e3129]:
+        - generic [ref=e3130]: 서울특별시 서초구 양재동NEW
+        - generic [ref=e3131]:
+          - generic [ref=e3132]: 건물
+          - generic [ref=e3133]: 확인 2026.07.09
+      - generic [ref=e3134]:
+        - generic [ref=e3135]: 213억
+        - generic [ref=e3136]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 반포동NEW 건물 확인 2026.07.08 논현역 초역세권 공실 변동성 낮은 생활밀착 상권 안정형 근린 200억 네이버에서 보기 ›" [ref=e3137] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636641284
+      - generic [ref=e3138]:
+        - generic [ref=e3139]: 서울특별시 서초구 반포동NEW
+        - generic [ref=e3140]:
+          - generic [ref=e3141]: 건물
+          - generic [ref=e3142]: 확인 2026.07.08
+        - generic [ref=e3143]: 논현역 초역세권 공실 변동성 낮은 생활밀착 상권 안정형 근린
+      - generic [ref=e3144]:
+        - generic [ref=e3145]: 200억
+        - generic [ref=e3146]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 반포동NEW 건물 확인 2026.07.08 실매물만 안내드립니다. 200억 네이버에서 보기 ›" [ref=e3147] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636768357
+      - generic [ref=e3148]:
+        - generic [ref=e3149]: 서울특별시 서초구 반포동NEW
+        - generic [ref=e3150]:
+          - generic [ref=e3151]: 건물
+          - generic [ref=e3152]: 확인 2026.07.08
+        - generic [ref=e3153]: 실매물만 안내드립니다.
+      - generic [ref=e3154]:
+        - generic [ref=e3155]: 200억
+        - generic [ref=e3156]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 우면동NEW 건물 확인 2026.06.18 교회건물 통매매 모든협의가능 200억 네이버에서 보기 ›" [ref=e3157] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2632932192
+      - generic [ref=e3158]:
+        - generic [ref=e3159]: 서울특별시 서초구 우면동NEW
+        - generic [ref=e3160]:
+          - generic [ref=e3161]: 건물
+          - generic [ref=e3162]: 확인 2026.06.18
+        - generic [ref=e3163]: 교회건물 통매매 모든협의가능
+      - generic [ref=e3164]:
+        - generic [ref=e3165]: 200억
+        - generic [ref=e3166]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 잠원동NEW 건물 확인 2026.07.08 근생건물 200억 네이버에서 보기 ›" [ref=e3167] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636768570
+      - generic [ref=e3168]:
+        - generic [ref=e3169]: 서울특별시 서초구 잠원동NEW
+        - generic [ref=e3170]:
+          - generic [ref=e3171]: 건물
+          - generic [ref=e3172]: 확인 2026.07.08
+        - generic [ref=e3173]: 근생건물
+      - generic [ref=e3174]:
+        - generic [ref=e3175]: 200억
+        - generic [ref=e3176]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 우면동NEW 토지 확인 2026.06.26 개밸제한지역,그린벨트 주택정책을위한 정부그린벨트해제가능성 199억 네이버에서 보기 ›" [ref=e3177] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2634346536
+      - generic [ref=e3178]:
+        - generic [ref=e3179]: 서울특별시 서초구 우면동NEW
+        - generic [ref=e3180]:
+          - generic [ref=e3181]: 토지
+          - generic [ref=e3182]: 확인 2026.06.26
+        - generic [ref=e3183]: 개밸제한지역,그린벨트 주택정책을위한 정부그린벨트해제가능성
+      - generic [ref=e3184]:
+        - generic [ref=e3185]: 199억
+        - generic [ref=e3186]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 서초동NEW 건물 확인 2026.07.09 근생건물 180억 네이버에서 보기 ›" [ref=e3187] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636903547
+      - generic [ref=e3188]:
+        - generic [ref=e3189]: 서울특별시 서초구 서초동NEW
+        - generic [ref=e3190]:
+          - generic [ref=e3191]: 건물
+          - generic [ref=e3192]: 확인 2026.07.09
+        - generic [ref=e3193]: 근생건물
+      - generic [ref=e3194]:
+        - generic [ref=e3195]: 180억
+        - generic [ref=e3196]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 서초동NEW 건물 확인 2026.07.09 서초동 강남역세권 신축부지 180억 네이버에서 보기 ›" [ref=e3197] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636820595
+      - generic [ref=e3198]:
+        - generic [ref=e3199]: 서울특별시 서초구 서초동NEW
+        - generic [ref=e3200]:
+          - generic [ref=e3201]: 건물
+          - generic [ref=e3202]: 확인 2026.07.09
+        - generic [ref=e3203]: 서초동 강남역세권 신축부지
+      - generic [ref=e3204]:
+        - generic [ref=e3205]: 180억
+        - generic [ref=e3206]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 양재동NEW 건물 확인 2026.07.09 26년 2월 준공승인된 신축건물 170억 네이버에서 보기 ›" [ref=e3207] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636882217
+      - generic [ref=e3208]:
+        - generic [ref=e3209]: 서울특별시 서초구 양재동NEW
+        - generic [ref=e3210]:
+          - generic [ref=e3211]: 건물
+          - generic [ref=e3212]: 확인 2026.07.09
+        - generic [ref=e3213]: 26년 2월 준공승인된 신축건물
+      - generic [ref=e3214]:
+        - generic [ref=e3215]: 170억
+        - generic [ref=e3216]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 방배동NEW 건물 확인 2026.07.08 160억 네이버에서 보기 ›" [ref=e3217] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636713158
+      - generic [ref=e3218]:
+        - generic [ref=e3219]: 서울특별시 서초구 방배동NEW
+        - generic [ref=e3220]:
+          - generic [ref=e3221]: 건물
+          - generic [ref=e3222]: 확인 2026.07.08
+      - generic [ref=e3223]:
+        - generic [ref=e3224]: 160억
+        - generic [ref=e3225]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 방배동NEW 건물 확인 2026.07.08 150억 네이버에서 보기 ›" [ref=e3226] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636689774
+      - generic [ref=e3227]:
+        - generic [ref=e3228]: 서울특별시 서초구 방배동NEW
+        - generic [ref=e3229]:
+          - generic [ref=e3230]: 건물
+          - generic [ref=e3231]: 확인 2026.07.08
+      - generic [ref=e3232]:
+        - generic [ref=e3233]: 150억
+        - generic [ref=e3234]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 서초동NEW 건물 확인 2026.07.09 150억 네이버에서 보기 ›" [ref=e3235] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636884568
+      - generic [ref=e3236]:
+        - generic [ref=e3237]: 서울특별시 서초구 서초동NEW
+        - generic [ref=e3238]:
+          - generic [ref=e3239]: 건물
+          - generic [ref=e3240]: 확인 2026.07.09
+      - generic [ref=e3241]:
+        - generic [ref=e3242]: 150억
+        - generic [ref=e3243]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 서초동NEW 건물 확인 2026.07.09 실매물만 안내드립니다. 150억 네이버에서 보기 ›" [ref=e3244] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636875624
+      - generic [ref=e3245]:
+        - generic [ref=e3246]: 서울특별시 서초구 서초동NEW
+        - generic [ref=e3247]:
+          - generic [ref=e3248]: 건물
+          - generic [ref=e3249]: 확인 2026.07.09
+        - generic [ref=e3250]: 실매물만 안내드립니다.
+      - generic [ref=e3251]:
+        - generic [ref=e3252]: 150억
+        - generic [ref=e3253]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 양재동NEW 건물 확인 2026.07.08 140억 네이버에서 보기 ›" [ref=e3254] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636775855
+      - generic [ref=e3255]:
+        - generic [ref=e3256]: 서울특별시 서초구 양재동NEW
+        - generic [ref=e3257]:
+          - generic [ref=e3258]: 건물
+          - generic [ref=e3259]: 확인 2026.07.08
+      - generic [ref=e3260]:
+        - generic [ref=e3261]: 140억
+        - generic [ref=e3262]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 원지동NEW 토지 확인 2026.07.03 140억 네이버에서 보기 ›" [ref=e3263] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2635788399
+      - generic [ref=e3264]:
+        - generic [ref=e3265]: 서울특별시 서초구 원지동NEW
+        - generic [ref=e3266]:
+          - generic [ref=e3267]: 토지
+          - generic [ref=e3268]: 확인 2026.07.03
+      - generic [ref=e3269]:
+        - generic [ref=e3270]: 140억
+        - generic [ref=e3271]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 서초동NEW 건물 확인 2026.07.09 138억 네이버에서 보기 ›" [ref=e3272] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636883172
+      - generic [ref=e3273]:
+        - generic [ref=e3274]: 서울특별시 서초구 서초동NEW
+        - generic [ref=e3275]:
+          - generic [ref=e3276]: 건물
+          - generic [ref=e3277]: 확인 2026.07.09
+      - generic [ref=e3278]:
+        - generic [ref=e3279]: 138억
+        - generic [ref=e3280]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 염곡동NEW 토지 확인 2026.07.04 급매 투자가치 높은지역, 개발호재 138억 네이버에서 보기 ›" [ref=e3281] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2635982321
+      - generic [ref=e3282]:
+        - generic [ref=e3283]: 서울특별시 서초구 염곡동NEW
+        - generic [ref=e3284]:
+          - generic [ref=e3285]: 토지
+          - generic [ref=e3286]: 확인 2026.07.04
+        - generic [ref=e3287]: 급매 투자가치 높은지역, 개발호재
+      - generic [ref=e3288]:
+        - generic [ref=e3289]: 138억
+        - generic [ref=e3290]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 반포동NEW 건물 확인 2026.07.09 135억 네이버에서 보기 ›" [ref=e3291] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636897404
+      - generic [ref=e3292]:
+        - generic [ref=e3293]: 서울특별시 서초구 반포동NEW
+        - generic [ref=e3294]:
+          - generic [ref=e3295]: 건물
+          - generic [ref=e3296]: 확인 2026.07.09
+      - generic [ref=e3297]:
+        - generic [ref=e3298]: 135억
+        - generic [ref=e3299]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 반포동NEW 건물 확인 2026.07.08 신논현역 역세권 매물 131억 네이버에서 보기 ›" [ref=e3300] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636776815
+      - generic [ref=e3301]:
+        - generic [ref=e3302]: 서울특별시 서초구 반포동NEW
+        - generic [ref=e3303]:
+          - generic [ref=e3304]: 건물
+          - generic [ref=e3305]: 확인 2026.07.08
+        - generic [ref=e3306]: 신논현역 역세권 매물
+      - generic [ref=e3307]:
+        - generic [ref=e3308]: 131억
+        - generic [ref=e3309]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 서초동NEW 건물 확인 2026.07.09 서초동 24년신축 사옥추천 건물 130억 네이버에서 보기 ›" [ref=e3310] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636821268
+      - generic [ref=e3311]:
+        - generic [ref=e3312]: 서울특별시 서초구 서초동NEW
+        - generic [ref=e3313]:
+          - generic [ref=e3314]: 건물
+          - generic [ref=e3315]: 확인 2026.07.09
+        - generic [ref=e3316]: 서초동 24년신축 사옥추천 건물
+      - generic [ref=e3317]:
+        - generic [ref=e3318]: 130억
+        - generic [ref=e3319]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 양재동NEW 건물 확인 2026.07.09 양재동 도로변 사옥용 건물 130억 네이버에서 보기 ›" [ref=e3320] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636880628
+      - generic [ref=e3321]:
+        - generic [ref=e3322]: 서울특별시 서초구 양재동NEW
+        - generic [ref=e3323]:
+          - generic [ref=e3324]: 건물
+          - generic [ref=e3325]: 확인 2026.07.09
+        - generic [ref=e3326]: 양재동 도로변 사옥용 건물
+      - generic [ref=e3327]:
+        - generic [ref=e3328]: 130억
+        - generic [ref=e3329]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 양재동NEW 건물 확인 2026.07.09 양재동 대로변 코너빌딩 130억 네이버에서 보기 ›" [ref=e3330] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636822195
+      - generic [ref=e3331]:
+        - generic [ref=e3332]: 서울특별시 서초구 양재동NEW
+        - generic [ref=e3333]:
+          - generic [ref=e3334]: 건물
+          - generic [ref=e3335]: 확인 2026.07.09
+        - generic [ref=e3336]: 양재동 대로변 코너빌딩
+      - generic [ref=e3337]:
+        - generic [ref=e3338]: 130억
+        - generic [ref=e3339]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 양재동NEW 건물 확인 2026.07.08 양재역 인근 근생 130억 네이버에서 보기 ›" [ref=e3340] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636789816
+      - generic [ref=e3341]:
+        - generic [ref=e3342]: 서울특별시 서초구 양재동NEW
+        - generic [ref=e3343]:
+          - generic [ref=e3344]: 건물
+          - generic [ref=e3345]: 확인 2026.07.08
+        - generic [ref=e3346]: 양재역 인근 근생
+      - generic [ref=e3347]:
+        - generic [ref=e3348]: 130억
+        - generic [ref=e3349]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 양재동NEW 건물 확인 2026.07.08 양재천 인근 5층 근생, 대지 141, 깨끗한 건물로 사옥 추천 126억 네이버에서 보기 ›" [ref=e3350] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636686349
+      - generic [ref=e3351]:
+        - generic [ref=e3352]: 서울특별시 서초구 양재동NEW
+        - generic [ref=e3353]:
+          - generic [ref=e3354]: 건물
+          - generic [ref=e3355]: 확인 2026.07.08
+        - generic [ref=e3356]: 양재천 인근 5층 근생, 대지 141, 깨끗한 건물로 사옥 추천
+      - generic [ref=e3357]:
+        - generic [ref=e3358]: 126억
+        - generic [ref=e3359]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 방배동NEW 건물 확인 2026.07.09 s 내방역세권 명도 완료된 대로변 코너건믈 124억 네이버에서 보기 ›" [ref=e3360] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636887840
+      - generic [ref=e3361]:
+        - generic [ref=e3362]: 서울특별시 서초구 방배동NEW
+        - generic [ref=e3363]:
+          - generic [ref=e3364]: 건물
+          - generic [ref=e3365]: 확인 2026.07.09
+        - generic [ref=e3366]: s 내방역세권 명도 완료된 대로변 코너건믈
+      - generic [ref=e3367]:
+        - generic [ref=e3368]: 124억
+        - generic [ref=e3369]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 반포동NEW 건물 확인 2026.07.09 120억 네이버에서 보기 ›" [ref=e3370] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636897036
+      - generic [ref=e3371]:
+        - generic [ref=e3372]: 서울특별시 서초구 반포동NEW
+        - generic [ref=e3373]:
+          - generic [ref=e3374]: 건물
+          - generic [ref=e3375]: 확인 2026.07.09
+      - generic [ref=e3376]:
+        - generic [ref=e3377]: 120억
+        - generic [ref=e3378]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 반포동NEW 건물 확인 2026.07.08 반포동 논현역 역세권 신축부지 120억 네이버에서 보기 ›" [ref=e3379] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636791934
+      - generic [ref=e3380]:
+        - generic [ref=e3381]: 서울특별시 서초구 반포동NEW
+        - generic [ref=e3382]:
+          - generic [ref=e3383]: 건물
+          - generic [ref=e3384]: 확인 2026.07.08
+        - generic [ref=e3385]: 반포동 논현역 역세권 신축부지
+      - generic [ref=e3386]:
+        - generic [ref=e3387]: 120억
+        - generic [ref=e3388]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 서초동NEW 건물 확인 2026.07.09 서초동 사옥용 건물 추천 120억 네이버에서 보기 ›" [ref=e3389] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636889057
+      - generic [ref=e3390]:
+        - generic [ref=e3391]: 서울특별시 서초구 서초동NEW
+        - generic [ref=e3392]:
+          - generic [ref=e3393]: 건물
+          - generic [ref=e3394]: 확인 2026.07.09
+        - generic [ref=e3395]: 서초동 사옥용 건물 추천
+      - generic [ref=e3396]:
+        - generic [ref=e3397]: 120억
+        - generic [ref=e3398]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 양재동NEW 건물 확인 2026.07.08 양재근린공원 인근 가시성, 접근성 우수하며 내외관 수려한 건물 120억 네이버에서 보기 ›" [ref=e3399] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636658214
+      - generic [ref=e3400]:
+        - generic [ref=e3401]: 서울특별시 서초구 양재동NEW
+        - generic [ref=e3402]:
+          - generic [ref=e3403]: 건물
+          - generic [ref=e3404]: 확인 2026.07.08
+        - generic [ref=e3405]: 양재근린공원 인근 가시성, 접근성 우수하며 내외관 수려한 건물
+      - generic [ref=e3406]:
+        - generic [ref=e3407]: 120억
+        - generic [ref=e3408]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 내곡동NEW 토지 확인 2026.07.01 서초구 서리풀 공공택지 주변 왕복 8차선도로 접한 상업용 신축건물 118억 네이버에서 보기 ›" [ref=e3409] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2635329767
+      - generic [ref=e3410]:
+        - generic [ref=e3411]: 서울특별시 서초구 내곡동NEW
+        - generic [ref=e3412]:
+          - generic [ref=e3413]: 토지
+          - generic [ref=e3414]: 확인 2026.07.01
+        - generic [ref=e3415]: 서초구 서리풀 공공택지 주변 왕복 8차선도로 접한 상업용 신축건물
+      - generic [ref=e3416]:
+        - generic [ref=e3417]: 118억
+        - generic [ref=e3418]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 서초동NEW 건물 확인 2026.07.09 리모델링용 급매물 115억 네이버에서 보기 ›" [ref=e3419] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636884962
+      - generic [ref=e3420]:
+        - generic [ref=e3421]: 서울특별시 서초구 서초동NEW
+        - generic [ref=e3422]:
+          - generic [ref=e3423]: 건물
+          - generic [ref=e3424]: 확인 2026.07.09
+        - generic [ref=e3425]: 리모델링용 급매물
+      - generic [ref=e3426]:
+        - generic [ref=e3427]: 115억
+        - generic [ref=e3428]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 양재동NEW 건물 확인 2026.07.09 정확한 중개, 명도, 용도변경 협의가 115억 네이버에서 보기 ›" [ref=e3429] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636908613
+      - generic [ref=e3430]:
+        - generic [ref=e3431]: 서울특별시 서초구 양재동NEW
+        - generic [ref=e3432]:
+          - generic [ref=e3433]: 건물
+          - generic [ref=e3434]: 확인 2026.07.09
+        - generic [ref=e3435]: 정확한 중개, 명도, 용도변경 협의가
+      - generic [ref=e3436]:
+        - generic [ref=e3437]: 115억
+        - generic [ref=e3438]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 양재동NEW 건물 확인 2026.07.09 양재동 사옥용 건물 110억 네이버에서 보기 ›" [ref=e3439] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636880174
+      - generic [ref=e3440]:
+        - generic [ref=e3441]: 서울특별시 서초구 양재동NEW
+        - generic [ref=e3442]:
+          - generic [ref=e3443]: 건물
+          - generic [ref=e3444]: 확인 2026.07.09
+        - generic [ref=e3445]: 양재동 사옥용 건물
+      - generic [ref=e3446]:
+        - generic [ref=e3447]: 110억
+        - generic [ref=e3448]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 양재동NEW 건물 확인 2026.07.09 양재동 양재천 삼거리코너 신축급빌딩 110억 네이버에서 보기 ›" [ref=e3449] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636819841
+      - generic [ref=e3450]:
+        - generic [ref=e3451]: 서울특별시 서초구 양재동NEW
+        - generic [ref=e3452]:
+          - generic [ref=e3453]: 건물
+          - generic [ref=e3454]: 확인 2026.07.09
+        - generic [ref=e3455]: 양재동 양재천 삼거리코너 신축급빌딩
+      - generic [ref=e3456]:
+        - generic [ref=e3457]: 110억
+        - generic [ref=e3458]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 방배동NEW 건물 확인 2026.07.08 내방역 초역세권 왕복 8차선 대로변 위치 가시성 우수 100억 네이버에서 보기 ›" [ref=e3459] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636641309
+      - generic [ref=e3460]:
+        - generic [ref=e3461]: 서울특별시 서초구 방배동NEW
+        - generic [ref=e3462]:
+          - generic [ref=e3463]: 건물
+          - generic [ref=e3464]: 확인 2026.07.08
+        - generic [ref=e3465]: 내방역 초역세권 왕복 8차선 대로변 위치 가시성 우수
+      - generic [ref=e3466]:
+        - generic [ref=e3467]: 100억
+        - generic [ref=e3468]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 양재동NEW 건물 확인 2026.07.08 양재시민의숲역세권 관리잘된건물 주차5 대지90 개발호재 편의시설풍부 100억 네이버에서 보기 ›" [ref=e3469] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636683589
+      - generic [ref=e3470]:
+        - generic [ref=e3471]: 서울특별시 서초구 양재동NEW
+        - generic [ref=e3472]:
+          - generic [ref=e3473]: 건물
+          - generic [ref=e3474]: 확인 2026.07.08
+        - generic [ref=e3475]: 양재시민의숲역세권 관리잘된건물 주차5 대지90 개발호재 편의시설풍부
+      - generic [ref=e3476]:
+        - generic [ref=e3477]: 100억
+        - generic [ref=e3478]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 양재동NEW 건물 확인 2026.07.08 100억 네이버에서 보기 ›" [ref=e3479] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636790967
+      - generic [ref=e3480]:
+        - generic [ref=e3481]: 서울특별시 서초구 양재동NEW
+        - generic [ref=e3482]:
+          - generic [ref=e3483]: 건물
+          - generic [ref=e3484]: 확인 2026.07.08
+      - generic [ref=e3485]:
+        - generic [ref=e3486]: 100억
+        - generic [ref=e3487]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 염곡동NEW 토지 확인 2026.06.30 양재 IC 인근 100억 네이버에서 보기 ›" [ref=e3488] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2635195382
+      - generic [ref=e3489]:
+        - generic [ref=e3490]: 서울특별시 서초구 염곡동NEW
+        - generic [ref=e3491]:
+          - generic [ref=e3492]: 토지
+          - generic [ref=e3493]: 확인 2026.06.30
+        - generic [ref=e3494]: 양재 IC 인근
+      - generic [ref=e3495]:
+        - generic [ref=e3496]: 100억
+        - generic [ref=e3497]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 잠원동NEW 건물 확인 2026.07.09 100억 네이버에서 보기 ›" [ref=e3498] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636814247
+      - generic [ref=e3499]:
+        - generic [ref=e3500]: 서울특별시 서초구 잠원동NEW
+        - generic [ref=e3501]:
+          - generic [ref=e3502]: 건물
+          - generic [ref=e3503]: 확인 2026.07.09
+      - generic [ref=e3504]:
+        - generic [ref=e3505]: 100억
+        - generic [ref=e3506]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 내곡동NEW 토지 확인 2026.07.01 서초구 서리풀공공지구 주변 8차선대로에 접한 신축중인 빌딩 95억 네이버에서 보기 ›" [ref=e3507] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2635330925
+      - generic [ref=e3508]:
+        - generic [ref=e3509]: 서울특별시 서초구 내곡동NEW
+        - generic [ref=e3510]:
+          - generic [ref=e3511]: 토지
+          - generic [ref=e3512]: 확인 2026.07.01
+        - generic [ref=e3513]: 서초구 서리풀공공지구 주변 8차선대로에 접한 신축중인 빌딩
+      - generic [ref=e3514]:
+        - generic [ref=e3515]: 95억
+        - generic [ref=e3516]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 반포동NEW 건물 확인 2026.07.08 95억 네이버에서 보기 ›" [ref=e3517] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636791617
+      - generic [ref=e3518]:
+        - generic [ref=e3519]: 서울특별시 서초구 반포동NEW
+        - generic [ref=e3520]:
+          - generic [ref=e3521]: 건물
+          - generic [ref=e3522]: 확인 2026.07.08
+      - generic [ref=e3523]:
+        - generic [ref=e3524]: 95억
+        - generic [ref=e3525]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 서초동NEW 건물 확인 2026.07.09 근생빌딩, 명도완료, 재건축, 임대사업,사옥용,정보사부지,지가상승예상 95억 네이버에서 보기 ›" [ref=e3526] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636905558
+      - generic [ref=e3527]:
+        - generic [ref=e3528]: 서울특별시 서초구 서초동NEW
+        - generic [ref=e3529]:
+          - generic [ref=e3530]: 건물
+          - generic [ref=e3531]: 확인 2026.07.09
+        - generic [ref=e3532]: 근생빌딩, 명도완료, 재건축, 임대사업,사옥용,정보사부지,지가상승예상
+      - generic [ref=e3533]:
+        - generic [ref=e3534]: 95억
+        - generic [ref=e3535]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 서초동NEW 건물 확인 2026.07.09 교대역 역세권 신축 부지 추천 95억 네이버에서 보기 ›" [ref=e3536] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636899400
+      - generic [ref=e3537]:
+        - generic [ref=e3538]: 서울특별시 서초구 서초동NEW
+        - generic [ref=e3539]:
+          - generic [ref=e3540]: 건물
+          - generic [ref=e3541]: 확인 2026.07.09
+        - generic [ref=e3542]: 교대역 역세권 신축 부지 추천
+      - generic [ref=e3543]:
+        - generic [ref=e3544]: 95억
+        - generic [ref=e3545]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 잠원동NEW 건물 확인 2026.07.09 신사역 역세권 신축부지 94억 네이버에서 보기 ›" [ref=e3546] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636905485
+      - generic [ref=e3547]:
+        - generic [ref=e3548]: 서울특별시 서초구 잠원동NEW
+        - generic [ref=e3549]:
+          - generic [ref=e3550]: 건물
+          - generic [ref=e3551]: 확인 2026.07.09
+        - generic [ref=e3552]: 신사역 역세권 신축부지
+      - generic [ref=e3553]:
+        - generic [ref=e3554]: 94억
+        - generic [ref=e3555]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 잠원동NEW 건물 확인 2026.07.08 신사역 역세권 올근생빌딩 94억 네이버에서 보기 ›" [ref=e3556] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636792729
+      - generic [ref=e3557]:
+        - generic [ref=e3558]: 서울특별시 서초구 잠원동NEW
+        - generic [ref=e3559]:
+          - generic [ref=e3560]: 건물
+          - generic [ref=e3561]: 확인 2026.07.08
+        - generic [ref=e3562]: 신사역 역세권 올근생빌딩
+      - generic [ref=e3563]:
+        - generic [ref=e3564]: 94억
+        - generic [ref=e3565]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 반포동NEW 건물 확인 2026.07.08 실매물만 안내드립니다. 93억 네이버에서 보기 ›" [ref=e3566] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636778618
+      - generic [ref=e3567]:
+        - generic [ref=e3568]: 서울특별시 서초구 반포동NEW
+        - generic [ref=e3569]:
+          - generic [ref=e3570]: 건물
+          - generic [ref=e3571]: 확인 2026.07.08
+        - generic [ref=e3572]: 실매물만 안내드립니다.
+      - generic [ref=e3573]:
+        - generic [ref=e3574]: 93억
+        - generic [ref=e3575]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 양재동NEW 건물 확인 2026.07.08 양재시민의숲역 l 리모델링완료 l 유니크한 외관 l 코너 건물 93억 네이버에서 보기 ›" [ref=e3576] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636712506
+      - generic [ref=e3577]:
+        - generic [ref=e3578]: 서울특별시 서초구 양재동NEW
+        - generic [ref=e3579]:
+          - generic [ref=e3580]: 건물
+          - generic [ref=e3581]: 확인 2026.07.08
+        - generic [ref=e3582]: 양재시민의숲역 l 리모델링완료 l 유니크한 외관 l 코너 건물
+      - generic [ref=e3583]:
+        - generic [ref=e3584]: 93억
+        - generic [ref=e3585]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 잠원동NEW 건물 확인 2026.07.09 노후 건물 철거 후 신축 적합 부지. 92억 네이버에서 보기 ›" [ref=e3586] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636885434
+      - generic [ref=e3587]:
+        - generic [ref=e3588]: 서울특별시 서초구 잠원동NEW
+        - generic [ref=e3589]:
+          - generic [ref=e3590]: 건물
+          - generic [ref=e3591]: 확인 2026.07.09
+        - generic [ref=e3592]: 노후 건물 철거 후 신축 적합 부지.
+      - generic [ref=e3593]:
+        - generic [ref=e3594]: 92억
+        - generic [ref=e3595]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 방배동NEW 건물 확인 2026.07.08 방배역 초역세권 핵심 생활 상권 서초구 서부권 핵심 생활주거 지구 90억 네이버에서 보기 ›" [ref=e3596] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636623458
+      - generic [ref=e3597]:
+        - generic [ref=e3598]: 서울특별시 서초구 방배동NEW
+        - generic [ref=e3599]:
+          - generic [ref=e3600]: 건물
+          - generic [ref=e3601]: 확인 2026.07.08
+        - generic [ref=e3602]: 방배역 초역세권 핵심 생활 상권 서초구 서부권 핵심 생활주거 지구
+      - generic [ref=e3603]:
+        - generic [ref=e3604]: 90억
+        - generic [ref=e3605]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 방배동NEW 건물 확인 2026.07.08 근생건물 90억 네이버에서 보기 ›" [ref=e3606] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636802132
+      - generic [ref=e3607]:
+        - generic [ref=e3608]: 서울특별시 서초구 방배동NEW
+        - generic [ref=e3609]:
+          - generic [ref=e3610]: 건물
+          - generic [ref=e3611]: 확인 2026.07.08
+        - generic [ref=e3612]: 근생건물
+      - generic [ref=e3613]:
+        - generic [ref=e3614]: 90억
+        - generic [ref=e3615]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 방배동NEW 건물 확인 2026.07.08 90억 네이버에서 보기 ›" [ref=e3616] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636791583
+      - generic [ref=e3617]:
+        - generic [ref=e3618]: 서울특별시 서초구 방배동NEW
+        - generic [ref=e3619]:
+          - generic [ref=e3620]: 건물
+          - generic [ref=e3621]: 확인 2026.07.08
+      - generic [ref=e3622]:
+        - generic [ref=e3623]: 90억
+        - generic [ref=e3624]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 염곡동NEW 토지 확인 2026.06.13 서초구 염통골 접근성 좋은 최고의 주택지 사옥추전 90억 네이버에서 보기 ›" [ref=e3625] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2631948834
+      - generic [ref=e3626]:
+        - generic [ref=e3627]: 서울특별시 서초구 염곡동NEW
+        - generic [ref=e3628]:
+          - generic [ref=e3629]: 토지
+          - generic [ref=e3630]: 확인 2026.06.13
+        - generic [ref=e3631]: 서초구 염통골 접근성 좋은 최고의 주택지 사옥추전
+      - generic [ref=e3632]:
+        - generic [ref=e3633]: 90억
+        - generic [ref=e3634]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 잠원동NEW 건물 확인 2026.07.08 신사논현 생활권과 인접한 잠원동 초입 한남대교강남대로 접근 용이 90억 네이버에서 보기 ›" [ref=e3635] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636638368
+      - generic [ref=e3636]:
+        - generic [ref=e3637]: 서울특별시 서초구 잠원동NEW
+        - generic [ref=e3638]:
+          - generic [ref=e3639]: 건물
+          - generic [ref=e3640]: 확인 2026.07.08
+        - generic [ref=e3641]: 신사논현 생활권과 인접한 잠원동 초입 한남대교강남대로 접근 용이
+      - generic [ref=e3642]:
+        - generic [ref=e3643]: 90억
+        - generic [ref=e3644]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 내곡동NEW 토지 확인 2026.07.01 내곡동, 신원동, 원지동 등 서초, 강남 투자 유망 89억 4,000 네이버에서 보기 ›" [ref=e3645] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2635343000
+      - generic [ref=e3646]:
+        - generic [ref=e3647]: 서울특별시 서초구 내곡동NEW
+        - generic [ref=e3648]:
+          - generic [ref=e3649]: 토지
+          - generic [ref=e3650]: 확인 2026.07.01
+        - generic [ref=e3651]: 내곡동, 신원동, 원지동 등 서초, 강남 투자 유망
+      - generic [ref=e3652]:
+        - generic [ref=e3653]: 89억 4,000
+        - generic [ref=e3654]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 반포동NEW 건물 확인 2026.07.09 89억 네이버에서 보기 ›" [ref=e3655] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636812438
+      - generic [ref=e3656]:
+        - generic [ref=e3657]: 서울특별시 서초구 반포동NEW
+        - generic [ref=e3658]:
+          - generic [ref=e3659]: 건물
+          - generic [ref=e3660]: 확인 2026.07.09
+      - generic [ref=e3661]:
+        - generic [ref=e3662]: 89억
+        - generic [ref=e3663]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 반포동NEW 건물 확인 2026.07.08 근생건물 89억 네이버에서 보기 ›" [ref=e3664] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636778825
+      - generic [ref=e3665]:
+        - generic [ref=e3666]: 서울특별시 서초구 반포동NEW
+        - generic [ref=e3667]:
+          - generic [ref=e3668]: 건물
+          - generic [ref=e3669]: 확인 2026.07.08
+        - generic [ref=e3670]: 근생건물
+      - generic [ref=e3671]:
+        - generic [ref=e3672]: 89억
+        - generic [ref=e3673]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 방배동NEW 건물 확인 2026.07.09 사당역 도보3분 거리, 코너위치 88억 네이버에서 보기 ›" [ref=e3674] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636910543
+      - generic [ref=e3675]:
+        - generic [ref=e3676]: 서울특별시 서초구 방배동NEW
+        - generic [ref=e3677]:
+          - generic [ref=e3678]: 건물
+          - generic [ref=e3679]: 확인 2026.07.09
+        - generic [ref=e3680]: 사당역 도보3분 거리, 코너위치
+      - generic [ref=e3681]:
+        - generic [ref=e3682]: 88억
+        - generic [ref=e3683]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 반포동NEW 건물 확인 2026.07.08 급매 서래마을 리모델링 상가 임차인 명도 완료 프랑스학교 인근 87억 네이버에서 보기 ›" [ref=e3684] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636827938
+      - generic [ref=e3685]:
+        - generic [ref=e3686]: 서울특별시 서초구 반포동NEW
+        - generic [ref=e3687]:
+          - generic [ref=e3688]: 건물
+          - generic [ref=e3689]: 확인 2026.07.08
+        - generic [ref=e3690]: 급매 서래마을 리모델링 상가 임차인 명도 완료 프랑스학교 인근
+      - generic [ref=e3691]:
+        - generic [ref=e3692]: 87억
+        - generic [ref=e3693]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 신원동NEW 토지 확인 2026.06.23 매도86억,신분당선청계산입구역도보5분,시행부지,주택,사옥,식당,카페 86억 네이버에서 보기 ›" [ref=e3694] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2633705265
+      - generic [ref=e3695]:
+        - generic [ref=e3696]: 서울특별시 서초구 신원동NEW
+        - generic [ref=e3697]:
+          - generic [ref=e3698]: 토지
+          - generic [ref=e3699]: 확인 2026.06.23
+        - generic [ref=e3700]: 매도86억,신분당선청계산입구역도보5분,시행부지,주택,사옥,식당,카페
+      - generic [ref=e3701]:
+        - generic [ref=e3702]: 86억
+        - generic [ref=e3703]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 원지동NEW 토지 확인 2026.06.09 투자. 그린벨트. 저렴가격 85억 네이버에서 보기 ›" [ref=e3704] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2631073633
+      - generic [ref=e3705]:
+        - generic [ref=e3706]: 서울특별시 서초구 원지동NEW
+        - generic [ref=e3707]:
+          - generic [ref=e3708]: 토지
+          - generic [ref=e3709]: 확인 2026.06.09
+        - generic [ref=e3710]: 투자. 그린벨트. 저렴가격
+      - generic [ref=e3711]:
+        - generic [ref=e3712]: 85억
+        - generic [ref=e3713]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 잠원동NEW 건물 확인 2026.07.07 85억 네이버에서 보기 ›" [ref=e3714] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636621286
+      - generic [ref=e3715]:
+        - generic [ref=e3716]: 서울특별시 서초구 잠원동NEW
+        - generic [ref=e3717]:
+          - generic [ref=e3718]: 건물
+          - generic [ref=e3719]: 확인 2026.07.07
+      - generic [ref=e3720]:
+        - generic [ref=e3721]: 85억
+        - generic [ref=e3722]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 잠원동NEW 건물 확인 2026.07.07 킹 사진0 킹에서 1분 올근생 신축 리모델링 코너 건물 가시성 최우수 와 85억 네이버에서 보기 ›" [ref=e3723] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636613725
+      - generic [ref=e3724]:
+        - generic [ref=e3725]: 서울특별시 서초구 잠원동NEW
+        - generic [ref=e3726]:
+          - generic [ref=e3727]: 건물
+          - generic [ref=e3728]: 확인 2026.07.07
+        - generic [ref=e3729]: 킹 사진0 킹에서 1분 올근생 신축 리모델링 코너 건물 가시성 최우수 와
+      - generic [ref=e3730]:
+        - generic [ref=e3731]: 85억
+        - generic [ref=e3732]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 잠원동NEW 건물 확인 2026.07.09 논현역 역세권 신축부지 82억 네이버에서 보기 ›" [ref=e3733] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636905875
+      - generic [ref=e3734]:
+        - generic [ref=e3735]: 서울특별시 서초구 잠원동NEW
+        - generic [ref=e3736]:
+          - generic [ref=e3737]: 건물
+          - generic [ref=e3738]: 확인 2026.07.09
+        - generic [ref=e3739]: 논현역 역세권 신축부지
+      - generic [ref=e3740]:
+        - generic [ref=e3741]: 82억
+        - generic [ref=e3742]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 양재동NEW 건물 확인 2026.07.08 건물통매각 80억 네이버에서 보기 ›" [ref=e3743] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636817940
+      - generic [ref=e3744]:
+        - generic [ref=e3745]: 서울특별시 서초구 양재동NEW
+        - generic [ref=e3746]:
+          - generic [ref=e3747]: 건물
+          - generic [ref=e3748]: 확인 2026.07.08
+        - generic [ref=e3749]: 건물통매각
+      - generic [ref=e3750]:
+        - generic [ref=e3751]: 80억
+        - generic [ref=e3752]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 방배동NEW 건물 확인 2026.07.09 79억 네이버에서 보기 ›" [ref=e3753] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636806869
+      - generic [ref=e3754]:
+        - generic [ref=e3755]: 서울특별시 서초구 방배동NEW
+        - generic [ref=e3756]:
+          - generic [ref=e3757]: 건물
+          - generic [ref=e3758]: 확인 2026.07.09
+      - generic [ref=e3759]:
+        - generic [ref=e3760]: 79억
+        - generic [ref=e3761]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 반포동NEW 건물 확인 2026.07.09 신논현역 4분거리 초역세권 건물 78억 네이버에서 보기 ›" [ref=e3762] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636863769
+      - generic [ref=e3763]:
+        - generic [ref=e3764]: 서울특별시 서초구 반포동NEW
+        - generic [ref=e3765]:
+          - generic [ref=e3766]: 건물
+          - generic [ref=e3767]: 확인 2026.07.09
+        - generic [ref=e3768]: 신논현역 4분거리 초역세권 건물
+      - generic [ref=e3769]:
+        - generic [ref=e3770]: 78억
+        - generic [ref=e3771]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 잠원동NEW 건물 확인 2026.07.07 킹 사진0 코너 대지 큰 귀한 건물 더블가시성 투자핵심 77억 네이버에서 보기 ›" [ref=e3772] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636612872
+      - generic [ref=e3773]:
+        - generic [ref=e3774]: 서울특별시 서초구 잠원동NEW
+        - generic [ref=e3775]:
+          - generic [ref=e3776]: 건물
+          - generic [ref=e3777]: 확인 2026.07.07
+        - generic [ref=e3778]: 킹 사진0 코너 대지 큰 귀한 건물 더블가시성 투자핵심
+      - generic [ref=e3779]:
+        - generic [ref=e3780]: 77억
+        - generic [ref=e3781]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 우면동NEW 토지 확인 2026.07.08 용도 다양한 저렴한 대지 76억 네이버에서 보기 ›" [ref=e3782] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636755003
+      - generic [ref=e3783]:
+        - generic [ref=e3784]: 서울특별시 서초구 우면동NEW
+        - generic [ref=e3785]:
+          - generic [ref=e3786]: 토지
+          - generic [ref=e3787]: 확인 2026.07.08
+        - generic [ref=e3788]: 용도 다양한 저렴한 대지
+      - generic [ref=e3789]:
+        - generic [ref=e3790]: 76억
+        - generic [ref=e3791]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 신원동NEW 건물 확인 2026.07.02 직접의뢰 여의천변 청계산입구역 사옥추천 신축추천 75억 네이버에서 보기 ›" [ref=e3792] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2635637358
+      - generic [ref=e3793]:
+        - generic [ref=e3794]: 서울특별시 서초구 신원동NEW
+        - generic [ref=e3795]:
+          - generic [ref=e3796]: 건물
+          - generic [ref=e3797]: 확인 2026.07.02
+        - generic [ref=e3798]: 직접의뢰 여의천변 청계산입구역 사옥추천 신축추천
+      - generic [ref=e3799]:
+        - generic [ref=e3800]: 75억
+        - generic [ref=e3801]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 잠원동NEW 건물 확인 2026.07.08 신사역 역세권 100억 언더 사옥 추천건물 75억 네이버에서 보기 ›" [ref=e3802] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2635734817
+      - generic [ref=e3803]:
+        - generic [ref=e3804]: 서울특별시 서초구 잠원동NEW
+        - generic [ref=e3805]:
+          - generic [ref=e3806]: 건물
+          - generic [ref=e3807]: 확인 2026.07.08
+        - generic [ref=e3808]: 신사역 역세권 100억 언더 사옥 추천건물
+      - generic [ref=e3809]:
+        - generic [ref=e3810]: 75억
+        - generic [ref=e3811]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 잠원동NEW 건물 확인 2026.07.08 잠원역 바로앞 대단지 항아리상권 신축부지 75억 네이버에서 보기 ›" [ref=e3812] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636759454
+      - generic [ref=e3813]:
+        - generic [ref=e3814]: 서울특별시 서초구 잠원동NEW
+        - generic [ref=e3815]:
+          - generic [ref=e3816]: 건물
+          - generic [ref=e3817]: 확인 2026.07.08
+        - generic [ref=e3818]: 잠원역 바로앞 대단지 항아리상권 신축부지
+      - generic [ref=e3819]:
+        - generic [ref=e3820]: 75억
+        - generic [ref=e3821]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 잠원동NEW 건물 확인 2026.07.08 논현역 초역세권 코너빌딩 추천 74억 네이버에서 보기 ›" [ref=e3822] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636747364
+      - generic [ref=e3823]:
+        - generic [ref=e3824]: 서울특별시 서초구 잠원동NEW
+        - generic [ref=e3825]:
+          - generic [ref=e3826]: 건물
+          - generic [ref=e3827]: 확인 2026.07.08
+        - generic [ref=e3828]: 논현역 초역세권 코너빌딩 추천
+      - generic [ref=e3829]:
+        - generic [ref=e3830]: 74억
+        - generic [ref=e3831]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 방배동NEW 건물 확인 2026.07.09 방배동 카페골목 메인도로 12m에 접해있음, 유동인구 많음 73억 네이버에서 보기 ›" [ref=e3832] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636868253
+      - generic [ref=e3833]:
+        - generic [ref=e3834]: 서울특별시 서초구 방배동NEW
+        - generic [ref=e3835]:
+          - generic [ref=e3836]: 건물
+          - generic [ref=e3837]: 확인 2026.07.09
+        - generic [ref=e3838]: 방배동 카페골목 메인도로 12m에 접해있음, 유동인구 많음
+      - generic [ref=e3839]:
+        - generic [ref=e3840]: 73억
+        - generic [ref=e3841]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 방배동NEW 건물 확인 2026.07.08 학원사무실근린시설 운용 최적화 실사용과 투자 모두 가능 73억 네이버에서 보기 ›" [ref=e3842] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636641356
+      - generic [ref=e3843]:
+        - generic [ref=e3844]: 서울특별시 서초구 방배동NEW
+        - generic [ref=e3845]:
+          - generic [ref=e3846]: 건물
+          - generic [ref=e3847]: 확인 2026.07.08
+        - generic [ref=e3848]: 학원사무실근린시설 운용 최적화 실사용과 투자 모두 가능
+      - generic [ref=e3849]:
+        - generic [ref=e3850]: 73억
+        - generic [ref=e3851]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 신원동NEW 토지 확인 2026.06.30 신분당선 청계산역에서 도보5분 72억 네이버에서 보기 ›" [ref=e3852] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2635220859
+      - generic [ref=e3853]:
+        - generic [ref=e3854]: 서울특별시 서초구 신원동NEW
+        - generic [ref=e3855]:
+          - generic [ref=e3856]: 토지
+          - generic [ref=e3857]: 확인 2026.06.30
+        - generic [ref=e3858]: 신분당선 청계산역에서 도보5분
+      - generic [ref=e3859]:
+        - generic [ref=e3860]: 72억
+        - generic [ref=e3861]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 신원동NEW 건물 확인 2026.06.29 재건축부지. 넓은 대지평수. 여의천 바로 앞 본마을. 지하철 도보10분 72억 네이버에서 보기 ›" [ref=e3862] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2634963715
+      - generic [ref=e3863]:
+        - generic [ref=e3864]: 서울특별시 서초구 신원동NEW
+        - generic [ref=e3865]:
+          - generic [ref=e3866]: 건물
+          - generic [ref=e3867]: 확인 2026.06.29
+        - generic [ref=e3868]: 재건축부지. 넓은 대지평수. 여의천 바로 앞 본마을. 지하철 도보10분
+      - generic [ref=e3869]:
+        - generic [ref=e3870]: 72억
+        - generic [ref=e3871]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 신원동NEW 건물 확인 2026.06.15 청계산입구역 도보 13분 210P 개발행위 추천 72억 네이버에서 보기 ›" [ref=e3872] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2632211640
+      - generic [ref=e3873]:
+        - generic [ref=e3874]: 서울특별시 서초구 신원동NEW
+        - generic [ref=e3875]:
+          - generic [ref=e3876]: 건물
+          - generic [ref=e3877]: 확인 2026.06.15
+        - generic [ref=e3878]: 청계산입구역 도보 13분 210P 개발행위 추천
+      - generic [ref=e3879]:
+        - generic [ref=e3880]: 72억
+        - generic [ref=e3881]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 신원동NEW 건물 확인 2026.06.09 저렴한코너땅 입지좋음,지하철 10분,인릉산 여의천 공기좋음 물좋음 72억 네이버에서 보기 ›" [ref=e3882] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2631096428
+      - generic [ref=e3883]:
+        - generic [ref=e3884]: 서울특별시 서초구 신원동NEW
+        - generic [ref=e3885]:
+          - generic [ref=e3886]: 건물
+          - generic [ref=e3887]: 확인 2026.06.09
+        - generic [ref=e3888]: 저렴한코너땅 입지좋음,지하철 10분,인릉산 여의천 공기좋음 물좋음
+      - generic [ref=e3889]:
+        - generic [ref=e3890]: 72억
+        - generic [ref=e3891]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 잠원동NEW 건물 확인 2026.07.07 주거 배후 이면 핵심지 목적 방문 업종에 최적화된 안정 수요형 입지 72억 네이버에서 보기 ›" [ref=e3892] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636601294
+      - generic [ref=e3893]:
+        - generic [ref=e3894]: 서울특별시 서초구 잠원동NEW
+        - generic [ref=e3895]:
+          - generic [ref=e3896]: 건물
+          - generic [ref=e3897]: 확인 2026.07.07
+        - generic [ref=e3898]: 주거 배후 이면 핵심지 목적 방문 업종에 최적화된 안정 수요형 입지
+      - generic [ref=e3899]:
+        - generic [ref=e3900]: 72억
+        - generic [ref=e3901]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 염곡동NEW 토지 확인 2026.06.23 급매저렴. 회장님마을 염곡동. 넓은 재건축부지. 사옥가능. 추천 71억 5,000 네이버에서 보기 ›" [ref=e3902] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2633859301
+      - generic [ref=e3903]:
+        - generic [ref=e3904]: 서울특별시 서초구 염곡동NEW
+        - generic [ref=e3905]:
+          - generic [ref=e3906]: 토지
+          - generic [ref=e3907]: 확인 2026.06.23
+        - generic [ref=e3908]: 급매저렴. 회장님마을 염곡동. 넓은 재건축부지. 사옥가능. 추천
+      - generic [ref=e3909]:
+        - generic [ref=e3910]: 71억 5,000
+        - generic [ref=e3911]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 방배동NEW 건물 확인 2026.07.08 내방역 역세권 이면골목 대비 전면 활용도 우수 메인보다 낮은임대료 70억 네이버에서 보기 ›" [ref=e3912] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636635510
+      - generic [ref=e3913]:
+        - generic [ref=e3914]: 서울특별시 서초구 방배동NEW
+        - generic [ref=e3915]:
+          - generic [ref=e3916]: 건물
+          - generic [ref=e3917]: 확인 2026.07.08
+        - generic [ref=e3918]: 내방역 역세권 이면골목 대비 전면 활용도 우수 메인보다 낮은임대료
+      - generic [ref=e3919]:
+        - generic [ref=e3920]: 70억
+        - generic [ref=e3921]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 양재동NEW 건물 확인 2026.07.08 양재역 매봉역 사이 위치 시민의숲RD 클러스터 영향권 업무 상업지 70억 네이버에서 보기 ›" [ref=e3922] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636635571
+      - generic [ref=e3923]:
+        - generic [ref=e3924]: 서울특별시 서초구 양재동NEW
+        - generic [ref=e3925]:
+          - generic [ref=e3926]: 건물
+          - generic [ref=e3927]: 확인 2026.07.08
+        - generic [ref=e3928]: 양재역 매봉역 사이 위치 시민의숲RD 클러스터 영향권 업무 상업지
+      - generic [ref=e3929]:
+        - generic [ref=e3930]: 70억
+        - generic [ref=e3931]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 원지동NEW 건물 확인 2026.06.29 70억 네이버에서 보기 ›" [ref=e3932] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2634934794
+      - generic [ref=e3933]:
+        - generic [ref=e3934]: 서울특별시 서초구 원지동NEW
+        - generic [ref=e3935]:
+          - generic [ref=e3936]: 건물
+          - generic [ref=e3937]: 확인 2026.06.29
+      - generic [ref=e3938]:
+        - generic [ref=e3939]: 70억
+        - generic [ref=e3940]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 원지동NEW 토지 확인 2026.06.29 70억 네이버에서 보기 ›" [ref=e3941] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2634933548
+      - generic [ref=e3942]:
+        - generic [ref=e3943]: 서울특별시 서초구 원지동NEW
+        - generic [ref=e3944]:
+          - generic [ref=e3945]: 토지
+          - generic [ref=e3946]: 확인 2026.06.29
+      - generic [ref=e3947]:
+        - generic [ref=e3948]: 70억
+        - generic [ref=e3949]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 염곡동NEW 건물 확인 2026.06.16 양재IC 바로 인근, 사옥용 추천 매물 68억 네이버에서 보기 ›" [ref=e3950] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2632541149
+      - generic [ref=e3951]:
+        - generic [ref=e3952]: 서울특별시 서초구 염곡동NEW
+        - generic [ref=e3953]:
+          - generic [ref=e3954]: 건물
+          - generic [ref=e3955]: 확인 2026.06.16
+        - generic [ref=e3956]: 양재IC 바로 인근, 사옥용 추천 매물
+      - generic [ref=e3957]:
+        - generic [ref=e3958]: 68억
+        - generic [ref=e3959]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 염곡동NEW 건물 확인 2026.06.11 코너 근린생활시설 전용 주차 공간이 있어 편리한곳 68억 네이버에서 보기 ›" [ref=e3960] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2631487614
+      - generic [ref=e3961]:
+        - generic [ref=e3962]: 서울특별시 서초구 염곡동NEW
+        - generic [ref=e3963]:
+          - generic [ref=e3964]: 건물
+          - generic [ref=e3965]: 확인 2026.06.11
+        - generic [ref=e3966]: 코너 근린생활시설 전용 주차 공간이 있어 편리한곳
+      - generic [ref=e3967]:
+        - generic [ref=e3968]: 68억
+        - generic [ref=e3969]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 방배동NEW 건물 확인 2026.07.09 s 내방역세권 올 근생건물 매매 65억 네이버에서 보기 ›" [ref=e3970] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636877406
+      - generic [ref=e3971]:
+        - generic [ref=e3972]: 서울특별시 서초구 방배동NEW
+        - generic [ref=e3973]:
+          - generic [ref=e3974]: 건물
+          - generic [ref=e3975]: 확인 2026.07.09
+        - generic [ref=e3976]: s 내방역세권 올 근생건물 매매
+      - generic [ref=e3977]:
+        - generic [ref=e3978]: 65억
+        - generic [ref=e3979]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 방배동NEW 건물 확인 2026.07.08 내방역 역세권 건물 상태 우수 이면도로 생활 상권 65억 네이버에서 보기 ›" [ref=e3980] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636639841
+      - generic [ref=e3981]:
+        - generic [ref=e3982]: 서울특별시 서초구 방배동NEW
+        - generic [ref=e3983]:
+          - generic [ref=e3984]: 건물
+          - generic [ref=e3985]: 확인 2026.07.08
+        - generic [ref=e3986]: 내방역 역세권 건물 상태 우수 이면도로 생활 상권
+      - generic [ref=e3987]:
+        - generic [ref=e3988]: 65억
+        - generic [ref=e3989]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 잠원동NEW 건물 확인 2026.07.07 킹 먹자상권 항아리 대기업 중소기업 바글바글 회식 신사 논현 만남 65억 네이버에서 보기 ›" [ref=e3990] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636614597
+      - generic [ref=e3991]:
+        - generic [ref=e3992]: 서울특별시 서초구 잠원동NEW
+        - generic [ref=e3993]:
+          - generic [ref=e3994]: 건물
+          - generic [ref=e3995]: 확인 2026.07.07
+        - generic [ref=e3996]: 킹 먹자상권 항아리 대기업 중소기업 바글바글 회식 신사 논현 만남
+      - generic [ref=e3997]:
+        - generic [ref=e3998]: 65억
+        - generic [ref=e3999]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 양재동NEW 건물 확인 2026.07.08 양재동 핵심 상권, 배후세대 탄탄하고 업무근린시설 겸용 가능한 건 63억 5,000 네이버에서 보기 ›" [ref=e4000] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636635530
+      - generic [ref=e4001]:
+        - generic [ref=e4002]: 서울특별시 서초구 양재동NEW
+        - generic [ref=e4003]:
+          - generic [ref=e4004]: 건물
+          - generic [ref=e4005]: 확인 2026.07.08
+        - generic [ref=e4006]: 양재동 핵심 상권, 배후세대 탄탄하고 업무근린시설 겸용 가능한 건
+      - generic [ref=e4007]:
+        - generic [ref=e4008]: 63억 5,000
+        - generic [ref=e4009]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 서초동NEW 토지 확인 2026.07.09 현대 다세대주택 11세대 중, 8세대 민간임대주택 등록, 명도가능 63억 4,000 네이버에서 보기 ›" [ref=e4010] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636858220
+      - generic [ref=e4011]:
+        - generic [ref=e4012]: 서울특별시 서초구 서초동NEW
+        - generic [ref=e4013]:
+          - generic [ref=e4014]: 토지
+          - generic [ref=e4015]: 확인 2026.07.09
+        - generic [ref=e4016]: 현대 다세대주택 11세대 중, 8세대 민간임대주택 등록, 명도가능
+      - generic [ref=e4017]:
+        - generic [ref=e4018]: 63억 4,000
+        - generic [ref=e4019]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 신원동NEW 토지 확인 2026.07.08 내곡동, 신원동, 원지동 등 서초, 강남 투자 유망 62억 네이버에서 보기 ›" [ref=e4020] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636790763
+      - generic [ref=e4021]:
+        - generic [ref=e4022]: 서울특별시 서초구 신원동NEW
+        - generic [ref=e4023]:
+          - generic [ref=e4024]: 토지
+          - generic [ref=e4025]: 확인 2026.07.08
+        - generic [ref=e4026]: 내곡동, 신원동, 원지동 등 서초, 강남 투자 유망
+      - generic [ref=e4027]:
+        - generic [ref=e4028]: 62억
+        - generic [ref=e4029]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 원지동NEW 건물 확인 2026.06.09 청계산입구역 인근 유동인구 많은 직접 사용하기 좋은 건물 61억 네이버에서 보기 ›" [ref=e4030] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2630987479
+      - generic [ref=e4031]:
+        - generic [ref=e4032]: 서울특별시 서초구 원지동NEW
+        - generic [ref=e4033]:
+          - generic [ref=e4034]: 건물
+          - generic [ref=e4035]: 확인 2026.06.09
+        - generic [ref=e4036]: 청계산입구역 인근 유동인구 많은 직접 사용하기 좋은 건물
+      - generic [ref=e4037]:
+        - generic [ref=e4038]: 61억
+        - generic [ref=e4039]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 반포동NEW 건물 확인 2026.07.08 고속터미널반포 학원주거벨트 경계 입지 장기 보유 시 안정 수익형 60억 네이버에서 보기 ›" [ref=e4040] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636638328
+      - generic [ref=e4041]:
+        - generic [ref=e4042]: 서울특별시 서초구 반포동NEW
+        - generic [ref=e4043]:
+          - generic [ref=e4044]: 건물
+          - generic [ref=e4045]: 확인 2026.07.08
+        - generic [ref=e4046]: 고속터미널반포 학원주거벨트 경계 입지 장기 보유 시 안정 수익형
+      - generic [ref=e4047]:
+        - generic [ref=e4048]: 60억
+        - generic [ref=e4049]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 방배동NEW 건물 확인 2026.07.09 노후 건물 철거 후 신축 적합 부지. 60억 네이버에서 보기 ›" [ref=e4050] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636889048
+      - generic [ref=e4051]:
+        - generic [ref=e4052]: 서울특별시 서초구 방배동NEW
+        - generic [ref=e4053]:
+          - generic [ref=e4054]: 건물
+          - generic [ref=e4055]: 확인 2026.07.09
+        - generic [ref=e4056]: 노후 건물 철거 후 신축 적합 부지.
+      - generic [ref=e4057]:
+        - generic [ref=e4058]: 60억
+        - generic [ref=e4059]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 잠원동NEW 건물 확인 2026.07.08 60억 네이버에서 보기 ›" [ref=e4060] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636787487
+      - generic [ref=e4061]:
+        - generic [ref=e4062]: 서울특별시 서초구 잠원동NEW
+        - generic [ref=e4063]:
+          - generic [ref=e4064]: 건물
+          - generic [ref=e4065]: 확인 2026.07.08
+      - generic [ref=e4066]:
+        - generic [ref=e4067]: 60억
+        - generic [ref=e4068]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 양재동NEW 건물 확인 2026.07.08 양재역양재천 인접 신축 부지 추천 58억 네이버에서 보기 ›" [ref=e4069] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636641294
+      - generic [ref=e4070]:
+        - generic [ref=e4071]: 서울특별시 서초구 양재동NEW
+        - generic [ref=e4072]:
+          - generic [ref=e4073]: 건물
+          - generic [ref=e4074]: 확인 2026.07.08
+        - generic [ref=e4075]: 양재역양재천 인접 신축 부지 추천
+      - generic [ref=e4076]:
+        - generic [ref=e4077]: 58억
+        - generic [ref=e4078]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 염곡동NEW 건물 확인 2026.06.23 서초구 신축 및 리모델링 추천 건물 58억 네이버에서 보기 ›" [ref=e4079] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2633880824
+      - generic [ref=e4080]:
+        - generic [ref=e4081]: 서울특별시 서초구 염곡동NEW
+        - generic [ref=e4082]:
+          - generic [ref=e4083]: 건물
+          - generic [ref=e4084]: 확인 2026.06.23
+        - generic [ref=e4085]: 서초구 신축 및 리모델링 추천 건물
+      - generic [ref=e4086]:
+        - generic [ref=e4087]: 58억
+        - generic [ref=e4088]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 원지동NEW 건물 확인 2026.07.07 청계산입구 메인도로 상권 좋은 위치 급매물 58억 네이버에서 보기 ›" [ref=e4089] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636620193
+      - generic [ref=e4090]:
+        - generic [ref=e4091]: 서울특별시 서초구 원지동NEW
+        - generic [ref=e4092]:
+          - generic [ref=e4093]: 건물
+          - generic [ref=e4094]: 확인 2026.07.07
+        - generic [ref=e4095]: 청계산입구 메인도로 상권 좋은 위치 급매물
+      - generic [ref=e4096]:
+        - generic [ref=e4097]: 58억
+        - generic [ref=e4098]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 방배동NEW 건물 확인 2026.07.09 s 내방역세권 올리모델링 빌딩 매매 57억 네이버에서 보기 ›" [ref=e4099] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636878863
+      - generic [ref=e4100]:
+        - generic [ref=e4101]: 서울특별시 서초구 방배동NEW
+        - generic [ref=e4102]:
+          - generic [ref=e4103]: 건물
+          - generic [ref=e4104]: 확인 2026.07.09
+        - generic [ref=e4105]: s 내방역세권 올리모델링 빌딩 매매
+      - generic [ref=e4106]:
+        - generic [ref=e4107]: 57억
+        - generic [ref=e4108]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 원지동NEW 건물 확인 2026.07.03 매도57억원,신분당선청계산입구역7분,올근생상가건물,사옥,사무실,카페 57억 네이버에서 보기 ›" [ref=e4109] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2635718805
+      - generic [ref=e4110]:
+        - generic [ref=e4111]: 서울특별시 서초구 원지동NEW
+        - generic [ref=e4112]:
+          - generic [ref=e4113]: 건물
+          - generic [ref=e4114]: 확인 2026.07.03
+        - generic [ref=e4115]: 매도57억원,신분당선청계산입구역7분,올근생상가건물,사옥,사무실,카페
+      - generic [ref=e4116]:
+        - generic [ref=e4117]: 57억
+        - generic [ref=e4118]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 원지동NEW 건물 확인 2026.07.03 매도57억,신분당선청계산입구역7분,근생상가건물,시행부지,사옥,카페 57억 네이버에서 보기 ›" [ref=e4119] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2635718791
+      - generic [ref=e4120]:
+        - generic [ref=e4121]: 서울특별시 서초구 원지동NEW
+        - generic [ref=e4122]:
+          - generic [ref=e4123]: 건물
+          - generic [ref=e4124]: 확인 2026.07.03
+        - generic [ref=e4125]: 매도57억,신분당선청계산입구역7분,근생상가건물,시행부지,사옥,카페
+      - generic [ref=e4126]:
+        - generic [ref=e4127]: 57억
+        - generic [ref=e4128]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 양재동NEW 건물 확인 2026.07.09 양재동 신축용지 급매물 56억 네이버에서 보기 ›" [ref=e4129] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636881747
+      - generic [ref=e4130]:
+        - generic [ref=e4131]: 서울특별시 서초구 양재동NEW
+        - generic [ref=e4132]:
+          - generic [ref=e4133]: 건물
+          - generic [ref=e4134]: 확인 2026.07.09
+        - generic [ref=e4135]: 양재동 신축용지 급매물
+      - generic [ref=e4136]:
+        - generic [ref=e4137]: 56억
+        - generic [ref=e4138]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 내곡동NEW 건물 확인 2026.07.06 55억 네이버에서 보기 ›" [ref=e4139] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636406734
+      - generic [ref=e4140]:
+        - generic [ref=e4141]: 서울특별시 서초구 내곡동NEW
+        - generic [ref=e4142]:
+          - generic [ref=e4143]: 건물
+          - generic [ref=e4144]: 확인 2026.07.06
+      - generic [ref=e4145]:
+        - generic [ref=e4146]: 55억
+        - generic [ref=e4147]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 서초동NEW 건물 확인 2026.07.09 서초 핵심 오피스 상권, 교대강남 더블 생활권 기반 안정수익 가능한 55억 네이버에서 보기 ›" [ref=e4148] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636885596
+      - generic [ref=e4149]:
+        - generic [ref=e4150]: 서울특별시 서초구 서초동NEW
+        - generic [ref=e4151]:
+          - generic [ref=e4152]: 건물
+          - generic [ref=e4153]: 확인 2026.07.09
+        - generic [ref=e4154]: 서초 핵심 오피스 상권, 교대강남 더블 생활권 기반 안정수익 가능한
+      - generic [ref=e4155]:
+        - generic [ref=e4156]: 55억
+        - generic [ref=e4157]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 원지동NEW 건물 확인 2026.06.19 1종근린생활시설로 다용도건물 54억 네이버에서 보기 ›" [ref=e4158] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2633224526
+      - generic [ref=e4159]:
+        - generic [ref=e4160]: 서울특별시 서초구 원지동NEW
+        - generic [ref=e4161]:
+          - generic [ref=e4162]: 건물
+          - generic [ref=e4163]: 확인 2026.06.19
+        - generic [ref=e4164]: 1종근린생활시설로 다용도건물
+      - generic [ref=e4165]:
+        - generic [ref=e4166]: 54억
+        - generic [ref=e4167]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 우면동NEW 건물 확인 2026.07.09 서초구 우면동연구센터옆 상가주택통매매 52억 네이버에서 보기 ›" [ref=e4168] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636905088
+      - generic [ref=e4169]:
+        - generic [ref=e4170]: 서울특별시 서초구 우면동NEW
+        - generic [ref=e4171]:
+          - generic [ref=e4172]: 건물
+          - generic [ref=e4173]: 확인 2026.07.09
+        - generic [ref=e4174]: 서초구 우면동연구센터옆 상가주택통매매
+      - generic [ref=e4175]:
+        - generic [ref=e4176]: 52억
+        - generic [ref=e4177]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 우면동NEW 건물 확인 2026.07.02 우면동 삼거리 코너 빌딩 매매 52억 네이버에서 보기 ›" [ref=e4178] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2635611082
+      - generic [ref=e4179]:
+        - generic [ref=e4180]: 서울특별시 서초구 우면동NEW
+        - generic [ref=e4181]:
+          - generic [ref=e4182]: 건물
+          - generic [ref=e4183]: 확인 2026.07.02
+        - generic [ref=e4184]: 우면동 삼거리 코너 빌딩 매매
+      - generic [ref=e4185]:
+        - generic [ref=e4186]: 52억
+        - generic [ref=e4187]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 우면동NEW 토지 확인 2026.06.12 나대지 코너 52억 네이버에서 보기 ›" [ref=e4188] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2631854020
+      - generic [ref=e4189]:
+        - generic [ref=e4190]: 서울특별시 서초구 우면동NEW
+        - generic [ref=e4191]:
+          - generic [ref=e4192]: 토지
+          - generic [ref=e4193]: 확인 2026.06.12
+        - generic [ref=e4194]: 나대지 코너
+      - generic [ref=e4195]:
+        - generic [ref=e4196]: 52억
+        - generic [ref=e4197]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 잠원동NEW 건물 확인 2026.07.08 52억 네이버에서 보기 ›" [ref=e4198] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636784052
+      - generic [ref=e4199]:
+        - generic [ref=e4200]: 서울특별시 서초구 잠원동NEW
+        - generic [ref=e4201]:
+          - generic [ref=e4202]: 건물
+          - generic [ref=e4203]: 확인 2026.07.08
+      - generic [ref=e4204]:
+        - generic [ref=e4205]: 52억
+        - generic [ref=e4206]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 우면동NEW 토지 확인 2026.07.06 1종일반, 나대지, 전원주택이나 사옥부지, 빌라사업부지 51억 네이버에서 보기 ›" [ref=e4207] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636213365
+      - generic [ref=e4208]:
+        - generic [ref=e4209]: 서울특별시 서초구 우면동NEW
+        - generic [ref=e4210]:
+          - generic [ref=e4211]: 토지
+          - generic [ref=e4212]: 확인 2026.07.06
+        - generic [ref=e4213]: 1종일반, 나대지, 전원주택이나 사옥부지, 빌라사업부지
+      - generic [ref=e4214]:
+        - generic [ref=e4215]: 51억
+        - generic [ref=e4216]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 염곡동NEW 건물 확인 2026.06.29 양재가까운 위치좋은 염곡동. 코너 근생건물. 모든사항협의. 편하게연락주세 50억 네이버에서 보기 ›" [ref=e4217] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2634961361
+      - generic [ref=e4218]:
+        - generic [ref=e4219]: 서울특별시 서초구 염곡동NEW
+        - generic [ref=e4220]:
+          - generic [ref=e4221]: 건물
+          - generic [ref=e4222]: 확인 2026.06.29
+        - generic [ref=e4223]: 양재가까운 위치좋은 염곡동. 코너 근생건물. 모든사항협의. 편하게연락주세
+      - generic [ref=e4224]:
+        - generic [ref=e4225]: 50억
+        - generic [ref=e4226]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 우면동NEW 토지 확인 2026.07.07 가격절층가능 나대지 코너 노른자 땅 고급주택지역 까페하기도 좋은곳 50억 네이버에서 보기 ›" [ref=e4227] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636624922
+      - generic [ref=e4228]:
+        - generic [ref=e4229]: 서울특별시 서초구 우면동NEW
+        - generic [ref=e4230]:
+          - generic [ref=e4231]: 토지
+          - generic [ref=e4232]: 확인 2026.07.07
+        - generic [ref=e4233]: 가격절층가능 나대지 코너 노른자 땅 고급주택지역 까페하기도 좋은곳
+      - generic [ref=e4234]:
+        - generic [ref=e4235]: 50억
+        - generic [ref=e4236]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 우면동NEW 건물 확인 2026.06.20 형촌마을내 코너건물로 사옥 카페 고급단독주택 추천 50억 네이버에서 보기 ›" [ref=e4237] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2633393508
+      - generic [ref=e4238]:
+        - generic [ref=e4239]: 서울특별시 서초구 우면동NEW
+        - generic [ref=e4240]:
+          - generic [ref=e4241]: 건물
+          - generic [ref=e4242]: 확인 2026.06.20
+        - generic [ref=e4243]: 형촌마을내 코너건물로 사옥 카페 고급단독주택 추천
+      - generic [ref=e4244]:
+        - generic [ref=e4245]: 50억
+        - generic [ref=e4246]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 반포동NEW 건물 확인 2026.07.08 49억 네이버에서 보기 ›" [ref=e4247] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636622886
+      - generic [ref=e4248]:
+        - generic [ref=e4249]: 서울특별시 서초구 반포동NEW
+        - generic [ref=e4250]:
+          - generic [ref=e4251]: 건물
+          - generic [ref=e4252]: 확인 2026.07.08
+      - generic [ref=e4253]:
+        - generic [ref=e4254]: 49억
+        - generic [ref=e4255]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 신원동NEW 토지 확인 2026.06.22 매도49억,신분당선청계산입구역도보5분,시행부지,주택,사옥,식당,카페 49억 네이버에서 보기 ›" [ref=e4256] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2633432591
+      - generic [ref=e4257]:
+        - generic [ref=e4258]: 서울특별시 서초구 신원동NEW
+        - generic [ref=e4259]:
+          - generic [ref=e4260]: 토지
+          - generic [ref=e4261]: 확인 2026.06.22
+        - generic [ref=e4262]: 매도49억,신분당선청계산입구역도보5분,시행부지,주택,사옥,식당,카페
+      - generic [ref=e4263]:
+        - generic [ref=e4264]: 49억
+        - generic [ref=e4265]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 원지동NEW 건물 확인 2026.07.06 급매, 신축급 사옥 매매, 엘레베이터,조용한 사옥 49억 네이버에서 보기 ›" [ref=e4266] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636312707
+      - generic [ref=e4267]:
+        - generic [ref=e4268]: 서울특별시 서초구 원지동NEW
+        - generic [ref=e4269]:
+          - generic [ref=e4270]: 건물
+          - generic [ref=e4271]: 확인 2026.07.06
+        - generic [ref=e4272]: 급매, 신축급 사옥 매매, 엘레베이터,조용한 사옥
+      - generic [ref=e4273]:
+        - generic [ref=e4274]: 49억
+        - generic [ref=e4275]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 원지동NEW 건물 확인 2026.07.02 원지동 조용한 사옥, 카페 등 추천 매물 49억 네이버에서 보기 ›" [ref=e4276] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2635608097
+      - generic [ref=e4277]:
+        - generic [ref=e4278]: 서울특별시 서초구 원지동NEW
+        - generic [ref=e4279]:
+          - generic [ref=e4280]: 건물
+          - generic [ref=e4281]: 확인 2026.07.02
+        - generic [ref=e4282]: 원지동 조용한 사옥, 카페 등 추천 매물
+      - generic [ref=e4283]:
+        - generic [ref=e4284]: 49억
+        - generic [ref=e4285]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 우면동NEW 건물 확인 2026.06.18 우면산 인근 공원 앞 고급 단독 주택 48억 5,000 네이버에서 보기 ›" [ref=e4286] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2632785032
+      - generic [ref=e4287]:
+        - generic [ref=e4288]: 서울특별시 서초구 우면동NEW
+        - generic [ref=e4289]:
+          - generic [ref=e4290]: 건물
+          - generic [ref=e4291]: 확인 2026.06.18
+        - generic [ref=e4292]: 우면산 인근 공원 앞 고급 단독 주택
+      - generic [ref=e4293]:
+        - generic [ref=e4294]: 48억 5,000
+        - generic [ref=e4295]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 신원동NEW 건물 확인 2026.07.03 신분당선 청계산입구역 도보권, 준신축프리미엄, 사옥추천 48억 네이버에서 보기 ›" [ref=e4296] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2635888778
+      - generic [ref=e4297]:
+        - generic [ref=e4298]: 서울특별시 서초구 신원동NEW
+        - generic [ref=e4299]:
+          - generic [ref=e4300]: 건물
+          - generic [ref=e4301]: 확인 2026.07.03
+        - generic [ref=e4302]: 신분당선 청계산입구역 도보권, 준신축프리미엄, 사옥추천
+      - generic [ref=e4303]:
+        - generic [ref=e4304]: 48억
+        - generic [ref=e4305]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 양재동NEW 건물 확인 2026.07.08 주차장앞 대수선건물 47억 네이버에서 보기 ›" [ref=e4306] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636640633
+      - generic [ref=e4307]:
+        - generic [ref=e4308]: 서울특별시 서초구 양재동NEW
+        - generic [ref=e4309]:
+          - generic [ref=e4310]: 건물
+          - generic [ref=e4311]: 확인 2026.07.08
+        - generic [ref=e4312]: 주차장앞 대수선건물
+      - generic [ref=e4313]:
+        - generic [ref=e4314]: 47억
+        - generic [ref=e4315]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 방배동NEW 건물 확인 2026.07.08 45억 네이버에서 보기 ›" [ref=e4316] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636794588
+      - generic [ref=e4317]:
+        - generic [ref=e4318]: 서울특별시 서초구 방배동NEW
+        - generic [ref=e4319]:
+          - generic [ref=e4320]: 건물
+          - generic [ref=e4321]: 확인 2026.07.08
+      - generic [ref=e4322]:
+        - generic [ref=e4323]: 45억
+        - generic [ref=e4324]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 신원동NEW 토지 확인 2026.07.08 내곡동, 신원동, 원지동 등 서초, 강남 투자 유망 45억 네이버에서 보기 ›" [ref=e4325] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636788923
+      - generic [ref=e4326]:
+        - generic [ref=e4327]: 서울특별시 서초구 신원동NEW
+        - generic [ref=e4328]:
+          - generic [ref=e4329]: 토지
+          - generic [ref=e4330]: 확인 2026.07.08
+        - generic [ref=e4331]: 내곡동, 신원동, 원지동 등 서초, 강남 투자 유망
+      - generic [ref=e4332]:
+        - generic [ref=e4333]: 45억
+        - generic [ref=e4334]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 우면동NEW 건물 확인 2026.06.11 45억 네이버에서 보기 ›" [ref=e4335] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2631644933
+      - generic [ref=e4336]:
+        - generic [ref=e4337]: 서울특별시 서초구 우면동NEW
+        - generic [ref=e4338]:
+          - generic [ref=e4339]: 건물
+          - generic [ref=e4340]: 확인 2026.06.11
+      - generic [ref=e4341]:
+        - generic [ref=e4342]: 45억
+        - generic [ref=e4343]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 원지동NEW 건물 확인 2026.06.25 급매,3층빌딩통매,신분당선청계산입구역7분,주차가능,투자가치굿 45억 네이버에서 보기 ›" [ref=e4344] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2634160177
+      - generic [ref=e4345]:
+        - generic [ref=e4346]: 서울특별시 서초구 원지동NEW
+        - generic [ref=e4347]:
+          - generic [ref=e4348]: 건물
+          - generic [ref=e4349]: 확인 2026.06.25
+        - generic [ref=e4350]: 급매,3층빌딩통매,신분당선청계산입구역7분,주차가능,투자가치굿
+      - generic [ref=e4351]:
+        - generic [ref=e4352]: 45억
+        - generic [ref=e4353]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 잠원동NEW 건물 확인 2026.07.08 신사역 초역세 신축부지 추천매물 45억 네이버에서 보기 ›" [ref=e4354] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636640370
+      - generic [ref=e4355]:
+        - generic [ref=e4356]: 서울특별시 서초구 잠원동NEW
+        - generic [ref=e4357]:
+          - generic [ref=e4358]: 건물
+          - generic [ref=e4359]: 확인 2026.07.08
+        - generic [ref=e4360]: 신사역 초역세 신축부지 추천매물
+      - generic [ref=e4361]:
+        - generic [ref=e4362]: 45억
+        - generic [ref=e4363]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 우면동NEW 건물 확인 2026.07.08 근생빌딩 사옥으로 적합 주택으로 용도변경가능 전망있는 남향 44억 네이버에서 보기 ›" [ref=e4364] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636713188
+      - generic [ref=e4365]:
+        - generic [ref=e4366]: 서울특별시 서초구 우면동NEW
+        - generic [ref=e4367]:
+          - generic [ref=e4368]: 건물
+          - generic [ref=e4369]: 확인 2026.07.08
+        - generic [ref=e4370]: 근생빌딩 사옥으로 적합 주택으로 용도변경가능 전망있는 남향
+      - generic [ref=e4371]:
+        - generic [ref=e4372]: 44억
+        - generic [ref=e4373]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 우면동NEW 건물 확인 2026.06.26 건축가가 조망살려지은 우면동 RD, AI 특구지역 근생빌딩 43억 네이버에서 보기 ›" [ref=e4374] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2634292595
+      - generic [ref=e4375]:
+        - generic [ref=e4376]: 서울특별시 서초구 우면동NEW
+        - generic [ref=e4377]:
+          - generic [ref=e4378]: 건물
+          - generic [ref=e4379]: 확인 2026.06.26
+        - generic [ref=e4380]: 건축가가 조망살려지은 우면동 RD, AI 특구지역 근생빌딩
+      - generic [ref=e4381]:
+        - generic [ref=e4382]: 43억
+        - generic [ref=e4383]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 우면동NEW 건물 확인 2026.06.18 우면동 대기업인근 오피스 건물 통매매 43억 네이버에서 보기 ›" [ref=e4384] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2632924422
+      - generic [ref=e4385]:
+        - generic [ref=e4386]: 서울특별시 서초구 우면동NEW
+        - generic [ref=e4387]:
+          - generic [ref=e4388]: 건물
+          - generic [ref=e4389]: 확인 2026.06.18
+        - generic [ref=e4390]: 우면동 대기업인근 오피스 건물 통매매
+      - generic [ref=e4391]:
+        - generic [ref=e4392]: 43억
+        - generic [ref=e4393]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 우면동NEW 건물 확인 2026.06.10 광고하지 않은 급매, A급 매물들이 많으니 연락주세요. 43억 네이버에서 보기 ›" [ref=e4394] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2631381799
+      - generic [ref=e4395]:
+        - generic [ref=e4396]: 서울특별시 서초구 우면동NEW
+        - generic [ref=e4397]:
+          - generic [ref=e4398]: 건물
+          - generic [ref=e4399]: 확인 2026.06.10
+        - generic [ref=e4400]: 광고하지 않은 급매, A급 매물들이 많으니 연락주세요.
+      - generic [ref=e4401]:
+        - generic [ref=e4402]: 43억
+        - generic [ref=e4403]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 방배동NEW 건물 확인 2026.07.08 방배동 주거밀집 핵심 입지, 안정적인 임대수요 확보 건물 40억 네이버에서 보기 ›" [ref=e4404] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636632445
+      - generic [ref=e4405]:
+        - generic [ref=e4406]: 서울특별시 서초구 방배동NEW
+        - generic [ref=e4407]:
+          - generic [ref=e4408]: 건물
+          - generic [ref=e4409]: 확인 2026.07.08
+        - generic [ref=e4410]: 방배동 주거밀집 핵심 입지, 안정적인 임대수요 확보 건물
+      - generic [ref=e4411]:
+        - generic [ref=e4412]: 40억
+        - generic [ref=e4413]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 방배동NEW 건물 확인 2026.07.08 방배 중심 주거지 인접, 병원학원생활편의 업종에 적합한 건물 40억 네이버에서 보기 ›" [ref=e4414] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636638081
+      - generic [ref=e4415]:
+        - generic [ref=e4416]: 서울특별시 서초구 방배동NEW
+        - generic [ref=e4417]:
+          - generic [ref=e4418]: 건물
+          - generic [ref=e4419]: 확인 2026.07.08
+        - generic [ref=e4420]: 방배 중심 주거지 인접, 병원학원생활편의 업종에 적합한 건물
+      - generic [ref=e4421]:
+        - generic [ref=e4422]: 40억
+        - generic [ref=e4423]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 신원동NEW 토지 확인 2026.06.17 신원동 한적한 단독주택단지 내 나대지 즉시 신축가능한 곳 40억 네이버에서 보기 ›" [ref=e4424] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2632619945
+      - generic [ref=e4425]:
+        - generic [ref=e4426]: 서울특별시 서초구 신원동NEW
+        - generic [ref=e4427]:
+          - generic [ref=e4428]: 토지
+          - generic [ref=e4429]: 확인 2026.06.17
+        - generic [ref=e4430]: 신원동 한적한 단독주택단지 내 나대지 즉시 신축가능한 곳
+      - generic [ref=e4431]:
+        - generic [ref=e4432]: 40억
+        - generic [ref=e4433]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 신원동NEW 건물 확인 2026.06.09 청계산입구역 인근 사옥신축부지 매각 40억 네이버에서 보기 ›" [ref=e4434] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2631062339
+      - generic [ref=e4435]:
+        - generic [ref=e4436]: 서울특별시 서초구 신원동NEW
+        - generic [ref=e4437]:
+          - generic [ref=e4438]: 건물
+          - generic [ref=e4439]: 확인 2026.06.09
+        - generic [ref=e4440]: 청계산입구역 인근 사옥신축부지 매각
+      - generic [ref=e4441]:
+        - generic [ref=e4442]: 40억
+        - generic [ref=e4443]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 염곡동NEW 토지 확인 2026.07.06 양재,개포ICT벨트와 서리풀지구 중간입지 , 마지막 개발제한구역 선점 39억 9,000 네이버에서 보기 ›" [ref=e4444] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636355791
+      - generic [ref=e4445]:
+        - generic [ref=e4446]: 서울특별시 서초구 염곡동NEW
+        - generic [ref=e4447]:
+          - generic [ref=e4448]: 토지
+          - generic [ref=e4449]: 확인 2026.07.06
+        - generic [ref=e4450]: 양재,개포ICT벨트와 서리풀지구 중간입지 , 마지막 개발제한구역 선점
+      - generic [ref=e4451]:
+        - generic [ref=e4452]: 39억 9,000
+        - generic [ref=e4453]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 염곡동NEW 토지 확인 2026.06.17 도로접 8차선도로앞 청계산입구삼거리 양곡도매시장 맟은편 39억 9,000 네이버에서 보기 ›" [ref=e4454] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2632731015
+      - generic [ref=e4455]:
+        - generic [ref=e4456]: 서울특별시 서초구 염곡동NEW
+        - generic [ref=e4457]:
+          - generic [ref=e4458]: 토지
+          - generic [ref=e4459]: 확인 2026.06.17
+        - generic [ref=e4460]: 도로접 8차선도로앞 청계산입구삼거리 양곡도매시장 맟은편
+      - generic [ref=e4461]:
+        - generic [ref=e4462]: 39억 9,000
+        - generic [ref=e4463]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 신원동NEW 토지 확인 2026.07.09 신분당선청계산역 도보 6분, 단독주택용지 129p, 강남,판교 10분 39억 네이버에서 보기 ›" [ref=e4464] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636841179
+      - generic [ref=e4465]:
+        - generic [ref=e4466]: 서울특별시 서초구 신원동NEW
+        - generic [ref=e4467]:
+          - generic [ref=e4468]: 토지
+          - generic [ref=e4469]: 확인 2026.07.09
+        - generic [ref=e4470]: 신분당선청계산역 도보 6분, 단독주택용지 129p, 강남,판교 10분
+      - generic [ref=e4471]:
+        - generic [ref=e4472]: 39억
+        - generic [ref=e4473]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 신원동NEW 토지 확인 2026.07.07 단독주택부지 매매, 제1종지구단위계획구역 39억 네이버에서 보기 ›" [ref=e4474] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636464694
+      - generic [ref=e4475]:
+        - generic [ref=e4476]: 서울특별시 서초구 신원동NEW
+        - generic [ref=e4477]:
+          - generic [ref=e4478]: 토지
+          - generic [ref=e4479]: 확인 2026.07.07
+        - generic [ref=e4480]: 단독주택부지 매매, 제1종지구단위계획구역
+      - generic [ref=e4481]:
+        - generic [ref=e4482]: 39억
+        - generic [ref=e4483]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 염곡동NEW 토지 확인 2026.06.16 탑성마을내 주택지, 집단취락구역, 사옥용부지로 적합 38억 네이버에서 보기 ›" [ref=e4484] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2632558040
+      - generic [ref=e4485]:
+        - generic [ref=e4486]: 서울특별시 서초구 염곡동NEW
+        - generic [ref=e4487]:
+          - generic [ref=e4488]: 토지
+          - generic [ref=e4489]: 확인 2026.06.16
+        - generic [ref=e4490]: 탑성마을내 주택지, 집단취락구역, 사옥용부지로 적합
+      - generic [ref=e4491]:
+        - generic [ref=e4492]: 38억
+        - generic [ref=e4493]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 신원동NEW 토지 확인 2026.07.06 매도37억,신분당선청계산입구역도보5분,시행부지,사옥,카페 등 37억 네이버에서 보기 ›" [ref=e4494] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636131006
+      - generic [ref=e4495]:
+        - generic [ref=e4496]: 서울특별시 서초구 신원동NEW
+        - generic [ref=e4497]:
+          - generic [ref=e4498]: 토지
+          - generic [ref=e4499]: 확인 2026.07.06
+        - generic [ref=e4500]: 매도37억,신분당선청계산입구역도보5분,시행부지,사옥,카페 등
+      - generic [ref=e4501]:
+        - generic [ref=e4502]: 37억
+        - generic [ref=e4503]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 신원동NEW 건물 확인 2026.07.03 매도37억,신분당선청계산입구역도보5분,시행부지,사옥,카페 등 37억 네이버에서 보기 ›" [ref=e4504] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2635718763
+      - generic [ref=e4505]:
+        - generic [ref=e4506]: 서울특별시 서초구 신원동NEW
+        - generic [ref=e4507]:
+          - generic [ref=e4508]: 건물
+          - generic [ref=e4509]: 확인 2026.07.03
+        - generic [ref=e4510]: 매도37억,신분당선청계산입구역도보5분,시행부지,사옥,카페 등
+      - generic [ref=e4511]:
+        - generic [ref=e4512]: 37억
+        - generic [ref=e4513]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 내곡동NEW 토지 확인 2026.07.01 내곡동, 세곡동 등 서초, 강남의 투자 유망 35억 네이버에서 보기 ›" [ref=e4514] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2635332671
+      - generic [ref=e4515]:
+        - generic [ref=e4516]: 서울특별시 서초구 내곡동NEW
+        - generic [ref=e4517]:
+          - generic [ref=e4518]: 토지
+          - generic [ref=e4519]: 확인 2026.07.01
+        - generic [ref=e4520]: 내곡동, 세곡동 등 서초, 강남의 투자 유망
+      - generic [ref=e4521]:
+        - generic [ref=e4522]: 35억
+        - generic [ref=e4523]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 우면동NEW 토지 확인 2026.06.29 우면동 단독주택 부지 매매 35억 네이버에서 보기 ›" [ref=e4524] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2634795273
+      - generic [ref=e4525]:
+        - generic [ref=e4526]: 서울특별시 서초구 우면동NEW
+        - generic [ref=e4527]:
+          - generic [ref=e4528]: 토지
+          - generic [ref=e4529]: 확인 2026.06.29
+        - generic [ref=e4530]: 우면동 단독주택 부지 매매
+      - generic [ref=e4531]:
+        - generic [ref=e4532]: 35억
+        - generic [ref=e4533]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 신원동NEW 토지 확인 2026.06.19 수익상승률확실 착한가격 34억 2,000 네이버에서 보기 ›" [ref=e4534] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2633190467
+      - generic [ref=e4535]:
+        - generic [ref=e4536]: 서울특별시 서초구 신원동NEW
+        - generic [ref=e4537]:
+          - generic [ref=e4538]: 토지
+          - generic [ref=e4539]: 확인 2026.06.19
+        - generic [ref=e4540]: 수익상승률확실 착한가격
+      - generic [ref=e4541]:
+        - generic [ref=e4542]: 34억 2,000
+        - generic [ref=e4543]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 염곡동NEW 토지 확인 2026.06.20 단독택지 반듯한 구조 내곡지구 조용한동네초급매 p2500만 34억 네이버에서 보기 ›" [ref=e4544] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2633329601
+      - generic [ref=e4545]:
+        - generic [ref=e4546]: 서울특별시 서초구 염곡동NEW
+        - generic [ref=e4547]:
+          - generic [ref=e4548]: 토지
+          - generic [ref=e4549]: 확인 2026.06.20
+        - generic [ref=e4550]: 단독택지 반듯한 구조 내곡지구 조용한동네초급매 p2500만
+      - generic [ref=e4551]:
+        - generic [ref=e4552]: 34억
+        - generic [ref=e4553]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 내곡동NEW 토지 확인 2026.07.02 서리풀 공공주택지구 매물 33억 네이버에서 보기 ›" [ref=e4554] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2635597452
+      - generic [ref=e4555]:
+        - generic [ref=e4556]: 서울특별시 서초구 내곡동NEW
+        - generic [ref=e4557]:
+          - generic [ref=e4558]: 토지
+          - generic [ref=e4559]: 확인 2026.07.02
+        - generic [ref=e4560]: 서리풀 공공주택지구 매물
+      - generic [ref=e4561]:
+        - generic [ref=e4562]: 33억
+        - generic [ref=e4563]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 우면동NEW 건물 확인 2026.06.19 우면동 종상향 호재지역 도로 코너에 위치한 건물 32억 네이버에서 보기 ›" [ref=e4564] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2633186525
+      - generic [ref=e4565]:
+        - generic [ref=e4566]: 서울특별시 서초구 우면동NEW
+        - generic [ref=e4567]:
+          - generic [ref=e4568]: 건물
+          - generic [ref=e4569]: 확인 2026.06.19
+        - generic [ref=e4570]: 우면동 종상향 호재지역 도로 코너에 위치한 건물
+      - generic [ref=e4571]:
+        - generic [ref=e4572]: 32억
+        - generic [ref=e4573]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 신원동NEW 건물 확인 2026.07.02 청계산입구역 2번출구에서 260미터 거리 30억 네이버에서 보기 ›" [ref=e4574] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2635612286
+      - generic [ref=e4575]:
+        - generic [ref=e4576]: 서울특별시 서초구 신원동NEW
+        - generic [ref=e4577]:
+          - generic [ref=e4578]: 건물
+          - generic [ref=e4579]: 확인 2026.07.02
+        - generic [ref=e4580]: 청계산입구역 2번출구에서 260미터 거리
+      - generic [ref=e4581]:
+        - generic [ref=e4582]: 30억
+        - generic [ref=e4583]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 내곡동NEW 토지 확인 2026.07.01 내곡동, 신원동, 원지동 등 서초, 강남 투자 가치 최고 26억 5,000 네이버에서 보기 ›" [ref=e4584] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2635346203
+      - generic [ref=e4585]:
+        - generic [ref=e4586]: 서울특별시 서초구 내곡동NEW
+        - generic [ref=e4587]:
+          - generic [ref=e4588]: 토지
+          - generic [ref=e4589]: 확인 2026.07.01
+        - generic [ref=e4590]: 내곡동, 신원동, 원지동 등 서초, 강남 투자 가치 최고
+      - generic [ref=e4591]:
+        - generic [ref=e4592]: 26억 5,000
+        - generic [ref=e4593]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 내곡동NEW 토지 확인 2026.07.08 내곡동, 신원동, 원지동 등 서초, 강남 자연녹지 지역 26억 2,000 네이버에서 보기 ›" [ref=e4594] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636791828
+      - generic [ref=e4595]:
+        - generic [ref=e4596]: 서울특별시 서초구 내곡동NEW
+        - generic [ref=e4597]:
+          - generic [ref=e4598]: 토지
+          - generic [ref=e4599]: 확인 2026.07.08
+        - generic [ref=e4600]: 내곡동, 신원동, 원지동 등 서초, 강남 자연녹지 지역
+      - generic [ref=e4601]:
+        - generic [ref=e4602]: 26억 2,000
+        - generic [ref=e4603]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 내곡동NEW 토지 확인 2026.07.02 교통편리 넓은대지 2개층하우스 화훼농업지역 즉시입주가능 지하수펌프O 26억 1,000 네이버에서 보기 ›" [ref=e4604] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2635535771
+      - generic [ref=e4605]:
+        - generic [ref=e4606]: 서울특별시 서초구 내곡동NEW
+        - generic [ref=e4607]:
+          - generic [ref=e4608]: 토지
+          - generic [ref=e4609]: 확인 2026.07.02
+        - generic [ref=e4610]: 교통편리 넓은대지 2개층하우스 화훼농업지역 즉시입주가능 지하수펌프O
+      - generic [ref=e4611]:
+        - generic [ref=e4612]: 26억 1,000
+        - generic [ref=e4613]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 내곡동NEW 토지 확인 2026.07.01 내곡동, 신원동, 원지동 등 서초, 강남 투자 유망 25억 2,000 네이버에서 보기 ›" [ref=e4614] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2635344762
+      - generic [ref=e4615]:
+        - generic [ref=e4616]: 서울특별시 서초구 내곡동NEW
+        - generic [ref=e4617]:
+          - generic [ref=e4618]: 토지
+          - generic [ref=e4619]: 확인 2026.07.01
+        - generic [ref=e4620]: 내곡동, 신원동, 원지동 등 서초, 강남 투자 유망
+      - generic [ref=e4621]:
+        - generic [ref=e4622]: 25억 2,000
+        - generic [ref=e4623]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 내곡동NEW 토지 확인 2026.07.08 내곡동, 신원동, 원지동 등 서초, 강남 투자 유망 25억 네이버에서 보기 ›" [ref=e4624] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636790152
+      - generic [ref=e4625]:
+        - generic [ref=e4626]: 서울특별시 서초구 내곡동NEW
+        - generic [ref=e4627]:
+          - generic [ref=e4628]: 토지
+          - generic [ref=e4629]: 확인 2026.07.08
+        - generic [ref=e4630]: 내곡동, 신원동, 원지동 등 서초, 강남 투자 유망
+      - generic [ref=e4631]:
+        - generic [ref=e4632]: 25억
+        - generic [ref=e4633]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 내곡동NEW 토지 확인 2026.07.08 내곡동, 신원동, 원지동 등 서초, 강남 투자 유망 25억 네이버에서 보기 ›" [ref=e4634] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636777228
+      - generic [ref=e4635]:
+        - generic [ref=e4636]: 서울특별시 서초구 내곡동NEW
+        - generic [ref=e4637]:
+          - generic [ref=e4638]: 토지
+          - generic [ref=e4639]: 확인 2026.07.08
+        - generic [ref=e4640]: 내곡동, 신원동, 원지동 등 서초, 강남 투자 유망
+      - generic [ref=e4641]:
+        - generic [ref=e4642]: 25억
+        - generic [ref=e4643]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 내곡동NEW 토지 확인 2026.07.08 내곡동 등 서초,강남 투자 유망한 토지 25억 네이버에서 보기 ›" [ref=e4644] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636759598
+      - generic [ref=e4645]:
+        - generic [ref=e4646]: 서울특별시 서초구 내곡동NEW
+        - generic [ref=e4647]:
+          - generic [ref=e4648]: 토지
+          - generic [ref=e4649]: 확인 2026.07.08
+        - generic [ref=e4650]: 내곡동 등 서초,강남 투자 유망한 토지
+      - generic [ref=e4651]:
+        - generic [ref=e4652]: 25억
+        - generic [ref=e4653]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 내곡동NEW 토지 확인 2026.07.01 내곡동, 신원동, 원지동 등 서초, 강남 투자 유망한 토지 24억 네이버에서 보기 ›" [ref=e4654] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2635328630
+      - generic [ref=e4655]:
+        - generic [ref=e4656]: 서울특별시 서초구 내곡동NEW
+        - generic [ref=e4657]:
+          - generic [ref=e4658]: 토지
+          - generic [ref=e4659]: 확인 2026.07.01
+        - generic [ref=e4660]: 내곡동, 신원동, 원지동 등 서초, 강남 투자 유망한 토지
+      - generic [ref=e4661]:
+        - generic [ref=e4662]: 24억
+        - generic [ref=e4663]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 염곡동NEW 토지 확인 2026.06.19 헌릉로 인접 토지 23억 1,000 네이버에서 보기 ›" [ref=e4664] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2633231059
+      - generic [ref=e4665]:
+        - generic [ref=e4666]: 서울특별시 서초구 염곡동NEW
+        - generic [ref=e4667]:
+          - generic [ref=e4668]: 토지
+          - generic [ref=e4669]: 확인 2026.06.19
+        - generic [ref=e4670]: 헌릉로 인접 토지
+      - generic [ref=e4671]:
+        - generic [ref=e4672]: 23억 1,000
+        - generic [ref=e4673]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 내곡동NEW 토지 확인 2026.07.01 내곡동, 신원동, 원지동 등 서초, 강남 투자 유망한 토지 23억 네이버에서 보기 ›" [ref=e4674] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2635347174
+      - generic [ref=e4675]:
+        - generic [ref=e4676]: 서울특별시 서초구 내곡동NEW
+        - generic [ref=e4677]:
+          - generic [ref=e4678]: 토지
+          - generic [ref=e4679]: 확인 2026.07.01
+        - generic [ref=e4680]: 내곡동, 신원동, 원지동 등 서초, 강남 투자 유망한 토지
+      - generic [ref=e4681]:
+        - generic [ref=e4682]: 23억
+        - generic [ref=e4683]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 원지동NEW 토지 확인 2026.07.08 내곡동, 신원동, 원지동 등 서초, 강남 투자 유망한 토지 23억 네이버에서 보기 ›" [ref=e4684] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636759984
+      - generic [ref=e4685]:
+        - generic [ref=e4686]: 서울특별시 서초구 원지동NEW
+        - generic [ref=e4687]:
+          - generic [ref=e4688]: 토지
+          - generic [ref=e4689]: 확인 2026.07.08
+        - generic [ref=e4690]: 내곡동, 신원동, 원지동 등 서초, 강남 투자 유망한 토지
+      - generic [ref=e4691]:
+        - generic [ref=e4692]: 23억
+        - generic [ref=e4693]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 내곡동NEW 토지 확인 2026.07.08 내곡동, 신원동, 원지동 등 서초, 강남 투자 유망 20억 3,000 네이버에서 보기 ›" [ref=e4694] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636775240
+      - generic [ref=e4695]:
+        - generic [ref=e4696]: 서울특별시 서초구 내곡동NEW
+        - generic [ref=e4697]:
+          - generic [ref=e4698]: 토지
+          - generic [ref=e4699]: 확인 2026.07.08
+        - generic [ref=e4700]: 내곡동, 신원동, 원지동 등 서초, 강남 투자 유망
+      - generic [ref=e4701]:
+        - generic [ref=e4702]: 20억 3,000
+        - generic [ref=e4703]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 신원동NEW 토지 확인 2026.07.01 투자 가치 최고의 서초, 강남 토지 20억 네이버에서 보기 ›" [ref=e4704] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2635351664
+      - generic [ref=e4705]:
+        - generic [ref=e4706]: 서울특별시 서초구 신원동NEW
+        - generic [ref=e4707]:
+          - generic [ref=e4708]: 토지
+          - generic [ref=e4709]: 확인 2026.07.01
+        - generic [ref=e4710]: 투자 가치 최고의 서초, 강남 토지
+      - generic [ref=e4711]:
+        - generic [ref=e4712]: 20억
+        - generic [ref=e4713]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 우면동NEW 토지 확인 2026.06.11 우면산 전경을 품은 토지 20억 네이버에서 보기 ›" [ref=e4714] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2631619817
+      - generic [ref=e4715]:
+        - generic [ref=e4716]: 서울특별시 서초구 우면동NEW
+        - generic [ref=e4717]:
+          - generic [ref=e4718]: 토지
+          - generic [ref=e4719]: 확인 2026.06.11
+        - generic [ref=e4720]: 우면산 전경을 품은 토지
+      - generic [ref=e4721]:
+        - generic [ref=e4722]: 20억
+        - generic [ref=e4723]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 원지동NEW 토지 확인 2026.07.01 역인근 투자 유망한 토지 19억 네이버에서 보기 ›" [ref=e4724] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2635349140
+      - generic [ref=e4725]:
+        - generic [ref=e4726]: 서울특별시 서초구 원지동NEW
+        - generic [ref=e4727]:
+          - generic [ref=e4728]: 토지
+          - generic [ref=e4729]: 확인 2026.07.01
+        - generic [ref=e4730]: 역인근 투자 유망한 토지
+      - generic [ref=e4731]:
+        - generic [ref=e4732]: 19억
+        - generic [ref=e4733]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 내곡동NEW 토지 확인 2026.07.08 도시 접근성 좋은 투자 유망 농림지역, 자연녹지지역 18억 1,800 네이버에서 보기 ›" [ref=e4734] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636789353
+      - generic [ref=e4735]:
+        - generic [ref=e4736]: 서울특별시 서초구 내곡동NEW
+        - generic [ref=e4737]:
+          - generic [ref=e4738]: 토지
+          - generic [ref=e4739]: 확인 2026.07.08
+        - generic [ref=e4740]: 도시 접근성 좋은 투자 유망 농림지역, 자연녹지지역
+      - generic [ref=e4741]:
+        - generic [ref=e4742]: 18억 1,800
+        - generic [ref=e4743]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 내곡동NEW 토지 확인 2026.07.03 도로붙은 예쁜토지. 경작중. 주말체험영농. 그린벨트. 투자 17억 3,000 네이버에서 보기 ›" [ref=e4744] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2635865816
+      - generic [ref=e4745]:
+        - generic [ref=e4746]: 서울특별시 서초구 내곡동NEW
+        - generic [ref=e4747]:
+          - generic [ref=e4748]: 토지
+          - generic [ref=e4749]: 확인 2026.07.03
+        - generic [ref=e4750]: 도로붙은 예쁜토지. 경작중. 주말체험영농. 그린벨트. 투자
+      - generic [ref=e4751]:
+        - generic [ref=e4752]: 17억 3,000
+        - generic [ref=e4753]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 우면동NEW 토지 확인 2026.07.01 2차선 도로접 평지같은 경사 조경업 추천 15억 네이버에서 보기 ›" [ref=e4754] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2635251247
+      - generic [ref=e4755]:
+        - generic [ref=e4756]: 서울특별시 서초구 우면동NEW
+        - generic [ref=e4757]:
+          - generic [ref=e4758]: 토지
+          - generic [ref=e4759]: 확인 2026.07.01
+        - generic [ref=e4760]: 2차선 도로접 평지같은 경사 조경업 추천
+      - generic [ref=e4761]:
+        - generic [ref=e4762]: 15억
+        - generic [ref=e4763]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 반포동NEW 건물 확인 2026.07.08 급매 서래마을 중심 카페거리 대로변 소형건물 13억 네이버에서 보기 ›" [ref=e4764] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636737468
+      - generic [ref=e4765]:
+        - generic [ref=e4766]: 서울특별시 서초구 반포동NEW
+        - generic [ref=e4767]:
+          - generic [ref=e4768]: 건물
+          - generic [ref=e4769]: 확인 2026.07.08
+        - generic [ref=e4770]: 급매 서래마을 중심 카페거리 대로변 소형건물
+      - generic [ref=e4771]:
+        - generic [ref=e4772]: 13억
+        - generic [ref=e4773]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 원지동NEW 토지 확인 2026.07.01 내곡동, 신원동, 원지동 등 서초, 강남 투자 유망 12억 네이버에서 보기 ›" [ref=e4774] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2635347910
+      - generic [ref=e4775]:
+        - generic [ref=e4776]: 서울특별시 서초구 원지동NEW
+        - generic [ref=e4777]:
+          - generic [ref=e4778]: 토지
+          - generic [ref=e4779]: 확인 2026.07.01
+        - generic [ref=e4780]: 내곡동, 신원동, 원지동 등 서초, 강남 투자 유망
+      - generic [ref=e4781]:
+        - generic [ref=e4782]: 12억
+        - generic [ref=e4783]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 신원동NEW 토지 확인 2026.07.03 신원동 임야 장기투자용 서초더샵포레옆 낮은 야산 임야매매 11억 네이버에서 보기 ›" [ref=e4784] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2635930892
+      - generic [ref=e4785]:
+        - generic [ref=e4786]: 서울특별시 서초구 신원동NEW
+        - generic [ref=e4787]:
+          - generic [ref=e4788]: 토지
+          - generic [ref=e4789]: 확인 2026.07.03
+        - generic [ref=e4790]: 신원동 임야 장기투자용 서초더샵포레옆 낮은 야산 임야매매
+      - generic [ref=e4791]:
+        - generic [ref=e4792]: 11억
+        - generic [ref=e4793]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 내곡동NEW 토지 확인 2026.07.08 내곡동, 신원동, 원지동 등 서초, 강남 투자 유망 9억 5,000 네이버에서 보기 ›" [ref=e4794] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636791270
+      - generic [ref=e4795]:
+        - generic [ref=e4796]: 서울특별시 서초구 내곡동NEW
+        - generic [ref=e4797]:
+          - generic [ref=e4798]: 토지
+          - generic [ref=e4799]: 확인 2026.07.08
+        - generic [ref=e4800]: 내곡동, 신원동, 원지동 등 서초, 강남 투자 유망
+      - generic [ref=e4801]:
+        - generic [ref=e4802]: 9억 5,000
+        - generic [ref=e4803]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 원지동NEW 토지 확인 2026.06.10 도시 접근성 좋은 투자 유망 토지 9억 5,000 네이버에서 보기 ›" [ref=e4804] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2631297356
+      - generic [ref=e4805]:
+        - generic [ref=e4806]: 서울특별시 서초구 원지동NEW
+        - generic [ref=e4807]:
+          - generic [ref=e4808]: 토지
+          - generic [ref=e4809]: 확인 2026.06.10
+        - generic [ref=e4810]: 도시 접근성 좋은 투자 유망 토지
+      - generic [ref=e4811]:
+        - generic [ref=e4812]: 9억 5,000
+        - generic [ref=e4813]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 내곡동NEW 토지 확인 2026.07.08 내곡동, 신원동, 원지동 등 서초,강남 투자 유망한 토지 7억 5,000 네이버에서 보기 ›" [ref=e4814] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2636761302
+      - generic [ref=e4815]:
+        - generic [ref=e4816]: 서울특별시 서초구 내곡동NEW
+        - generic [ref=e4817]:
+          - generic [ref=e4818]: 토지
+          - generic [ref=e4819]: 확인 2026.07.08
+        - generic [ref=e4820]: 내곡동, 신원동, 원지동 등 서초,강남 투자 유망한 토지
+      - generic [ref=e4821]:
+        - generic [ref=e4822]: 7억 5,000
+        - generic [ref=e4823]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 원지동NEW 토지 확인 2026.06.30 서리풀 개발관련 지역, 추후 상승여력높아요. 6억 네이버에서 보기 ›" [ref=e4824] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2635131866
+      - generic [ref=e4825]:
+        - generic [ref=e4826]: 서울특별시 서초구 원지동NEW
+        - generic [ref=e4827]:
+          - generic [ref=e4828]: 토지
+          - generic [ref=e4829]: 확인 2026.06.30
+        - generic [ref=e4830]: 서리풀 개발관련 지역, 추후 상승여력높아요.
+      - generic [ref=e4831]:
+        - generic [ref=e4832]: 6억
+        - generic [ref=e4833]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 원지동NEW 토지 확인 2026.06.10 내곡동, 신원동, 원지동 등 서초, 강남 투자 유망 4억 8,480 네이버에서 보기 ›" [ref=e4834] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2631285836
+      - generic [ref=e4835]:
+        - generic [ref=e4836]: 서울특별시 서초구 원지동NEW
+        - generic [ref=e4837]:
+          - generic [ref=e4838]: 토지
+          - generic [ref=e4839]: 확인 2026.06.10
+        - generic [ref=e4840]: 내곡동, 신원동, 원지동 등 서초, 강남 투자 유망
+      - generic [ref=e4841]:
+        - generic [ref=e4842]: 4억 8,480
+        - generic [ref=e4843]: 네이버에서 보기 ›
+    - link "서울특별시 서초구 우면동NEW 토지 확인 2026.06.25 귀한소규모농지 주말농장으로 추천 4억 네이버에서 보기 ›" [ref=e4844] [cursor=pointer]:
+      - /url: https://m.land.naver.com/article/info/2634228034
+      - generic [ref=e4845]:
+        - generic [ref=e4846]: 서울특별시 서초구 우면동NEW
+        - generic [ref=e4847]:
+          - generic [ref=e4848]: 토지
+          - generic [ref=e4849]: 확인 2026.06.25
+        - generic [ref=e4850]: 귀한소규모농지 주말농장으로 추천
+      - generic [ref=e4851]:
+        - generic [ref=e4852]: 4억
+        - generic [ref=e4853]: 네이버에서 보기 ›
+  - contentinfo [ref=e2967]: 네이버 부동산 매물 정보(개인용). 매매가는 등록 광고가 기준이며 실제 거래·정확도를 보장하지 않습니다.
