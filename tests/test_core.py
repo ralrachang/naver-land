@@ -139,5 +139,43 @@ class TestDelisting(unittest.TestCase):
         st.close()
 
 
+class TestLocations(unittest.TestCase):
+    """위경도 기반 광고수(loc_count) + '이전엔 없던 위치'(새 주소) 판정."""
+    def setUp(self):
+        self.tmp = tempfile.mkdtemp()
+        self.db = Path(self.tmp) / "t.db"
+
+    def _item(self, ano, lat, lng):
+        return {"article_no": ano, "address": "서울특별시 강남구 개포동", "sido": "서울특별시",
+                "gu": "강남구", "dong": "개포동", "price_text": "10억", "price_manwon": 100000,
+                "re_type": "건물", "article_name": "빌딩", "confirm_ymd": "20260708",
+                "same_addr_cnt": None, "feature_desc": "", "area": 100, "floor": "",
+                "lat": lat, "lng": lng}
+
+    def test_loc_count_and_new_location(self):
+        st = Store(self.db)
+        # A,B = 같은 건물(같은 좌표), C = 다른 좌표
+        items = [self._item("A", "37.1", "127.1"), self._item("B", "37.1", "127.1"),
+                 self._item("C", "37.2", "127.2")]
+        st.upsert(items, "2026-07-09 09:00:00")
+        newloc = st.register_locations(items, "2026-07-09 09:00:00")
+        self.assertEqual(newloc, {"37.1,127.1", "37.2,127.2"})  # 위치 2곳 다 처음
+        rows = {r["article_no"]: r for r in st.active_listings(new_loc_keys=newloc)}
+        self.assertEqual(rows["A"]["loc_count"], 2)   # 같은 좌표 2개 → 단독 아님
+        self.assertEqual(rows["C"]["loc_count"], 1)   # 단독
+        self.assertTrue(rows["C"]["is_new_location"])
+
+    def test_previously_seen_location_not_new(self):
+        st = Store(self.db)
+        st.upsert([self._item("A", "37.1", "127.1")], "2026-07-09 09:00:00")
+        st.register_locations([self._item("A", "37.1", "127.1")], "2026-07-09 09:00:00")
+        # 다음날: 같은 위치 D(기존) + 새 위치 E
+        d, e = self._item("D", "37.1", "127.1"), self._item("E", "37.9", "127.9")
+        st.upsert([d, e], "2026-07-10 09:00:00")
+        newloc2 = st.register_locations([d, e], "2026-07-10 09:00:00")
+        self.assertEqual(newloc2, {"37.9,127.9"})     # 기존 위치는 새 주소 아님
+        st.close()
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

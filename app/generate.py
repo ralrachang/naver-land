@@ -46,6 +46,11 @@ h1{font-size:1.3rem;margin:0 0 4px}
 .fbtn.solo.active span{color:#fff;opacity:.85}
 .solo-chip{background:var(--price);color:#fff;border-radius:6px;padding:1px 7px;font-size:.72rem;font-weight:700}
 .cnt{color:var(--muted);font-size:.75rem}
+.fbtn.newloc{border-color:var(--link);color:var(--link);font-weight:600}
+.fbtn.newloc.active{background:var(--link);color:#fff;border-color:var(--link)}
+.fbtn.newloc.active span{color:#fff;opacity:.85}
+.newloc-badge{background:var(--link);color:#fff;border-radius:6px;padding:1px 7px;font-size:.7rem;font-weight:700;margin-left:6px}
+a.row.newloc{border-color:var(--link)}
 main{max-width:900px;margin:8px auto 20px;padding:0 12px}
 a.row{text-decoration:none;color:inherit;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:8px 0;display:flex;justify-content:space-between;align-items:flex-start;gap:12px;transition:border-color .15s}
 a.row:hover{border-color:var(--link)}
@@ -75,7 +80,7 @@ footer{max-width:900px;margin:0 auto;padding:16px;color:var(--muted);font-size:.
   <span>표시 <b id="curcount">@@TOTAL@@</b>건 / 전체 @@TOTAL@@건</span>
   <span>이번 신규 <b style="color:var(--new)">@@NEWCOUNT@@</b>건</span>
 </div>
-<div class="note">💡 기본은 <b>단독 매물(광고 1개)</b>만 표시합니다 — 상단 🎯 버튼을 끄면 전체가 보입니다. 네이버가 지번은 공개하지 않아 주소는 동 단위이며, 매물을 눌러 상세(지도·사진·중개업소)를 확인하세요.</div>
+<div class="note">💡 <b>🎯 단독</b> = 같은 위치 광고 1개(기본 켜짐) · <b>🆕 새 주소</b> = 이전엔 없던 위치에 새로 등장한 매물. 네이버가 지번은 공개 안 해 주소는 동 단위이며, 매물을 눌러 상세를 확인하세요.</div>
 <div class="filters" id="filters"></div>
 <main id="list"></main>
 <div class="more" id="more" style="display:none"><button type="button">더 보기</button></div>
@@ -84,37 +89,43 @@ footer{max-width:900px;margin:0 auto;padding:16px;color:var(--muted);font-size:.
 <script>
 (function(){
   var L = JSON.parse(document.getElementById('data').textContent);
-  var PAGE = 300, curGu = '전체', soloOnly = true, shown = PAGE;
+  var PAGE = 300, curGu = '전체', soloOnly = true, newLocOnly = false, shown = PAGE;
   function esc(s){ s = s==null?'':(''+s); return s.replace(/[&<>"]/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m];}); }
-  var countsAll = {}, countsSolo = {}, soloCnt = 0;
-  for (var i=0;i<L.length;i++){ var g0=L[i].g; countsAll[g0]=(countsAll[g0]||0)+1; if(L[i].s===1){ countsSolo[g0]=(countsSolo[g0]||0)+1; soloCnt++; } }
-  var gus = Object.keys(countsAll).sort();
+  var soloCnt = 0, newLocCnt = 0, gusSet = {};
+  for (var i=0;i<L.length;i++){ gusSet[L[i].g]=1; if(L[i].s===1) soloCnt++; if(L[i].nl) newLocCnt++; }
+  var gus = Object.keys(gusSet).sort();
   var filtersEl = document.getElementById('filters');
   var listEl = document.getElementById('list');
   var moreEl = document.getElementById('more');
   var moreBtn = moreEl.querySelector('button');
+  function passToggles(x){ return (!soloOnly || x.s===1) && (!newLocOnly || x.nl); }
   function btn(g,n){ return '<button type="button" class="fbtn'+(g===curGu?' active':'')+'" data-gu="'+esc(g)+'">'+esc(g)+' <span>'+n+'</span></button>'; }
   function renderFilters(){
-    var cmap = soloOnly ? countsSolo : countsAll;
+    var c = {}, total = 0;
+    for (var i=0;i<L.length;i++){ if(passToggles(L[i])){ c[L[i].g]=(c[L[i].g]||0)+1; total++; } }
     var h = '<button type="button" class="fbtn solo'+(soloOnly?' active':'')+'" data-solo="1">🎯 단독매물만 <span>'+soloCnt+'</span></button>';
-    h += btn('전체', soloOnly ? soloCnt : L.length);
-    for (var i=0;i<gus.length;i++){ h += btn(gus[i], cmap[gus[i]]||0); }
+    h += '<button type="button" class="fbtn newloc'+(newLocOnly?' active':'')+'" data-newloc="1">🆕 새 주소만 <span>'+newLocCnt+'</span></button>';
+    h += btn('전체', total);
+    for (var k=0;k<gus.length;k++){ h += btn(gus[k], c[gus[k]]||0); }
     filtersEl.innerHTML = h;
     var bs = filtersEl.querySelectorAll('button');
     for (var j=0;j<bs.length;j++){ bs[j].onclick = function(){
       if (this.getAttribute('data-solo')){ soloOnly = !soloOnly; }
+      else if (this.getAttribute('data-newloc')){ newLocOnly = !newLocOnly; }
       else { curGu = this.getAttribute('data-gu'); }
       shown = PAGE; render(); window.scrollTo(0,0);
     }; }
   }
   function filtered(){
-    var f = curGu==='전체' ? L : L.filter(function(x){ return x.g===curGu; });
-    if (soloOnly) f = f.filter(function(x){ return x.s===1; });
+    var f = [];
+    for (var i=0;i<L.length;i++){ var x=L[i]; if((curGu==='전체'||x.g===curGu) && passToggles(x)) f.push(x); }
     return f;
   }
   function rowHtml(x){
-    return '<a class="row'+(x.n?' new':'')+'" href="'+esc(x.u)+'" target="_blank" rel="noopener">'
-      + '<div class="left"><div class="addr">'+esc(x.a)+(x.n?'<span class="badge">NEW</span>':'')+'</div>'
+    var cls = x.nl?' newloc':(x.n?' new':'');
+    var badge = x.nl?'<span class="badge newloc-badge">🆕 새주소</span>':(x.n?'<span class="badge">NEW</span>':'');
+    return '<a class="row'+cls+'" href="'+esc(x.u)+'" target="_blank" rel="noopener">'
+      + '<div class="left"><div class="addr">'+esc(x.a)+badge+'</div>'
       + '<div class="meta"><span class="tag">'+esc(x.t)+'</span>'+(x.s===1?'<span class="solo-chip">단독</span>':(x.s>1?'<span class="cnt">광고 '+x.s+'개</span>':''))+'<span>확인 '+esc(x.c)+'</span></div>'
       + (x.f?'<div class="feature">'+esc(x.f)+'</div>':'')
       + '</div><div class="right"><div class="price">'+esc(x.p)+'</div><div class="link">네이버에서 보기 ›</div></div></a>';
@@ -154,9 +165,10 @@ def _build_listings(rows: list[dict]) -> list[dict]:
             "t": r.get("re_type") or "",
             "c": _fmt_confirm(r.get("confirm_ymd") or ""),
             "n": bool(r.get("is_new")),
+            "nl": bool(r.get("is_new_location")),  # 이전엔 없던 위치에 새로 등장
             "u": ARTICLE_URL.format(no=r.get("article_no")),
             "g": r.get("gu") or "기타",
-            "s": r.get("same_addr_cnt"),  # 같은 주소 광고 수(1=단독)
+            "s": r.get("loc_count"),  # 같은 위경도(=같은 건물) 광고 수. 1=진짜 단독
             "f": (r.get("feature_desc") or "").strip(),
         })
     return out

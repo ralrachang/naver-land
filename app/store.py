@@ -40,6 +40,13 @@ CREATE TABLE IF NOT EXISTS runs (
     ok        INTEGER,
     note      TEXT
 );
+
+-- 우리가 지금껏 광고를 본 모든 위치(위경도). 매물이 만료돼도 지워지지 않아
+-- '이전엔 없던 위치' 판정의 기준이 된다.
+CREATE TABLE IF NOT EXISTS seen_locations (
+    loc_key       TEXT PRIMARY KEY,
+    first_seen_at TEXT NOT NULL
+);
 """
 
 
@@ -53,10 +60,19 @@ class Store:
         self.conn.commit()
 
     def _migrate(self):
-        """기존 DB에 없는 컬럼을 추가(하위호환)."""
+        """기존 DB에 없는 컬럼 추가 + 위치 baseline 백필(하위호환)."""
         cols = {r[1] for r in self.conn.execute("PRAGMA table_info(listings)")}
         if "same_addr_cnt" not in cols:
             self.conn.execute("ALTER TABLE listings ADD COLUMN same_addr_cnt INTEGER")
+        # seen_locations 가 비어있고 기존 매물이 있으면, 현재 매물의 위치를 baseline 으로
+        # 저장(각 위치의 최초 목격 시각). 이후 이 목록에 없는 위치만 '새 주소'가 된다.
+        has_loc = self.conn.execute("SELECT 1 FROM seen_locations LIMIT 1").fetchone()
+        if not has_loc:
+            self.conn.execute(
+                "INSERT OR IGNORE INTO seen_locations(loc_key, first_seen_at) "
+                "SELECT lat||','||lng, MIN(first_seen_at) FROM listings "
+                "WHERE lat IS NOT NULL AND lat!='' GROUP BY lat||','||lng"
+            )
 
     def close(self):
         self.conn.close()
@@ -102,6 +118,34 @@ class Store:
         log.info("저장: 신규 %d건, 갱신 %d건", len(new_ids), seen)
         return {"new": new_ids, "new_count": len(new_ids), "seen_count": seen}
 
+    def register_locations(self, items: list[dict], run_ts: str) -> set:
+        """관측된 매물의 위치를 seen_locations 에 등록. 처음 보는 위치만 run_ts 로 기록.
+        반환: 이번에 처음 등장한 위치(loc_key) 집합 = '새 주소'."""
+        new_keys = set()
+        for it in items:
+            lat, lng = it.get("lat"), it.get("lng")
+            if not (lat and lng):
+                continue
+            key = f"{lat},{lng}"
+            cur = self.conn.execute(
+                "INSERT OR IGNORE INTO seen_locations(loc_key, first_seen_at) VALUES (?,?)",
+                (key, run_ts))
+            if cur.rowcount:
+                new_keys.add(key)
+        self.conn.commit()
+        log.info("새 주소(이전에 없던 위치): %d개", len(new_keys))
+        return new_keys
+
+    def latest_location_batch(self) -> set:
+        """가장 최근에 처음 등장한 위치 집합(재생성 시 '새 주소' 표시용)."""
+        row = self.conn.execute(
+            "SELECT MAX(first_seen_at) FROM seen_locations").fetchone()
+        if not row or not row[0]:
+            return set()
+        cur = self.conn.execute(
+            "SELECT loc_key FROM seen_locations WHERE first_seen_at=?", (row[0],))
+        return {r[0] for r in cur.fetchall()}
+
     def deactivate_stale(self, keep_days: int, now_ts: str):
         """삭제(더 이상 목격 안 됨) 매물 비활성화.
 
@@ -139,15 +183,30 @@ class Store:
         )
         self.conn.commit()
 
-    def active_listings(self, new_ids: set[str] | None = None) -> list[dict]:
-        """표시용 목록. 신규 우선, 그다음 최초 발견 최신순."""
+    def active_listings(self, new_ids: set[str] | None = None,
+                        new_loc_keys: set | None = None) -> list[dict]:
+        """표시용 목록. 신규 우선, 그다음 최초 발견 최신순.
+
+        - loc_count: 같은 위경도(=같은 건물/토지)의 광고 수. 네이버 sameAddrCnt는
+          토지/건물에서 부정확하므로 위경도로 직접 세어 '단독(광고 1개)'을 판정한다.
+        - is_new_location: 이전엔 없던 위치(seen_locations 기준)에 처음 등장한 매물.
+        """
         new_ids = new_ids or set()
+        new_loc_keys = new_loc_keys or set()
+        loc_count: dict = {}
+        for r in self.conn.execute(
+            "SELECT lat, lng, COUNT(*) c FROM listings "
+            "WHERE is_active=1 AND lat IS NOT NULL AND lat!='' GROUP BY lat, lng"
+        ):
+            loc_count[(r["lat"], r["lng"])] = r["c"]
         cur = self.conn.execute(
             "SELECT * FROM listings WHERE is_active=1 ORDER BY first_seen_at DESC, price_manwon DESC"
         )
         rows = [dict(r) for r in cur.fetchall()]
         for r in rows:
             r["is_new"] = r["article_no"] in new_ids
+            r["loc_count"] = loc_count.get((r["lat"], r["lng"]), 1)
+            r["is_new_location"] = f"{r['lat']},{r['lng']}" in new_loc_keys
         rows.sort(key=lambda r: (0 if r["is_new"] else 1,), reverse=False)
         return rows
 

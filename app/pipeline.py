@@ -55,15 +55,16 @@ def run_pipeline(cfg, rebuild_regions: bool = False, dry_run: bool | None = None
             st.record_run(run_ts, 0, 0, st.count_active(), False, summary["note"])
             return summary
 
-        # 4) 저장 + 신규판별
+        # 4) 저장 + 신규판별 + 새 위치 등록
         res = st.upsert(items, run_ts)
+        new_loc_keys = st.register_locations(items, run_ts)
         # 목록 정리: 전체스캔=마지막 목격 기준(삭제 매물), early_stop=올라온 지 기준(신규 피드).
         if full_scan:
             st.deactivate_stale(cfg.site.keep_days, run_ts)
         else:
             st.deactivate_by_age(cfg.site.keep_days, run_ts)
         new_ids = set(res["new"])
-        rows = st.active_listings(new_ids=new_ids)
+        rows = st.active_listings(new_ids=new_ids, new_loc_keys=new_loc_keys)
 
         # 5) 사이트 생성
         generated = generate.generate(cfg, rows, res["new_count"], run_dt=now)
@@ -89,7 +90,8 @@ def regenerate(cfg, dry_run: bool | None = None) -> dict:
     st = store.Store(cfg.db_path)
     try:
         new_ids = st.latest_batch_ids()
-        rows = st.active_listings(new_ids=new_ids)
+        new_loc_keys = st.latest_location_batch()
+        rows = st.active_listings(new_ids=new_ids, new_loc_keys=new_loc_keys)
         generated = generate.generate(cfg, rows, len(new_ids), run_dt=now)
         if generated:
             deploy.deploy(cfg, dry_run=dry_run)
