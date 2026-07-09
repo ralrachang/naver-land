@@ -75,7 +75,7 @@ footer{max-width:900px;margin:0 auto;padding:16px;color:var(--muted);font-size:.
   <span>표시 <b id="curcount">@@TOTAL@@</b>건 / 전체 @@TOTAL@@건</span>
   <span>이번 신규 <b style="color:var(--new)">@@NEWCOUNT@@</b>건</span>
 </div>
-<div class="note">💡 네이버가 지번(번지)은 공개하지 않아 주소는 동 단위입니다. 매물을 눌러 네이버에서 지도 위치·사진·중개업소를 확인하세요.</div>
+<div class="note">💡 기본은 <b>단독 매물(광고 1개)</b>만 표시합니다 — 상단 🎯 버튼을 끄면 전체가 보입니다. 네이버가 지번은 공개하지 않아 주소는 동 단위이며, 매물을 눌러 상세(지도·사진·중개업소)를 확인하세요.</div>
 <div class="filters" id="filters"></div>
 <main id="list"></main>
 <div class="more" id="more" style="display:none"><button type="button">더 보기</button></div>
@@ -84,21 +84,21 @@ footer{max-width:900px;margin:0 auto;padding:16px;color:var(--muted);font-size:.
 <script>
 (function(){
   var L = JSON.parse(document.getElementById('data').textContent);
-  var PAGE = 300, curGu = '전체', soloOnly = false, shown = PAGE;
+  var PAGE = 300, curGu = '전체', soloOnly = true, shown = PAGE;
   function esc(s){ s = s==null?'':(''+s); return s.replace(/[&<>"]/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m];}); }
-  var counts = {};
-  for (var i=0;i<L.length;i++){ counts[L[i].g] = (counts[L[i].g]||0)+1; }
-  var gus = Object.keys(counts).sort();
+  var countsAll = {}, countsSolo = {}, soloCnt = 0;
+  for (var i=0;i<L.length;i++){ var g0=L[i].g; countsAll[g0]=(countsAll[g0]||0)+1; if(L[i].s===1){ countsSolo[g0]=(countsSolo[g0]||0)+1; soloCnt++; } }
+  var gus = Object.keys(countsAll).sort();
   var filtersEl = document.getElementById('filters');
   var listEl = document.getElementById('list');
   var moreEl = document.getElementById('more');
   var moreBtn = moreEl.querySelector('button');
   function btn(g,n){ return '<button type="button" class="fbtn'+(g===curGu?' active':'')+'" data-gu="'+esc(g)+'">'+esc(g)+' <span>'+n+'</span></button>'; }
-  var soloCnt = 0; for (var k=0;k<L.length;k++){ if (L[k].s===1) soloCnt++; }
   function renderFilters(){
+    var cmap = soloOnly ? countsSolo : countsAll;
     var h = '<button type="button" class="fbtn solo'+(soloOnly?' active':'')+'" data-solo="1">🎯 단독매물만 <span>'+soloCnt+'</span></button>';
-    h += btn('전체', L.length);
-    for (var i=0;i<gus.length;i++){ h += btn(gus[i], counts[gus[i]]); }
+    h += btn('전체', soloOnly ? soloCnt : L.length);
+    for (var i=0;i<gus.length;i++){ h += btn(gus[i], cmap[gus[i]]||0); }
     filtersEl.innerHTML = h;
     var bs = filtersEl.querySelectorAll('button');
     for (var j=0;j<bs.length;j++){ bs[j].onclick = function(){
