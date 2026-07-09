@@ -41,6 +41,11 @@ h1{font-size:1.3rem;margin:0 0 4px}
 .fbtn span{color:var(--muted);font-size:.72rem;margin-left:3px}
 .fbtn.active{background:var(--chipactive);color:var(--bg);border-color:var(--chipactive)}
 .fbtn.active span{color:var(--bg);opacity:.7}
+.fbtn.solo{border-color:var(--price);color:var(--price);font-weight:600}
+.fbtn.solo.active{background:var(--price);color:#fff;border-color:var(--price)}
+.fbtn.solo.active span{color:#fff;opacity:.85}
+.solo-chip{background:var(--price);color:#fff;border-radius:6px;padding:1px 7px;font-size:.72rem;font-weight:700}
+.cnt{color:var(--muted);font-size:.75rem}
 main{max-width:900px;margin:8px auto 20px;padding:0 12px}
 a.row{text-decoration:none;color:inherit;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:8px 0;display:flex;justify-content:space-between;align-items:flex-start;gap:12px;transition:border-color .15s}
 a.row:hover{border-color:var(--link)}
@@ -79,7 +84,7 @@ footer{max-width:900px;margin:0 auto;padding:16px;color:var(--muted);font-size:.
 <script>
 (function(){
   var L = JSON.parse(document.getElementById('data').textContent);
-  var PAGE = 300, curGu = '전체', shown = PAGE;
+  var PAGE = 300, curGu = '전체', soloOnly = false, shown = PAGE;
   function esc(s){ s = s==null?'':(''+s); return s.replace(/[&<>"]/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m];}); }
   var counts = {};
   for (var i=0;i<L.length;i++){ counts[L[i].g] = (counts[L[i].g]||0)+1; }
@@ -89,18 +94,28 @@ footer{max-width:900px;margin:0 auto;padding:16px;color:var(--muted);font-size:.
   var moreEl = document.getElementById('more');
   var moreBtn = moreEl.querySelector('button');
   function btn(g,n){ return '<button type="button" class="fbtn'+(g===curGu?' active':'')+'" data-gu="'+esc(g)+'">'+esc(g)+' <span>'+n+'</span></button>'; }
+  var soloCnt = 0; for (var k=0;k<L.length;k++){ if (L[k].s===1) soloCnt++; }
   function renderFilters(){
-    var h = btn('전체', L.length);
+    var h = '<button type="button" class="fbtn solo'+(soloOnly?' active':'')+'" data-solo="1">🎯 단독매물만 <span>'+soloCnt+'</span></button>';
+    h += btn('전체', L.length);
     for (var i=0;i<gus.length;i++){ h += btn(gus[i], counts[gus[i]]); }
     filtersEl.innerHTML = h;
     var bs = filtersEl.querySelectorAll('button');
-    for (var j=0;j<bs.length;j++){ bs[j].onclick = function(){ curGu=this.getAttribute('data-gu'); shown=PAGE; render(); window.scrollTo(0,0); }; }
+    for (var j=0;j<bs.length;j++){ bs[j].onclick = function(){
+      if (this.getAttribute('data-solo')){ soloOnly = !soloOnly; }
+      else { curGu = this.getAttribute('data-gu'); }
+      shown = PAGE; render(); window.scrollTo(0,0);
+    }; }
   }
-  function filtered(){ return curGu==='전체' ? L : L.filter(function(x){ return x.g===curGu; }); }
+  function filtered(){
+    var f = curGu==='전체' ? L : L.filter(function(x){ return x.g===curGu; });
+    if (soloOnly) f = f.filter(function(x){ return x.s===1; });
+    return f;
+  }
   function rowHtml(x){
     return '<a class="row'+(x.n?' new':'')+'" href="'+esc(x.u)+'" target="_blank" rel="noopener">'
       + '<div class="left"><div class="addr">'+esc(x.a)+(x.n?'<span class="badge">NEW</span>':'')+'</div>'
-      + '<div class="meta"><span class="tag">'+esc(x.t)+'</span><span>확인 '+esc(x.c)+'</span></div>'
+      + '<div class="meta"><span class="tag">'+esc(x.t)+'</span>'+(x.s===1?'<span class="solo-chip">단독</span>':(x.s>1?'<span class="cnt">광고 '+x.s+'개</span>':''))+'<span>확인 '+esc(x.c)+'</span></div>'
       + (x.f?'<div class="feature">'+esc(x.f)+'</div>':'')
       + '</div><div class="right"><div class="price">'+esc(x.p)+'</div><div class="link">네이버에서 보기 ›</div></div></a>';
   }
@@ -141,6 +156,7 @@ def _build_listings(rows: list[dict]) -> list[dict]:
             "n": bool(r.get("is_new")),
             "u": ARTICLE_URL.format(no=r.get("article_no")),
             "g": r.get("gu") or "기타",
+            "s": r.get("same_addr_cnt"),  # 같은 주소 광고 수(1=단독)
             "f": (r.get("feature_desc") or "").strip(),
         })
     return out

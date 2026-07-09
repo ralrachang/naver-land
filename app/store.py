@@ -19,6 +19,7 @@ CREATE TABLE IF NOT EXISTS listings (
     re_type      TEXT,
     article_name TEXT,
     confirm_ymd  TEXT,
+    same_addr_cnt INTEGER,
     feature_desc TEXT,
     area         REAL,
     floor        TEXT,
@@ -48,7 +49,14 @@ class Store:
         self.conn = sqlite3.connect(self.db_path)
         self.conn.row_factory = sqlite3.Row
         self.conn.executescript(SCHEMA)
+        self._migrate()
         self.conn.commit()
+
+    def _migrate(self):
+        """기존 DB에 없는 컬럼을 추가(하위호환)."""
+        cols = {r[1] for r in self.conn.execute("PRAGMA table_info(listings)")}
+        if "same_addr_cnt" not in cols:
+            self.conn.execute("ALTER TABLE listings ADD COLUMN same_addr_cnt INTEGER")
 
     def close(self):
         self.conn.close()
@@ -72,21 +80,22 @@ class Store:
                 self.conn.execute(
                     """INSERT INTO listings
                        (article_no,address,sido,gu,dong,price_text,price_manwon,
-                        re_type,article_name,confirm_ymd,feature_desc,area,floor,
+                        re_type,article_name,confirm_ymd,same_addr_cnt,feature_desc,area,floor,
                         lat,lng,first_seen_at,last_seen_at,is_active)
-                       VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,1)""",
+                       VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,1)""",
                     (ano, it["address"], it.get("sido"), it.get("gu"), it.get("dong"),
                      it["price_text"], it.get("price_manwon"), it.get("re_type"),
-                     it.get("article_name"), it.get("confirm_ymd"), it.get("feature_desc"),
-                     it.get("area"), it.get("floor"), it.get("lat"), it.get("lng"),
-                     run_ts, run_ts),
+                     it.get("article_name"), it.get("confirm_ymd"), it.get("same_addr_cnt"),
+                     it.get("feature_desc"), it.get("area"), it.get("floor"),
+                     it.get("lat"), it.get("lng"), run_ts, run_ts),
                 )
                 new_ids.append(ano)
             else:
                 self.conn.execute(
                     """UPDATE listings SET last_seen_at=?, price_text=?, price_manwon=?,
-                       is_active=1 WHERE article_no=?""",
-                    (run_ts, it["price_text"], it.get("price_manwon"), ano),
+                       same_addr_cnt=?, is_active=1 WHERE article_no=?""",
+                    (run_ts, it["price_text"], it.get("price_manwon"),
+                     it.get("same_addr_cnt"), ano),
                 )
                 seen += 1
         self.conn.commit()

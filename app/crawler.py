@@ -42,6 +42,7 @@ def _extract(article: dict, region: dict) -> dict:
         "re_type": article.get("realEstateTypeName", ""),
         "article_name": article.get("articleName", ""),
         "confirm_ymd": article.get("articleConfirmYmd", "") or "",
+        "same_addr_cnt": article.get("sameAddrCnt"),  # 같은 주소 광고 수(1=단독)
         "feature_desc": (article.get("articleFeatureDesc", "") or "").strip(),
         "area": article.get("area1"),
         "floor": article.get("floorInfo", "") or "",
