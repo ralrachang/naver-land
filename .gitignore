@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+data/*.db
+data/*.db-journal
+data/regions.json
+logs/
+site/
+.venv/
+venv/
+*.log
+.DS_Store
+.omc/

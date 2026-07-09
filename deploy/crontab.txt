@@ -1,0 +1,13 @@
+# 네이버 부동산 매물 모니터 — cron 예시 (하루 2회: 09:00 / 16:00 KST)
+#
+# 등록: crontab -e  후 아래 한 줄을 붙여넣기 (경로/파이썬 위치는 환경에 맞게 수정)
+#
+# ── 방법 A) VPS 타임존이 KST(Asia/Seoul)인 경우 ─────────────────────────────
+# 분 시 일 월 요일
+   0 9,16 * * *  cd /opt/naver-land && GH_TOKEN=$GH_TOKEN /usr/bin/python3 run.py >> logs/cron.log 2>&1
+#
+# ── 방법 B) VPS 타임존이 UTC인 경우 (KST-9h = 00:00, 07:00 UTC) ──────────────
+#  0 0,7 * * *  cd /opt/naver-land && GH_TOKEN=$GH_TOKEN /usr/bin/python3 run.py >> logs/cron.log 2>&1
+#
+# 타임존 확인:  timedatectl        (KST로 변경:  sudo timedatectl set-timezone Asia/Seoul)
+# GH_TOKEN 은 /etc/environment 또는 cron 상단 환경변수로 관리 권장.
