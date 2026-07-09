@@ -1,0 +1,6 @@
+# 저장소에는 항상 LF로 저장 (Windows에서 개발 → Linux VPS에서 실행 시 안전)
+* text=auto eol=lf
+*.py text eol=lf
+*.toml text eol=lf
+*.md text eol=lf
+Dockerfile text eol=lf
