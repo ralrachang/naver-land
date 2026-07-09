@@ -57,10 +57,11 @@ def run_pipeline(cfg, rebuild_regions: bool = False, dry_run: bool | None = None
 
         # 4) 저장 + 신규판별
         res = st.upsert(items, run_ts)
-        # 삭제(비활성화) 판정: 전체 스캔일 때만(early_stop 스캔은 불완전 → 생략).
-        # keep_days>0 이면 마지막 목격 후 그 일수만큼 유예. keep_days=0 이면 누적 보관.
+        # 목록 정리: 전체스캔=마지막 목격 기준(삭제 매물), early_stop=올라온 지 기준(신규 피드).
         if full_scan:
             st.deactivate_stale(cfg.site.keep_days, run_ts)
+        else:
+            st.deactivate_by_age(cfg.site.keep_days, run_ts)
         new_ids = set(res["new"])
         rows = st.active_listings(new_ids=new_ids)
 

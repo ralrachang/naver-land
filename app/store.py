@@ -117,6 +117,20 @@ class Store:
             )
             self.conn.commit()
 
+    def deactivate_by_age(self, keep_days: int, now_ts: str):
+        """올라온 지(=first_seen) keep_days 초과한 매물을 비활성화(신규 피드 유지용).
+
+        early_stop 모드에서 사용: 전체를 스캔하지 않으므로 '삭제' 판정 대신 '최근 N일'
+        기준으로 목록을 롤링한다. keep_days<=0 이면 무제한 누적.
+        """
+        if keep_days and keep_days > 0:
+            self.conn.execute(
+                """UPDATE listings SET is_active=0
+                   WHERE julianday(?) - julianday(first_seen_at) > ?""",
+                (now_ts, keep_days),
+            )
+            self.conn.commit()
+
     def record_run(self, run_ts: str, new_count: int, seen_count: int,
                    total_active: int, ok: bool, note: str = ""):
         self.conn.execute(

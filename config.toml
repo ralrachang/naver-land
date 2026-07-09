@@ -10,17 +10,18 @@ request_jitter_sec = 0.7          # 지연에 더할 무작위 지터(0~값)
 max_pages_per_region = 25         # 동별 최대 페이지(안전장치)
 max_retries = 3                   # 실패 시 재시도 횟수
 timeout_sec = 20
-early_stop = false                # true면 신규 없는 페이지에서 조기중단(넓은 범위·요청최소화용).
-                                  # 단 스캔이 불완전해져 '삭제 매물' 판정을 생략합니다.
-                                  # 강남3구처럼 좁은 범위는 false(전체 스캔) 권장.
+early_stop = true                 # true=신규 위주(최신순, 이미 본 매물 나오면 조기중단).
+                                  # 서울 전체를 하루 2회 돌아도 요청이 적어 차단 위험↓·빠름.
+                                  # 목적이 '신규 단독 매물 체크'라 권장. false=전체 스캔(현재 시장 전부).
 
 [site]
 title = "네이버 부동산 매매 매물 (토지·건물)"
 subtitle = "강남·서초·송파 · 하루 2회 자동 수집"
 timezone = "Asia/Seoul"
-keep_days = 14                    # 삭제(더 이상 목격 안 됨) 매물 처리: 0=계속 누적(무제한),
-                                  # N(>0)=마지막 목격 후 N일 지나면 목록에서 제외. 서울 전체는 양이 많아
-                                  # 14일 권장(사이트가 과도하게 무거워지지 않게). 전체스캔일 때만 적용.
+keep_days = 14                    # 목록 유지 기간(0=무제한).
+                                  # early_stop=true(신규 위주): 올라온 지 N일 지난 매물은 목록에서 제외
+                                  #   → '최근 N일 신규 피드'. N=14면 최근 2주치.
+                                  # early_stop=false(전체스캔): 마지막 목격 후 N일 지나면 제외(삭제 매물 정리).
 
 [deploy]
 enabled = false                   # true면 git push 수행. VPS에서 GH_TOKEN 설정 후 켜기

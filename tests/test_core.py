@@ -118,6 +118,17 @@ class TestDelisting(unittest.TestCase):
         self.assertNotIn("B", ids)
         st.close()
 
+    def test_deactivate_by_age_rolling_feed(self):
+        # early_stop 모드: 올라온 지 keep_days 지난 매물은 빠지고 최근 것만 유지
+        st = Store(self.db)
+        st.upsert([self._item("OLD")], "2026-06-01 09:00:00")   # 오래됨
+        st.upsert([self._item("NEW")], "2026-07-06 09:00:00")   # 최근
+        st.deactivate_by_age(14, "2026-07-06 09:00:00")         # 14일 초과 제외
+        ids = {r["article_no"] for r in st.active_listings()}
+        self.assertIn("NEW", ids)
+        self.assertNotIn("OLD", ids)
+        st.close()
+
     def test_keep_days_zero_accumulates(self):
         st = Store(self.db)
         st.upsert([self._item("A"), self._item("B")], "2026-06-01 09:00:00")
