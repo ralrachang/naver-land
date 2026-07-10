@@ -20,6 +20,10 @@ CREATE TABLE IF NOT EXISTS listings (
     article_name TEXT,
     confirm_ymd  TEXT,
     same_addr_cnt INTEGER,
+    price_change_state TEXT,
+    prev_price_manwon INTEGER,
+    prev_price_text  TEXT,
+    price_changed_at TEXT,
     feature_desc TEXT,
     area         REAL,
     floor        TEXT,
@@ -64,6 +68,12 @@ class Store:
         cols = {r[1] for r in self.conn.execute("PRAGMA table_info(listings)")}
         if "same_addr_cnt" not in cols:
             self.conn.execute("ALTER TABLE listings ADD COLUMN same_addr_cnt INTEGER")
+        for col, typ in (("price_change_state", "TEXT"),
+                         ("prev_price_manwon", "INTEGER"),
+                         ("prev_price_text", "TEXT"),
+                         ("price_changed_at", "TEXT")):
+            if col not in cols:
+                self.conn.execute(f"ALTER TABLE listings ADD COLUMN {col} {typ}")
         # seen_locations 가 비어있고 기존 매물이 있으면, 현재 매물의 위치를 baseline 으로
         # 저장(각 위치의 최초 목격 시각). 이후 이 목록에 없는 위치만 '새 주소'가 된다.
         has_loc = self.conn.execute("SELECT 1 FROM seen_locations LIMIT 1").fetchone()
@@ -90,29 +100,46 @@ class Store:
             if not ano:
                 continue
             row = self.conn.execute(
-                "SELECT article_no FROM listings WHERE article_no=?", (ano,)
+                "SELECT price_manwon, price_text FROM listings WHERE article_no=?", (ano,)
             ).fetchone()
             if row is None:
                 self.conn.execute(
                     """INSERT INTO listings
                        (article_no,address,sido,gu,dong,price_text,price_manwon,
-                        re_type,article_name,confirm_ymd,same_addr_cnt,feature_desc,area,floor,
+                        re_type,article_name,confirm_ymd,same_addr_cnt,price_change_state,
+                        feature_desc,area,floor,
                         lat,lng,first_seen_at,last_seen_at,is_active)
-                       VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,1)""",
+                       VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,1)""",
                     (ano, it["address"], it.get("sido"), it.get("gu"), it.get("dong"),
                      it["price_text"], it.get("price_manwon"), it.get("re_type"),
                      it.get("article_name"), it.get("confirm_ymd"), it.get("same_addr_cnt"),
+                     it.get("price_change_state"),
                      it.get("feature_desc"), it.get("area"), it.get("floor"),
                      it.get("lat"), it.get("lng"), run_ts, run_ts),
                 )
                 new_ids.append(ano)
             else:
-                self.conn.execute(
-                    """UPDATE listings SET last_seen_at=?, price_text=?, price_manwon=?,
-                       same_addr_cnt=?, is_active=1 WHERE article_no=?""",
-                    (run_ts, it["price_text"], it.get("price_manwon"),
-                     it.get("same_addr_cnt"), ano),
-                )
+                # 가격 변동 감지: 재목격 시 저장된 가격과 다르면 이전가·시점을 기록.
+                # (인하/인상 모두 기록하고, '인하' 여부는 표시 단계에서 판정)
+                old_man, new_man = row["price_manwon"], it.get("price_manwon")
+                if old_man is not None and new_man is not None and new_man != old_man:
+                    self.conn.execute(
+                        """UPDATE listings SET last_seen_at=?, price_text=?, price_manwon=?,
+                           same_addr_cnt=?, price_change_state=?,
+                           prev_price_manwon=?, prev_price_text=?, price_changed_at=?,
+                           is_active=1 WHERE article_no=?""",
+                        (run_ts, it["price_text"], new_man, it.get("same_addr_cnt"),
+                         it.get("price_change_state"), old_man, row["price_text"],
+                         run_ts, ano),
+                    )
+                else:
+                    self.conn.execute(
+                        """UPDATE listings SET last_seen_at=?, price_text=?, price_manwon=?,
+                           same_addr_cnt=?, price_change_state=?, is_active=1
+                           WHERE article_no=?""",
+                        (run_ts, it["price_text"], new_man, it.get("same_addr_cnt"),
+                         it.get("price_change_state"), ano),
+                    )
                 seen += 1
         self.conn.commit()
         log.info("저장: 신규 %d건, 갱신 %d건", len(new_ids), seen)
@@ -166,12 +193,15 @@ class Store:
 
         early_stop 모드에서 사용: 전체를 스캔하지 않으므로 '삭제' 판정 대신 '최근 N일'
         기준으로 목록을 롤링한다. keep_days<=0 이면 무제한 누적.
+        단, 최근 N일 내 가격 변동(인하 감지)이 있던 매물은 오래됐어도 피드에 유지한다.
         """
         if keep_days and keep_days > 0:
             self.conn.execute(
                 """UPDATE listings SET is_active=0
-                   WHERE julianday(?) - julianday(first_seen_at) > ?""",
-                (now_ts, keep_days),
+                   WHERE julianday(?) - julianday(first_seen_at) > ?
+                     AND (price_changed_at IS NULL
+                          OR julianday(?) - julianday(price_changed_at) > ?)""",
+                (now_ts, keep_days, now_ts, keep_days),
             )
             self.conn.commit()
 
@@ -190,6 +220,8 @@ class Store:
         - loc_count: 같은 위경도(=같은 건물/토지)의 광고 수. 네이버 sameAddrCnt는
           토지/건물에서 부정확하므로 위경도로 직접 세어 '단독(광고 1개)'을 판정한다.
         - is_new_location: 이전엔 없던 위치(seen_locations 기준)에 처음 등장한 매물.
+        - is_price_cut: 가격 인하(급매 신호). 자체 감지(재목격 시 가격이 내려감) 또는
+          네이버 priceChangeState=DECREASE.
         """
         new_ids = new_ids or set()
         new_loc_keys = new_loc_keys or set()
@@ -207,7 +239,13 @@ class Store:
             r["is_new"] = r["article_no"] in new_ids
             r["loc_count"] = loc_count.get((r["lat"], r["lng"]), 1)
             r["is_new_location"] = f"{r['lat']},{r['lng']}" in new_loc_keys
-        rows.sort(key=lambda r: (0 if r["is_new"] else 1,), reverse=False)
+            own_cut = (r.get("prev_price_manwon") is not None
+                       and r.get("price_manwon") is not None
+                       and r["price_manwon"] < r["prev_price_manwon"])
+            state_cut = (r.get("price_change_state") or "").upper() in ("DECREASE", "DOWN")
+            r["is_price_cut"] = own_cut or state_cut
+        # 정렬: 신규 → 가격인하 → 나머지 (그룹 내에서는 first_seen 최신순 유지)
+        rows.sort(key=lambda r: 0 if r["is_new"] else (1 if r["is_price_cut"] else 2))
         return rows
 
     def count_active(self) -> int:

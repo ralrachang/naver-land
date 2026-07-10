@@ -177,5 +177,92 @@ class TestLocations(unittest.TestCase):
         st.close()
 
 
+class TestPriceCut(unittest.TestCase):
+    """가격 인하 감지: 재목격 시 가격 비교 + 네이버 priceChangeState."""
+    def setUp(self):
+        self.tmp = tempfile.mkdtemp()
+        self.db = Path(self.tmp) / "t.db"
+
+    def _item(self, ano, price_text="10억", manwon=100000, state=""):
+        return {"article_no": ano, "address": "서울특별시 강남구 개포동", "sido": "서울특별시",
+                "gu": "강남구", "dong": "개포동", "price_text": price_text,
+                "price_manwon": manwon, "re_type": "건물", "article_name": "빌딩",
+                "confirm_ymd": "20260708", "same_addr_cnt": None,
+                "price_change_state": state, "feature_desc": "", "area": 100,
+                "floor": "", "lat": "37.0", "lng": "127.0"}
+
+    def _row(self, st, ano):
+        rows = {r["article_no"]: r for r in st.active_listings()}
+        return rows[ano]
+
+    def test_price_drop_detected(self):
+        st = Store(self.db)
+        st.upsert([self._item("A")], "2026-07-01 09:00:00")
+        st.upsert([self._item("A", "9억", 90000)], "2026-07-05 09:00:00")
+        r = self._row(st, "A")
+        self.assertEqual(r["prev_price_manwon"], 100000)
+        self.assertEqual(r["prev_price_text"], "10억")
+        self.assertEqual(r["price_changed_at"], "2026-07-05 09:00:00")
+        self.assertTrue(r["is_price_cut"])
+        st.close()
+
+    def test_price_same_no_change_recorded(self):
+        st = Store(self.db)
+        st.upsert([self._item("A")], "2026-07-01 09:00:00")
+        st.upsert([self._item("A")], "2026-07-05 09:00:00")
+        r = self._row(st, "A")
+        self.assertIsNone(r["prev_price_manwon"])
+        self.assertFalse(r["is_price_cut"])
+        st.close()
+
+    def test_price_increase_not_cut(self):
+        st = Store(self.db)
+        st.upsert([self._item("A")], "2026-07-01 09:00:00")
+        st.upsert([self._item("A", "11억", 110000)], "2026-07-05 09:00:00")
+        r = self._row(st, "A")
+        self.assertEqual(r["prev_price_manwon"], 100000)  # 변동은 기록되지만
+        self.assertFalse(r["is_price_cut"])               # 인하는 아님
+        st.close()
+
+    def test_second_drop_overwrites_prev(self):
+        st = Store(self.db)
+        st.upsert([self._item("A")], "2026-07-01 09:00:00")
+        st.upsert([self._item("A", "9억", 90000)], "2026-07-03 09:00:00")
+        st.upsert([self._item("A", "8억", 80000)], "2026-07-05 09:00:00")
+        r = self._row(st, "A")
+        self.assertEqual(r["prev_price_manwon"], 90000)   # 직전 가격 기준
+        self.assertEqual(r["price_changed_at"], "2026-07-05 09:00:00")
+        st.close()
+
+    def test_naver_state_decrease_is_cut(self):
+        st = Store(self.db)
+        st.upsert([self._item("A", state="DECREASE")], "2026-07-01 09:00:00")
+        self.assertTrue(self._row(st, "A")["is_price_cut"])
+        st.close()
+
+    def test_cut_keeps_listing_in_rolling_feed(self):
+        # 올라온 지 오래돼도 최근 가격인하가 있으면 신규 피드에 유지
+        st = Store(self.db)
+        st.upsert([self._item("OLD")], "2026-06-01 09:00:00")
+        st.upsert([self._item("OLD", "9억", 90000)], "2026-07-05 09:00:00")
+        st.deactivate_by_age(14, "2026-07-06 09:00:00")
+        ids = {r["article_no"] for r in st.active_listings()}
+        self.assertIn("OLD", ids)
+        # 인하마저 오래되면 제외
+        st.deactivate_by_age(14, "2026-08-01 09:00:00")
+        ids = {r["article_no"] for r in st.active_listings()}
+        self.assertNotIn("OLD", ids)
+        st.close()
+
+    def test_sort_cut_after_new_before_rest(self):
+        st = Store(self.db)
+        st.upsert([self._item("PLAIN"), self._item("CUT")], "2026-07-01 09:00:00")
+        st.upsert([self._item("CUT", "9억", 90000)], "2026-07-04 09:00:00")
+        r = st.upsert([self._item("NEWB")], "2026-07-05 09:00:00")
+        order = [x["article_no"] for x in st.active_listings(new_ids=set(r["new"]))]
+        self.assertEqual(order, ["NEWB", "CUT", "PLAIN"])
+        st.close()
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

@@ -12,3 +12,4 @@ venv/
 .omc/
 .env
 .env.sh
+.playwright-mcp/
