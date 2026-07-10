@@ -177,6 +177,87 @@ class TestLocations(unittest.TestCase):
         st.close()
 
 
+class TestPreciseSolo(unittest.TestCase):
+    """💎 정밀단독: 이력 전체(비활성 포함)+면적 결합+마스킹 좌표 제외."""
+    def setUp(self):
+        self.tmp = tempfile.mkdtemp()
+        self.db = Path(self.tmp) / "t.db"
+
+    def _item(self, ano, lat="37.1", lng="127.1", area=100):
+        return {"article_no": ano, "address": "서울특별시 강남구 개포동", "sido": "서울특별시",
+                "gu": "강남구", "dong": "개포동", "price_text": "10억",
+                "price_manwon": 100000, "re_type": "건물", "article_name": "빌딩",
+                "confirm_ymd": "20260708", "same_addr_cnt": None,
+                "price_change_state": "", "feature_desc": "", "area": area,
+                "floor": "", "lat": lat, "lng": lng}
+
+    def _flags(self, st, **kw):
+        return {r["article_no"]: r["is_precise_solo"] for r in st.active_listings(**kw)}
+
+    def test_same_coord_diff_area_both_solo(self):
+        # 같은 좌표에 다른 물건(면적 상이) 혼재 → 각각 정밀단독으로 복원
+        st = Store(self.db)
+        st.upsert([self._item("A", area=187), self._item("B", area=434)],
+                  "2026-07-09 09:00:00")
+        f = self._flags(st)
+        self.assertTrue(f["A"])
+        self.assertTrue(f["B"])
+        st.close()
+
+    def test_same_coord_same_area_not_solo(self):
+        st = Store(self.db)
+        st.upsert([self._item("A"), self._item("B")], "2026-07-09 09:00:00")
+        f = self._flags(st)
+        self.assertFalse(f["A"])
+        self.assertFalse(f["B"])
+        st.close()
+
+    def test_inactive_history_still_counts(self):
+        # 롤링으로 목록에서 빠진 옛 광고도 윈도우 안이면 광고 수에 포함(가짜 단독 방지)
+        st = Store(self.db)
+        st.upsert([self._item("OLD")], "2026-06-20 09:00:00")
+        st.upsert([self._item("NEW2")], "2026-07-09 09:00:00")
+        st.deactivate_by_age(14, "2026-07-09 09:00:00")  # OLD 비활성화
+        rows = {r["article_no"]: r for r in st.active_listings(solo_window_days=30)}
+        self.assertNotIn("OLD", rows)                      # 목록에는 없지만
+        self.assertEqual(rows["NEW2"]["loc_count"], 1)     # 단순 판정은 단독인데
+        self.assertFalse(rows["NEW2"]["is_precise_solo"])  # 정밀 판정은 아님
+        st.close()
+
+    def test_history_beyond_window_ignored(self):
+        # 윈도우(30일) 밖의 옛 광고는 만료로 보고 무시 → 정밀단독 인정
+        st = Store(self.db)
+        st.upsert([self._item("OLD")], "2026-05-01 09:00:00")
+        st.upsert([self._item("NEW2")], "2026-07-09 09:00:00")
+        st.deactivate_by_age(14, "2026-07-09 09:00:00")
+        f = self._flags(st, solo_window_days=30)
+        self.assertTrue(f["NEW2"])
+        st.close()
+
+    def test_mega_coord_excluded(self):
+        # 한 좌표에 광고 10개 이상 = 마스킹 의심 → 면적이 유일해도 판정 제외
+        st = Store(self.db)
+        items = [self._item(f"M{i}", area=100 + i) for i in range(10)]
+        st.upsert(items, "2026-07-09 09:00:00")
+        f = self._flags(st, mega_coord_threshold=10)
+        self.assertFalse(any(f.values()))
+        # 임계 미만이면 각자 면적 유일 → 전부 정밀단독
+        f2 = self._flags(st, mega_coord_threshold=11)
+        self.assertTrue(all(f2.values()))
+        st.close()
+
+    def test_missing_area_conservative(self):
+        st = Store(self.db)
+        # 면적 미상 매물 자신은 판정 불가
+        st.upsert([self._item("NOAREA", area=None)], "2026-07-09 09:00:00")
+        # 같은 좌표의 면적 미상 광고는 같은 물건일 수 있어 합산 → B도 단독 아님
+        st.upsert([self._item("B", area=100)], "2026-07-09 09:00:00")
+        f = self._flags(st)
+        self.assertFalse(f["NOAREA"])
+        self.assertFalse(f["B"])
+        st.close()
+
+
 class TestPriceCut(unittest.TestCase):
     """가격 인하 감지: 재목격 시 가격 비교 + 네이버 priceChangeState."""
     def setUp(self):

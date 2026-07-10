@@ -26,8 +26,8 @@ TEMPLATE = """<!doctype html>
 <meta name="robots" content="noindex">
 <title>@@TITLE@@</title>
 <style>
-:root{--bg:#f7f7f8;--card:#fff;--fg:#1a1a1a;--muted:#6b7280;--line:#e5e7eb;--new:#e11d48;--tag:#eef2ff;--tagfg:#4338ca;--price:#0f766e;--link:#2563eb;--cut:#d97706;--chip:#fff;--chipactive:#111}
-@media (prefers-color-scheme:dark){:root{--bg:#0b0d10;--card:#15181d;--fg:#e8eaed;--muted:#9aa3af;--line:#242a31;--new:#fb7185;--tag:#1e2340;--tagfg:#a5b4fc;--price:#5eead4;--link:#7dd3fc;--cut:#fbbf24;--chip:#15181d;--chipactive:#e8eaed}}
+:root{--bg:#f7f7f8;--card:#fff;--fg:#1a1a1a;--muted:#6b7280;--line:#e5e7eb;--new:#e11d48;--tag:#eef2ff;--tagfg:#4338ca;--price:#0f766e;--link:#2563eb;--cut:#d97706;--ps:#7c3aed;--chip:#fff;--chipactive:#111}
+@media (prefers-color-scheme:dark){:root{--bg:#0b0d10;--card:#15181d;--fg:#e8eaed;--muted:#9aa3af;--line:#242a31;--new:#fb7185;--tag:#1e2340;--tagfg:#a5b4fc;--price:#5eead4;--link:#7dd3fc;--cut:#fbbf24;--ps:#a78bfa;--chip:#15181d;--chipactive:#e8eaed}}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--fg);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Malgun Gothic","Apple SD Gothic Neo",sans-serif;line-height:1.5}
 header{padding:18px 16px 8px;max-width:900px;margin:0 auto}
@@ -51,6 +51,10 @@ h1{font-size:1.3rem;margin:0 0 4px}
 .fbtn.newloc.active span{color:#fff;opacity:.85}
 .newloc-badge{background:var(--link);color:#fff;border-radius:6px;padding:1px 7px;font-size:.7rem;font-weight:700;margin-left:6px}
 a.row.newloc{border-color:var(--link)}
+.fbtn.ps{border-color:var(--ps);color:var(--ps);font-weight:600}
+.fbtn.ps.active{background:var(--ps);color:#fff;border-color:var(--ps)}
+.fbtn.ps.active span{color:#fff;opacity:.85}
+.ps-chip{background:var(--ps);color:#fff;border-radius:6px;padding:1px 7px;font-size:.72rem;font-weight:700}
 .fbtn.cut{border-color:var(--cut);color:var(--cut);font-weight:600}
 .fbtn.cut.active{background:var(--cut);color:#fff;border-color:var(--cut)}
 .fbtn.cut.active span{color:#fff;opacity:.85}
@@ -87,7 +91,7 @@ footer{max-width:900px;margin:0 auto;padding:16px;color:var(--muted);font-size:.
   <span>표시 <b id="curcount">@@TOTAL@@</b>건 / 전체 @@TOTAL@@건</span>
   <span>이번 신규 <b style="color:var(--new)">@@NEWCOUNT@@</b>건</span>
 </div>
-<div class="note">💡 <b>🎯 단독</b> = 같은 위치 광고 1개(기본 켜짐) · <b>🆕 새 주소</b> = 이전엔 없던 위치에 새로 등장한 매물 · <b>💰 가격인하</b> = 등록 후 가격이 내려간 매물(급매 신호, 이전가→현재가 표시). 네이버가 지번은 공개 안 해 주소는 동 단위이며, 매물을 눌러 상세를 확인하세요.</div>
+<div class="note">💡 <b>💎 정밀단독</b> = 최근 광고 이력 전체에서 같은 위치·같은 면적 광고가 1개뿐(위치가 가려진 좌표는 제외, 기본 켜짐) · <b>🎯 단독</b> = 같은 위치 광고 1개(단순 판정) · <b>🆕 새 주소</b> = 이전엔 없던 위치에 새로 등장한 매물 · <b>💰 가격인하</b> = 등록 후 가격이 내려간 매물(급매 신호). 네이버가 지번은 공개 안 해 주소는 동 단위이며, 매물을 눌러 상세를 확인하세요.</div>
 <div class="filters" id="filters"></div>
 <main id="list"></main>
 <div class="more" id="more" style="display:none"><button type="button">더 보기</button></div>
@@ -96,21 +100,22 @@ footer{max-width:900px;margin:0 auto;padding:16px;color:var(--muted);font-size:.
 <script>
 (function(){
   var L = JSON.parse(document.getElementById('data').textContent);
-  var PAGE = 300, curGu = '전체', soloOnly = true, newLocOnly = false, cutOnly = false, shown = PAGE;
+  var PAGE = 300, curGu = '전체', psOnly = true, soloOnly = false, newLocOnly = false, cutOnly = false, shown = PAGE;
   function esc(s){ s = s==null?'':(''+s); return s.replace(/[&<>"]/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m];}); }
-  var soloCnt = 0, newLocCnt = 0, cutCnt = 0, gusSet = {};
-  for (var i=0;i<L.length;i++){ gusSet[L[i].g]=1; if(L[i].s===1) soloCnt++; if(L[i].nl) newLocCnt++; if(L[i].pc) cutCnt++; }
+  var psCnt = 0, soloCnt = 0, newLocCnt = 0, cutCnt = 0, gusSet = {};
+  for (var i=0;i<L.length;i++){ gusSet[L[i].g]=1; if(L[i].ps) psCnt++; if(L[i].s===1) soloCnt++; if(L[i].nl) newLocCnt++; if(L[i].pc) cutCnt++; }
   var gus = Object.keys(gusSet).sort();
   var filtersEl = document.getElementById('filters');
   var listEl = document.getElementById('list');
   var moreEl = document.getElementById('more');
   var moreBtn = moreEl.querySelector('button');
-  function passToggles(x){ return (!soloOnly || x.s===1) && (!newLocOnly || x.nl) && (!cutOnly || x.pc); }
+  function passToggles(x){ return (!psOnly || x.ps) && (!soloOnly || x.s===1) && (!newLocOnly || x.nl) && (!cutOnly || x.pc); }
   function btn(g,n){ return '<button type="button" class="fbtn'+(g===curGu?' active':'')+'" data-gu="'+esc(g)+'">'+esc(g)+' <span>'+n+'</span></button>'; }
   function renderFilters(){
     var c = {}, total = 0;
     for (var i=0;i<L.length;i++){ if(passToggles(L[i])){ c[L[i].g]=(c[L[i].g]||0)+1; total++; } }
-    var h = '<button type="button" class="fbtn solo'+(soloOnly?' active':'')+'" data-solo="1">🎯 단독매물만 <span>'+soloCnt+'</span></button>';
+    var h = '<button type="button" class="fbtn ps'+(psOnly?' active':'')+'" data-ps="1">💎 정밀단독만 <span>'+psCnt+'</span></button>';
+    h += '<button type="button" class="fbtn solo'+(soloOnly?' active':'')+'" data-solo="1">🎯 단독매물만 <span>'+soloCnt+'</span></button>';
     h += '<button type="button" class="fbtn newloc'+(newLocOnly?' active':'')+'" data-newloc="1">🆕 새 주소만 <span>'+newLocCnt+'</span></button>';
     h += '<button type="button" class="fbtn cut'+(cutOnly?' active':'')+'" data-cut="1">💰 가격인하만 <span>'+cutCnt+'</span></button>';
     h += btn('전체', total);
@@ -118,7 +123,8 @@ footer{max-width:900px;margin:0 auto;padding:16px;color:var(--muted);font-size:.
     filtersEl.innerHTML = h;
     var bs = filtersEl.querySelectorAll('button');
     for (var j=0;j<bs.length;j++){ bs[j].onclick = function(){
-      if (this.getAttribute('data-solo')){ soloOnly = !soloOnly; }
+      if (this.getAttribute('data-ps')){ psOnly = !psOnly; }
+      else if (this.getAttribute('data-solo')){ soloOnly = !soloOnly; }
       else if (this.getAttribute('data-newloc')){ newLocOnly = !newLocOnly; }
       else if (this.getAttribute('data-cut')){ cutOnly = !cutOnly; }
       else { curGu = this.getAttribute('data-gu'); }
@@ -138,7 +144,7 @@ footer{max-width:900px;margin:0 auto;padding:16px;color:var(--muted);font-size:.
     if (x.pc && x.pp) priceLine = '<div><span class="oldprice">'+esc(x.pp)+'</span> <span class="pct">-'+x.pd+'%</span></div>' + priceLine;
     return '<a class="row'+cls+'" href="'+esc(x.u)+'" target="_blank" rel="noopener">'
       + '<div class="left"><div class="addr">'+esc(x.a)+badge+'</div>'
-      + '<div class="meta"><span class="tag">'+esc(x.t)+'</span>'+(x.s===1?'<span class="solo-chip">단독</span>':(x.s>1?'<span class="cnt">광고 '+x.s+'개</span>':''))+'<span>확인 '+esc(x.c)+'</span></div>'
+      + '<div class="meta"><span class="tag">'+esc(x.t)+'</span>'+(x.ps?'<span class="ps-chip">💎 정밀단독</span>':(x.s===1?'<span class="solo-chip">단독</span>':(x.s>1?'<span class="cnt">광고 '+x.s+'개</span>':'')))+'<span>확인 '+esc(x.c)+'</span></div>'
       + (x.f?'<div class="feature">'+esc(x.f)+'</div>':'')
       + '</div><div class="right">'+priceLine+'<div class="link">네이버에서 보기 ›</div></div></a>';
   }
@@ -184,6 +190,7 @@ def _build_listings(rows: list[dict]) -> list[dict]:
             "g": r.get("gu") or "기타",
             "s": r.get("loc_count"),  # 같은 위경도(=같은 건물) 광고 수. 1=진짜 단독
             "f": (r.get("feature_desc") or "").strip(),
+            "ps": 1 if r.get("is_precise_solo") else 0,  # 💎정밀단독(이력전체+면적+마스킹 제외)
             "pc": 1 if r.get("is_price_cut") else 0,  # 가격인하(급매 신호)
             "pp": (r.get("prev_price_text") or "") if own_cut else "",  # 인하 전 가격
             "pd": round((prev - cur) / prev * 100) if own_cut else 0,   # 할인율 %

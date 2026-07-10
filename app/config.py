@@ -29,6 +29,8 @@ class SiteCfg:
     subtitle: str = ""
     timezone: str = "Asia/Seoul"
     keep_days: int = 30
+    solo_window_days: int = 30       # 💎정밀단독: 최근 N일 목격 이력 전체로 광고 수 판정
+    mega_coord_threshold: int = 10   # 한 좌표에 광고 N개 이상 = 위치 마스킹 의심 → 판정 제외
 
 
 @dataclass
