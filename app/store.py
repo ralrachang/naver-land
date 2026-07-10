@@ -216,16 +216,16 @@ class Store:
 
     def active_listings(self, new_ids: set[str] | None = None,
                         new_loc_keys: set | None = None,
-                        solo_window_days: int = 30,
-                        mega_coord_threshold: int = 10) -> list[dict]:
+                        solo_window_days: int = 30) -> list[dict]:
         """표시용 목록. 신규 우선, 그다음 최초 발견 최신순.
 
         - loc_count: 같은 위경도(=같은 건물/토지)의 '활성' 광고 수(단순 판정, 🎯단독).
           네이버 sameAddrCnt는 토지/건물에서 부정확하므로 위경도로 직접 센다.
         - is_precise_solo(💎정밀단독): 최근 solo_window_days일 내 목격된 광고 '이력
-          전체'(비활성 포함)를 좌표+면적으로 묶어 광고 1개일 때만 True. 좌표에 광고가
-          mega_coord_threshold개 이상 겹치면 위치 마스킹(대표좌표) 의심 → 판정 제외.
-          면적 미상인 광고가 같은 좌표에 있으면 같은 물건일 수 있어 광고 수에 합산(보수적).
+          전체'(목록에서 빠진 비활성 포함)에서 같은 좌표 광고가 자기 자신뿐일 때만 True.
+          롤링으로 옛 광고가 빠져 생기는 가짜 단독을 막는다. 면적으로 물건을 나누지
+          않는 이유: 실측 결과 같은 건물도 중개업소마다 area1(대지면적)을 다르게 적어
+          (연면적은 동일) 면적 분리는 같은 건물 중복 광고를 단독으로 오판시킨다.
         - is_new_location: 이전엔 없던 위치(seen_locations 기준)에 처음 등장한 매물.
         - is_price_cut: 가격 인하(급매 신호). 자체 감지(재목격 시 가격이 내려감) 또는
           네이버 priceChangeState=DECREASE.
@@ -238,10 +238,8 @@ class Store:
             "WHERE is_active=1 AND lat IS NOT NULL AND lat!='' GROUP BY lat, lng"
         ):
             loc_count[(r["lat"], r["lng"])] = r["c"]
-        # 정밀단독용 카운트 — 기준 시각은 DB의 최근 목격 시각(재생성 시에도 동일 판정).
-        coord_total: dict = {}
-        group_count: dict = {}
-        noarea_count: dict = {}
+        # 정밀단독용 좌표별 이력 카운트 — 기준 시각은 DB의 최근 목격 시각(재생성 시에도 동일 판정).
+        window_count: dict = {}
         ref = self.conn.execute("SELECT MAX(last_seen_at) FROM listings").fetchone()[0]
         cutoff = ""
         if ref:
@@ -249,18 +247,12 @@ class Store:
             cutoff = (ref_dt - timedelta(days=solo_window_days)).strftime(
                 "%Y-%m-%d %H:%M:%S")
             for r in self.conn.execute(
-                "SELECT lat, lng, area FROM listings "
+                "SELECT lat, lng, COUNT(*) c FROM listings "
                 "WHERE lat IS NOT NULL AND lat!='' "
-                "AND julianday(?) - julianday(last_seen_at) <= ?",
+                "AND julianday(?) - julianday(last_seen_at) <= ? GROUP BY lat, lng",
                 (ref, solo_window_days),
             ):
-                k = (r["lat"], r["lng"])
-                coord_total[k] = coord_total.get(k, 0) + 1
-                if r["area"] is None:
-                    noarea_count[k] = noarea_count.get(k, 0) + 1
-                else:
-                    g = (r["lat"], r["lng"], round(r["area"]))
-                    group_count[g] = group_count.get(g, 0) + 1
+                window_count[(r["lat"], r["lng"])] = r["c"]
         cur = self.conn.execute(
             "SELECT * FROM listings WHERE is_active=1 ORDER BY first_seen_at DESC, price_manwon DESC"
         )
@@ -269,16 +261,10 @@ class Store:
             r["is_new"] = r["article_no"] in new_ids
             r["loc_count"] = loc_count.get((r["lat"], r["lng"]), 1)
             r["is_new_location"] = f"{r['lat']},{r['lng']}" in new_loc_keys
-            lat, lng, area = r["lat"], r["lng"], r["area"]
-            ps = False
             # 자신도 윈도우 안이어야 함(밖이면 카운트에 자신이 빠져 오판 가능)
-            if lat and lng and area is not None and r["last_seen_at"] >= cutoff:
-                k = (lat, lng)
-                if coord_total.get(k, 0) < mega_coord_threshold:
-                    n = (group_count.get((lat, lng, round(area)), 0)
-                         + noarea_count.get(k, 0))
-                    ps = (n == 1)
-            r["is_precise_solo"] = ps
+            r["is_precise_solo"] = bool(
+                r["lat"] and r["lng"] and r["last_seen_at"] >= cutoff
+                and window_count.get((r["lat"], r["lng"]), 0) == 1)
             own_cut = (r.get("prev_price_manwon") is not None
                        and r.get("price_manwon") is not None
                        and r["price_manwon"] < r["prev_price_manwon"])

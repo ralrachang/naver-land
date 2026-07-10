@@ -194,14 +194,15 @@ class TestPreciseSolo(unittest.TestCase):
     def _flags(self, st, **kw):
         return {r["article_no"]: r["is_precise_solo"] for r in st.active_listings(**kw)}
 
-    def test_same_coord_diff_area_both_solo(self):
-        # 같은 좌표에 다른 물건(면적 상이) 혼재 → 각각 정밀단독으로 복원
+    def test_same_coord_diff_area_not_solo(self):
+        # 같은 좌표+다른 면적 = 같은 건물의 중복 광고(실측: 중개업소마다 대지면적을
+        # 다르게 적음, 연면적은 동일) → 면적으로 나누지 않고 단독 아님으로 판정
         st = Store(self.db)
         st.upsert([self._item("A", area=187), self._item("B", area=434)],
                   "2026-07-09 09:00:00")
         f = self._flags(st)
-        self.assertTrue(f["A"])
-        self.assertTrue(f["B"])
+        self.assertFalse(f["A"])
+        self.assertFalse(f["B"])
         st.close()
 
     def test_same_coord_same_area_not_solo(self):
@@ -210,6 +211,17 @@ class TestPreciseSolo(unittest.TestCase):
         f = self._flags(st)
         self.assertFalse(f["A"])
         self.assertFalse(f["B"])
+        st.close()
+
+    def test_alone_at_coord_is_solo(self):
+        # 좌표에 광고가 자기 자신뿐이면 정밀단독(면적 미상이어도 무관)
+        st = Store(self.db)
+        st.upsert([self._item("A", lat="37.1", lng="127.1", area=None),
+                   self._item("B", lat="37.2", lng="127.2")],
+                  "2026-07-09 09:00:00")
+        f = self._flags(st)
+        self.assertTrue(f["A"])
+        self.assertTrue(f["B"])
         st.close()
 
     def test_inactive_history_still_counts(self):
@@ -234,27 +246,13 @@ class TestPreciseSolo(unittest.TestCase):
         self.assertTrue(f["NEW2"])
         st.close()
 
-    def test_mega_coord_excluded(self):
-        # 한 좌표에 광고 10개 이상 = 마스킹 의심 → 면적이 유일해도 판정 제외
+    def test_masked_coord_stack_not_solo(self):
+        # 위치 마스킹으로 한 좌표에 광고가 대량으로 쌓여도(면적 제각각) 전부 단독 아님
         st = Store(self.db)
         items = [self._item(f"M{i}", area=100 + i) for i in range(10)]
         st.upsert(items, "2026-07-09 09:00:00")
-        f = self._flags(st, mega_coord_threshold=10)
-        self.assertFalse(any(f.values()))
-        # 임계 미만이면 각자 면적 유일 → 전부 정밀단독
-        f2 = self._flags(st, mega_coord_threshold=11)
-        self.assertTrue(all(f2.values()))
-        st.close()
-
-    def test_missing_area_conservative(self):
-        st = Store(self.db)
-        # 면적 미상 매물 자신은 판정 불가
-        st.upsert([self._item("NOAREA", area=None)], "2026-07-09 09:00:00")
-        # 같은 좌표의 면적 미상 광고는 같은 물건일 수 있어 합산 → B도 단독 아님
-        st.upsert([self._item("B", area=100)], "2026-07-09 09:00:00")
         f = self._flags(st)
-        self.assertFalse(f["NOAREA"])
-        self.assertFalse(f["B"])
+        self.assertFalse(any(f.values()))
         st.close()
 
 

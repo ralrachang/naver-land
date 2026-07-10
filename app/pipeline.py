@@ -65,8 +65,7 @@ def run_pipeline(cfg, rebuild_regions: bool = False, dry_run: bool | None = None
             st.deactivate_by_age(cfg.site.keep_days, run_ts)
         new_ids = set(res["new"])
         rows = st.active_listings(new_ids=new_ids, new_loc_keys=new_loc_keys,
-                                  solo_window_days=cfg.site.solo_window_days,
-                                  mega_coord_threshold=cfg.site.mega_coord_threshold)
+                                  solo_window_days=cfg.site.solo_window_days)
 
         # 5) 사이트 생성
         generated = generate.generate(cfg, rows, res["new_count"], run_dt=now)
@@ -94,8 +93,7 @@ def regenerate(cfg, dry_run: bool | None = None) -> dict:
         new_ids = st.latest_batch_ids()
         new_loc_keys = st.latest_location_batch()
         rows = st.active_listings(new_ids=new_ids, new_loc_keys=new_loc_keys,
-                                  solo_window_days=cfg.site.solo_window_days,
-                                  mega_coord_threshold=cfg.site.mega_coord_threshold)
+                                  solo_window_days=cfg.site.solo_window_days)
         generated = generate.generate(cfg, rows, len(new_ids), run_dt=now)
         if generated:
             deploy.deploy(cfg, dry_run=dry_run)
