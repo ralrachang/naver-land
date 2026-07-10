@@ -38,6 +38,9 @@ def main(argv=None):
     ap.add_argument("--rebuild-regions", action="store_true")
     ap.add_argument("--regenerate", action="store_true",
                     help="크롤 없이 기존 DB로 사이트만 재생성+배포(템플릿 변경 즉시 반영)")
+    ap.add_argument("--rebaseline", action="store_true",
+                    help="전체 재스캔으로 위치 기억을 완성(가짜 새주소 근절, 40~60분 소요). "
+                         "신규 배지를 만들지 않아 언제 돌려도 안전")
     args = ap.parse_args(argv)
 
     cfg = config_mod.load(args.config)
@@ -45,7 +48,9 @@ def main(argv=None):
     log = logging.getLogger("naver_land.run")
     log.info("=== 실행 시작 (%s KST) ===", datetime.now(KST).strftime("%Y-%m-%d %H:%M:%S"))
     try:
-        if args.regenerate:
+        if args.rebaseline:
+            summary = pipeline.rebaseline(cfg, dry_run=args.dry_run)
+        elif args.regenerate:
             summary = pipeline.regenerate(cfg, dry_run=args.dry_run)
         else:
             summary = pipeline.run_pipeline(cfg, rebuild_regions=args.rebuild_regions,

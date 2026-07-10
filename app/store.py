@@ -8,6 +8,13 @@ from pathlib import Path
 
 log = logging.getLogger("naver_land.store")
 
+
+def _confirm_to_ts(ymd: str | None) -> str | None:
+    """'20260627' -> '2026-06-27 00:00:00' (형식 불량이면 None)."""
+    if ymd and len(ymd) == 8 and ymd.isdigit():
+        return f"{ymd[:4]}-{ymd[4:6]}-{ymd[6:]} 00:00:00"
+    return None
+
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS listings (
     article_no   TEXT PRIMARY KEY,
@@ -120,31 +127,94 @@ class Store:
                 )
                 new_ids.append(ano)
             else:
-                # 가격 변동 감지: 재목격 시 저장된 가격과 다르면 이전가·시점을 기록.
-                # (인하/인상 모두 기록하고, '인하' 여부는 표시 단계에서 판정)
-                old_man, new_man = row["price_manwon"], it.get("price_manwon")
-                if old_man is not None and new_man is not None and new_man != old_man:
-                    self.conn.execute(
-                        """UPDATE listings SET last_seen_at=?, price_text=?, price_manwon=?,
-                           same_addr_cnt=?, price_change_state=?,
-                           prev_price_manwon=?, prev_price_text=?, price_changed_at=?,
-                           is_active=1 WHERE article_no=?""",
-                        (run_ts, it["price_text"], new_man, it.get("same_addr_cnt"),
-                         it.get("price_change_state"), old_man, row["price_text"],
-                         run_ts, ano),
-                    )
-                else:
-                    self.conn.execute(
-                        """UPDATE listings SET last_seen_at=?, price_text=?, price_manwon=?,
-                           same_addr_cnt=?, price_change_state=?, is_active=1
-                           WHERE article_no=?""",
-                        (run_ts, it["price_text"], new_man, it.get("same_addr_cnt"),
-                         it.get("price_change_state"), ano),
-                    )
+                self._update_seen(it, row, ano, run_ts)
                 seen += 1
         self.conn.commit()
         log.info("저장: 신규 %d건, 갱신 %d건", len(new_ids), seen)
         return {"new": new_ids, "new_count": len(new_ids), "seen_count": seen}
+
+    def _update_seen(self, it: dict, row, ano: str, run_ts: str):
+        """재목격 매물 갱신 + 가격 변동 감지(저장된 가격과 다르면 이전가·시점 기록.
+        인하/인상 모두 기록하고, '인하' 여부는 표시 단계에서 판정)."""
+        old_man, new_man = row["price_manwon"], it.get("price_manwon")
+        if old_man is not None and new_man is not None and new_man != old_man:
+            self.conn.execute(
+                """UPDATE listings SET last_seen_at=?, price_text=?, price_manwon=?,
+                   same_addr_cnt=?, price_change_state=?,
+                   prev_price_manwon=?, prev_price_text=?, price_changed_at=?,
+                   is_active=1 WHERE article_no=?""",
+                (run_ts, it["price_text"], new_man, it.get("same_addr_cnt"),
+                 it.get("price_change_state"), old_man, row["price_text"],
+                 run_ts, ano),
+            )
+        else:
+            self.conn.execute(
+                """UPDATE listings SET last_seen_at=?, price_text=?, price_manwon=?,
+                   same_addr_cnt=?, price_change_state=?, is_active=1
+                   WHERE article_no=?""",
+                (run_ts, it["price_text"], new_man, it.get("same_addr_cnt"),
+                 it.get("price_change_state"), ano),
+            )
+
+    def upsert_baseline(self, items: list[dict], run_ts: str) -> int:
+        """전체 재스캔(rebaseline)용 upsert — 신규 피드를 오염시키지 않는다.
+
+        그동안 못 봤던 매물(페이지 상한에 잘렸던 꼬리)은 first_seen_at 을 네이버
+        '매물 확인일'로 기록: 오래된 것은 롤링(keep_days)에서 즉시 제외되고 NEW/새주소
+        배지도 받지 않지만, 이력에는 남아 💎정밀단독 카운트의 기반이 된다.
+        기존 매물은 일반 갱신(가격 변동 감지 포함). 반환: 새로 채워진 매물 수.
+        """
+        added = 0
+        for it in items:
+            ano = it["article_no"]
+            if not ano:
+                continue
+            row = self.conn.execute(
+                "SELECT price_manwon, price_text FROM listings WHERE article_no=?",
+                (ano,)).fetchone()
+            if row is None:
+                first = _confirm_to_ts(it.get("confirm_ymd")) or run_ts
+                self.conn.execute(
+                    """INSERT INTO listings
+                       (article_no,address,sido,gu,dong,price_text,price_manwon,
+                        re_type,article_name,confirm_ymd,same_addr_cnt,price_change_state,
+                        feature_desc,area,floor,
+                        lat,lng,first_seen_at,last_seen_at,is_active)
+                       VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,1)""",
+                    (ano, it["address"], it.get("sido"), it.get("gu"), it.get("dong"),
+                     it["price_text"], it.get("price_manwon"), it.get("re_type"),
+                     it.get("article_name"), it.get("confirm_ymd"), it.get("same_addr_cnt"),
+                     it.get("price_change_state"),
+                     it.get("feature_desc"), it.get("area"), it.get("floor"),
+                     it.get("lat"), it.get("lng"), first, run_ts),
+                )
+                added += 1
+            else:
+                self._update_seen(it, row, ano, run_ts)
+        self.conn.commit()
+        log.info("재스캔 저장: 못 봤던 매물 %d건 채움(확인일 기준 등록)", added)
+        return added
+
+    def register_locations_baseline(self, items: list[dict]) -> int:
+        """위치 기억(baseline) 채우기 — '새주소 배지'를 만들지 않도록 과거 시각으로 등록.
+
+        각 위치의 first_seen_at 을 해당 매물 확인일(없으면 고정 과거값)로 기록해
+        latest_location_batch(=🆕 배지 대상)에 절대 잡히지 않게 한다.
+        반환: 새로 등록된 위치 수.
+        """
+        added = 0
+        for it in items:
+            lat, lng = it.get("lat"), it.get("lng")
+            if not (lat and lng):
+                continue
+            ts = _confirm_to_ts(it.get("confirm_ymd")) or "2000-01-01 00:00:00"
+            cur = self.conn.execute(
+                "INSERT OR IGNORE INTO seen_locations(loc_key, first_seen_at) VALUES (?,?)",
+                (f"{lat},{lng}", ts))
+            added += cur.rowcount
+        self.conn.commit()
+        log.info("재스캔 위치 등록: 몰랐던 위치 %d개 채움", added)
+        return added
 
     def register_locations(self, items: list[dict], run_ts: str) -> set:
         """관측된 매물의 위치를 seen_locations 에 등록. 처음 보는 위치만 run_ts 로 기록.

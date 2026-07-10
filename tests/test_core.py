@@ -256,6 +256,78 @@ class TestPreciseSolo(unittest.TestCase):
         st.close()
 
 
+class TestRebaseline(unittest.TestCase):
+    """전체 재스캔(rebaseline): 위치 기억 완성 + 신규 피드 비오염."""
+    def setUp(self):
+        self.tmp = tempfile.mkdtemp()
+        self.db = Path(self.tmp) / "t.db"
+
+    def _item(self, ano, lat="37.1", lng="127.1", confirm="20260708",
+              price_text="10억", manwon=100000):
+        return {"article_no": ano, "address": "서울특별시 강남구 개포동", "sido": "서울특별시",
+                "gu": "강남구", "dong": "개포동", "price_text": price_text,
+                "price_manwon": manwon, "re_type": "건물", "article_name": "빌딩",
+                "confirm_ymd": confirm, "same_addr_cnt": None,
+                "price_change_state": "", "feature_desc": "", "area": 100,
+                "floor": "", "lat": lat, "lng": lng}
+
+    def test_tail_item_gets_confirm_date_and_rolls_out(self):
+        st = Store(self.db)
+        # 일반 수집 배치(오늘) + 재스캔으로 발견된 옛 꼬리 매물(확인일 6/1)
+        st.upsert([self._item("NEWB", lat="37.9", lng="127.9")], "2026-07-10 16:00:00")
+        st.upsert_baseline([self._item("TAIL", confirm="20260601")],
+                           "2026-07-10 18:00:00")
+        row = st.conn.execute(
+            "SELECT first_seen_at, last_seen_at FROM listings WHERE article_no='TAIL'"
+        ).fetchone()
+        self.assertEqual(row["first_seen_at"], "2026-06-01 00:00:00")  # 확인일 기준
+        self.assertEqual(row["last_seen_at"], "2026-07-10 18:00:00")
+        # NEW 배지 배치는 일반 수집분 유지(재스캔 매물이 최신 배치를 가로채지 않음)
+        self.assertEqual(st.latest_batch_ids(), {"NEWB"})
+        # 오래된 꼬리는 롤링에서 즉시 제외되지만 이력(정밀단독 카운트)에는 남음
+        st.deactivate_by_age(14, "2026-07-10 18:00:00")
+        ids = {r["article_no"] for r in st.active_listings()}
+        self.assertNotIn("TAIL", ids)
+        st.close()
+
+    def test_tail_history_feeds_precise_solo(self):
+        st = Store(self.db)
+        # 같은 좌표의 꼬리 매물이 이력에 있으면 새 매물은 정밀단독 아님
+        st.upsert_baseline([self._item("TAIL", confirm="20260701")],
+                           "2026-07-10 18:00:00")
+        st.upsert([self._item("NEW2")], "2026-07-10 19:00:00")
+        rows = {r["article_no"]: r for r in st.active_listings(solo_window_days=30)}
+        self.assertFalse(rows["NEW2"]["is_precise_solo"])
+        st.close()
+
+    def test_baseline_does_not_reset_existing(self):
+        st = Store(self.db)
+        st.upsert([self._item("A")], "2026-07-09 09:00:00")
+        st.upsert_baseline([self._item("A", price_text="9억", manwon=90000)],
+                           "2026-07-10 18:00:00")
+        row = st.conn.execute(
+            "SELECT first_seen_at, prev_price_manwon FROM listings WHERE article_no='A'"
+        ).fetchone()
+        self.assertEqual(row["first_seen_at"], "2026-07-09 09:00:00")  # 유지
+        self.assertEqual(row["prev_price_manwon"], 100000)  # 가격 인하도 감지
+        st.close()
+
+    def test_baseline_location_blocks_future_false_new_address(self):
+        st = Store(self.db)
+        # 일반 수집으로 위치 A 등록(오늘 16시) → 🆕 배지 배치
+        a = self._item("A", lat="37.5", lng="127.5")
+        st.upsert([a], "2026-07-10 16:00:00")
+        st.register_locations([a], "2026-07-10 16:00:00")
+        # 재스캔으로 꼬리 위치 B 등록 — 최신 배치를 가로채면 안 됨
+        tail = self._item("TAIL", lat="37.7", lng="127.7", confirm="20260601")
+        st.register_locations_baseline([tail])
+        self.assertEqual(st.latest_location_batch(), {"37.5,127.5"})
+        # 이후 위치 B에 새 광고가 와도 '새주소'가 아님(핵심 수정 목표)
+        newad = self._item("NEWAD", lat="37.7", lng="127.7")
+        self.assertEqual(st.register_locations([newad], "2026-07-11 09:00:00"), set())
+        st.close()
+
+
 class TestPriceCut(unittest.TestCase):
     """가격 인하 감지: 재목격 시 가격 비교 + 네이버 priceChangeState."""
     def setUp(self):

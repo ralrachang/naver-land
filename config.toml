@@ -7,7 +7,8 @@ real_estate_types = ["TJ", "GM"]  # TJ=토지, GM=건물(통건물). 아파트=A
 order = "dateDesc"                # 최신 등록순 (신규 조기중단에 필수)
 request_delay_sec = 1.0           # 요청 간 기본 지연(차단 완화)
 request_jitter_sec = 0.7          # 지연에 더할 무작위 지터(0~값)
-max_pages_per_region = 25         # 동별 최대 페이지(안전장치)
+max_pages_per_region = 75         # 동별 최대 페이지(안전장치). 큰 동(역삼 등)은 55페이지 넘게
+                                  # 매물이 있어 25로는 잘림 → 위치 기억에 구멍(가짜 새주소 원인).
 max_retries = 3                   # 실패 시 재시도 횟수
 timeout_sec = 20
 early_stop = true                 # true=신규 위주(최신순, 이미 본 매물 나오면 조기중단).

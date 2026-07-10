@@ -17,7 +17,7 @@ class CrawlCfg:
     order: str = "dateDesc"
     request_delay_sec: float = 1.0
     request_jitter_sec: float = 0.7
-    max_pages_per_region: int = 25
+    max_pages_per_region: int = 75
     max_retries: int = 3
     timeout_sec: int = 20
     early_stop: bool = False

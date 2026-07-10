@@ -85,6 +85,65 @@ def run_pipeline(cfg, rebuild_regions: bool = False, dry_run: bool | None = None
         st.close()
 
 
+def rebaseline(cfg, dry_run: bool | None = None) -> dict:
+    """위치 기억(baseline) 완성용 전체 재스캔 — 가짜 '새주소' 근절.
+
+    첫 수집의 동별 페이지 상한(구 25p=500건)에 잘려 못 본 꼬리 매물을 전부 목격해
+    seen_locations 와 매물 이력에 채운다. 신규 피드 오염 방지를 위해 새로 발견된
+    매물·위치의 등록 시각은 네이버 '매물 확인일'로 기록한다(NEW/🆕 배지 없음,
+    오래된 매물은 롤링에서 즉시 제외되지만 💎정밀단독 이력에는 반영).
+    """
+    now = datetime.now(KST)
+    run_ts = now.strftime("%Y-%m-%d %H:%M:%S")
+    summary = {"ok": False, "new_count": 0, "total": 0, "note": ""}
+
+    c = client_mod.Client(delay=cfg.crawl.request_delay_sec,
+                          jitter=cfg.crawl.request_jitter_sec,
+                          retries=cfg.crawl.max_retries,
+                          timeout=cfg.crawl.timeout_sec)
+    try:
+        c.get_token()
+        region_list = regions.build(c, cfg.regions, cache_path=cfg.regions_cache,
+                                    use_cache=True)
+    except Exception as e:
+        log.error("재스캔 준비 실패 — 중단: %s", e)
+        summary["note"] = f"rebaseline_prep_fail: {e}"
+        return summary
+
+    cfg.crawl.early_stop = False  # 전체 스캔 강제(조기중단 없이 끝 페이지까지)
+    st = store.Store(cfg.db_path)
+    try:
+        try:
+            items, _ = crawler.crawl(c, cfg, region_list, seen_ids=st.existing_ids())
+        except client_mod.BlockedError as e:
+            log.error("차단 추정으로 재스캔 중단: %s", e)
+            summary["note"] = f"blocked: {e}"
+            st.record_run(run_ts, 0, 0, st.count_active(), False, summary["note"])
+            return summary
+
+        added = st.upsert_baseline(items, run_ts)
+        added_locs = st.register_locations_baseline(items)
+        st.deactivate_by_age(cfg.site.keep_days, run_ts)
+
+        # 배지는 마지막 '일반' 수집 기준 그대로 유지한 채 사이트만 갱신
+        new_ids = st.latest_batch_ids()
+        new_loc_keys = st.latest_location_batch()
+        rows = st.active_listings(new_ids=new_ids, new_loc_keys=new_loc_keys,
+                                  solo_window_days=cfg.site.solo_window_days)
+        generated = generate.generate(cfg, rows, len(new_ids), run_dt=now)
+        if generated:
+            deploy.deploy(cfg, dry_run=dry_run)
+
+        total = st.count_active()
+        st.record_run(run_ts, added, len(items) - added, total, True, "rebaseline")
+        summary.update(ok=True, new_count=added, total=total, note="rebaseline")
+        log.info("재스캔 완료: 목격 %d건 중 못 봤던 매물 %d건·위치 %d개 채움 / 표시 %d건",
+                 len(items), added, added_locs, total)
+        return summary
+    finally:
+        st.close()
+
+
 def regenerate(cfg, dry_run: bool | None = None) -> dict:
     """크롤 없이 기존 DB로 사이트만 재생성 + 배포(템플릿 변경 즉시 반영용)."""
     now = datetime.now(KST)
