@@ -91,7 +91,7 @@ footer{max-width:900px;margin:0 auto;padding:16px;color:var(--muted);font-size:.
   <span>표시 <b id="curcount">@@TOTAL@@</b>건 / 전체 @@TOTAL@@건</span>
   <span>이번 신규 <b style="color:var(--new)">@@NEWCOUNT@@</b>건</span>
 </div>
-<div class="note">💡 <b>💎 정밀단독</b> = 최근 30일 광고 이력 전체(목록에서 빠진 광고 포함)에서 같은 위치 광고가 1개뿐(기본 켜짐) · <b>🎯 단독</b> = 현재 목록 기준 같은 위치 광고 1개 · <b>🆕 새 주소</b> = 이전엔 없던 위치에 새로 등장한 매물 · <b>💰 가격인하</b> = 등록 후 가격이 내려간 매물(급매 신호). 네이버가 지번은 공개 안 해 주소는 동 단위이며, 매물을 눌러 상세를 확인하세요.</div>
+<div class="note">💡 <b>🆕 새 주소</b> = 이전엔 없던 위치에 새로 등장한 매물(가장 최근 수집분, 기본 켜짐) · <b>💎 정밀단독</b> = 최근 30일 광고 이력 전체(목록에서 빠진 광고 포함)에서 같은 위치 광고가 1개뿐 · <b>🎯 단독</b> = 현재 목록 기준 같은 위치 광고 1개 · <b>💰 가격인하</b> = 등록 후 가격이 내려간 매물(급매 신호). 네이버가 지번은 공개 안 해 주소는 동 단위이며, 매물을 눌러 상세를 확인하세요.</div>
 <div class="filters" id="filters"></div>
 <main id="list"></main>
 <div class="more" id="more" style="display:none"><button type="button">더 보기</button></div>
@@ -100,7 +100,7 @@ footer{max-width:900px;margin:0 auto;padding:16px;color:var(--muted);font-size:.
 <script>
 (function(){
   var L = JSON.parse(document.getElementById('data').textContent);
-  var PAGE = 300, curGu = '전체', psOnly = true, soloOnly = false, newLocOnly = false, cutOnly = false, shown = PAGE;
+  var PAGE = 300, curGu = '전체', psOnly = false, soloOnly = false, newLocOnly = true, cutOnly = false, shown = PAGE;
   function esc(s){ s = s==null?'':(''+s); return s.replace(/[&<>"]/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m];}); }
   var psCnt = 0, soloCnt = 0, newLocCnt = 0, cutCnt = 0, gusSet = {};
   for (var i=0;i<L.length;i++){ gusSet[L[i].g]=1; if(L[i].ps) psCnt++; if(L[i].s===1) soloCnt++; if(L[i].nl) newLocCnt++; if(L[i].pc) cutCnt++; }
@@ -114,9 +114,9 @@ footer{max-width:900px;margin:0 auto;padding:16px;color:var(--muted);font-size:.
   function renderFilters(){
     var c = {}, total = 0;
     for (var i=0;i<L.length;i++){ if(passToggles(L[i])){ c[L[i].g]=(c[L[i].g]||0)+1; total++; } }
-    var h = '<button type="button" class="fbtn ps'+(psOnly?' active':'')+'" data-ps="1">💎 정밀단독만 <span>'+psCnt+'</span></button>';
+    var h = '<button type="button" class="fbtn newloc'+(newLocOnly?' active':'')+'" data-newloc="1">🆕 새 주소만 <span>'+newLocCnt+'</span></button>';
+    h += '<button type="button" class="fbtn ps'+(psOnly?' active':'')+'" data-ps="1">💎 정밀단독만 <span>'+psCnt+'</span></button>';
     h += '<button type="button" class="fbtn solo'+(soloOnly?' active':'')+'" data-solo="1">🎯 단독매물만 <span>'+soloCnt+'</span></button>';
-    h += '<button type="button" class="fbtn newloc'+(newLocOnly?' active':'')+'" data-newloc="1">🆕 새 주소만 <span>'+newLocCnt+'</span></button>';
     h += '<button type="button" class="fbtn cut'+(cutOnly?' active':'')+'" data-cut="1">💰 가격인하만 <span>'+cutCnt+'</span></button>';
     h += btn('전체', total);
     for (var k=0;k<gus.length;k++){ h += btn(gus[k], c[gus[k]]||0); }
