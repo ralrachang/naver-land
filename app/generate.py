@@ -168,6 +168,18 @@ footer{max-width:900px;margin:0 auto;padding:16px;color:var(--muted);font-size:.
 """
 
 
+def _batch_label(ts: str | None) -> str:
+    """배치시각 '2026-07-13 09:00:03' → '7.13 오전'(hour<12=오전, else 오후). 불량이면 ''."""
+    if not ts:
+        return ""
+    try:
+        dt = datetime.strptime(ts, "%Y-%m-%d %H:%M:%S")
+    except (ValueError, TypeError):
+        return ""
+    ampm = "오전" if dt.hour < 12 else "오후"
+    return f"{dt.month}.{dt.day} {ampm}"
+
+
 def _fmt_confirm(ymd: str) -> str:
     if ymd and len(ymd) == 8:
         return f"{ymd[:4]}.{ymd[4:6]}.{ymd[6:]}"
@@ -186,6 +198,8 @@ def _build_listings(rows: list[dict]) -> list[dict]:
             "c": _fmt_confirm(r.get("confirm_ymd") or ""),
             "n": bool(r.get("is_new")),
             "nl": bool(r.get("is_new_location")),  # 이전엔 없던 위치에 새로 등장
+            "nlb": _batch_label(r.get("new_location_batch")),  # 수집분 라벨 "7.13 오전"
+            "nlbt": r.get("new_location_batch") or "",         # 그룹 정렬키(원본 시각)
             "u": ARTICLE_URL.format(no=r.get("article_no")),
             "g": r.get("gu") or "기타",
             "s": r.get("loc_count"),  # 같은 위경도(=같은 건물) 광고 수. 1=진짜 단독

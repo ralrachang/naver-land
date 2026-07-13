@@ -519,5 +519,40 @@ class TestRecentBatches(unittest.TestCase):
         st.close()
 
 
+class TestBatchLabel(unittest.TestCase):
+    def test_morning_afternoon(self):
+        from app.generate import _batch_label
+        self.assertEqual(_batch_label("2026-07-13 09:00:03"), "7.13 오전")
+        self.assertEqual(_batch_label("2026-07-12 16:00:00"), "7.12 오후")
+
+    def test_empty_or_bad(self):
+        from app.generate import _batch_label
+        self.assertEqual(_batch_label(None), "")
+        self.assertEqual(_batch_label(""), "")
+        self.assertEqual(_batch_label("bad"), "")
+
+    def test_build_listings_carries_batch(self):
+        from app.generate import _build_listings
+        rows = [{"address": "서울 강남", "price_text": "10억", "re_type": "건물",
+                 "confirm_ymd": "20260708", "is_new": False, "is_new_location": True,
+                 "article_no": "A", "gu": "강남구", "loc_count": 1, "feature_desc": "",
+                 "is_precise_solo": False, "is_price_cut": False,
+                 "new_location_batch": "2026-07-13 09:00:03"}]
+        out = _build_listings(rows)
+        self.assertEqual(out[0]["nlb"], "7.13 오전")
+        self.assertEqual(out[0]["nlbt"], "2026-07-13 09:00:03")
+
+    def test_build_listings_no_batch(self):
+        from app.generate import _build_listings
+        rows = [{"address": "서울 강남", "price_text": "10억", "re_type": "건물",
+                 "confirm_ymd": "20260708", "is_new": False, "is_new_location": False,
+                 "article_no": "A", "gu": "강남구", "loc_count": 1, "feature_desc": "",
+                 "is_precise_solo": False, "is_price_cut": False,
+                 "new_location_batch": None}]
+        out = _build_listings(rows)
+        self.assertEqual(out[0]["nlb"], "")
+        self.assertEqual(out[0]["nlbt"], "")
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
