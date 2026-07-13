@@ -581,5 +581,36 @@ class TestGenerateGrouping(unittest.TestCase):
         self.assertIn("7.13 오전", html_txt)        # 배치 라벨 임베드
 
 
+class TestPipelineRegenerate(unittest.TestCase):
+    def _cfg(self):
+        from app.config import Config, CrawlCfg, SiteCfg, DeployCfg
+        root = Path(tempfile.mkdtemp())
+        for sub in ("data", "site", "logs"):
+            (root / sub).mkdir()
+        return Config(crawl=CrawlCfg(),
+                      site=SiteCfg(title="t", subtitle="s", new_location_window_days=2),
+                      deploy=DeployCfg(enabled=False), regions=[], root=root)
+
+    def test_regenerate_uses_recent_batches(self):
+        import json
+        from app import pipeline
+        cfg = self._cfg()
+        st = Store(cfg.db_path)
+        it = {"article_no": "A", "address": "서울 강남", "sido": "서울특별시",
+              "gu": "강남구", "dong": "개포동", "price_text": "10억",
+              "price_manwon": 100000, "re_type": "건물", "article_name": "빌딩",
+              "confirm_ymd": "20260708", "same_addr_cnt": None, "feature_desc": "",
+              "area": 100, "floor": "", "lat": "37.1", "lng": "127.1"}
+        st.upsert([it], "2026-07-13 09:00:00")
+        st.register_locations([it], "2026-07-13 09:00:00")
+        st.record_run("2026-07-13 09:00:00", 1, 0, 1, True, "generated")
+        st.close()
+        res = pipeline.regenerate(cfg, dry_run=True)
+        self.assertTrue(res["ok"])
+        data = json.loads((cfg.site_dir / "data.json").read_text(encoding="utf-8"))
+        self.assertEqual(data["listings"][0]["nlb"], "7.13 오전")
+        self.assertEqual(data["listings"][0]["nl"], True)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
