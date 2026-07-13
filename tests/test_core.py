@@ -415,5 +415,24 @@ class TestPriceCut(unittest.TestCase):
         st.close()
 
 
+class TestConfig(unittest.TestCase):
+    def _write(self, body: str) -> Path:
+        d = tempfile.mkdtemp()
+        p = Path(d) / "c.toml"
+        p.write_text(body, encoding="utf-8")
+        return p
+
+    def test_new_location_window_default_is_2(self):
+        from app import config as config_mod
+        cfg = config_mod.load(self._write('[site]\ntitle = "t"\n'))
+        self.assertEqual(cfg.site.new_location_window_days, 2)
+
+    def test_new_location_window_override(self):
+        from app import config as config_mod
+        cfg = config_mod.load(self._write(
+            '[site]\ntitle = "t"\nnew_location_window_days = 3\n'))
+        self.assertEqual(cfg.site.new_location_window_days, 3)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

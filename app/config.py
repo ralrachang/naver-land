@@ -30,6 +30,7 @@ class SiteCfg:
     timezone: str = "Asia/Seoul"
     keep_days: int = 30
     solo_window_days: int = 30       # 💎정밀단독: 최근 N일 목격 이력 전체로 좌표별 광고 수 판정
+    new_location_window_days: int = 2  # 🆕 새 주소: 최근 N일 정상 수집 배치의 새 위치를 그룹으로 표시
 
 
 @dataclass
