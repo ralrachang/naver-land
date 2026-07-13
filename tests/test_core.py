@@ -434,5 +434,90 @@ class TestConfig(unittest.TestCase):
         self.assertEqual(cfg.site.new_location_window_days, 3)
 
 
+class TestRecentBatches(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.mkdtemp()
+        self.db = Path(self.tmp) / "t.db"
+
+    def _item(self, ano, lat, lng, confirm="20260708"):
+        return {"article_no": ano, "address": "서울특별시 강남구 개포동",
+                "sido": "서울특별시", "gu": "강남구", "dong": "개포동",
+                "price_text": "10억", "price_manwon": 100000, "re_type": "건물",
+                "article_name": "빌딩", "confirm_ymd": confirm, "same_addr_cnt": None,
+                "feature_desc": "", "area": 100, "floor": "", "lat": lat, "lng": lng}
+
+    def _normal_batch(self, st, ano, lat, lng, ts):
+        it = self._item(ano, lat, lng)
+        st.upsert([it], ts)
+        st.register_locations([it], ts)
+        st.record_run(ts, 1, 0, st.count_active(), True, "generated")
+
+    def test_includes_normal_runs_within_window(self):
+        st = Store(self.db)
+        self._normal_batch(st, "A", "37.1", "127.1", "2026-07-12 09:00:00")
+        self._normal_batch(st, "B", "37.2", "127.2", "2026-07-13 09:00:00")
+        self.assertEqual(
+            st.recent_location_batches(2),
+            {"37.1,127.1": "2026-07-12 09:00:00",
+             "37.2,127.2": "2026-07-13 09:00:00"})
+        st.close()
+
+    def test_rebaseline_backfill_excluded(self):
+        # 급소 회귀: 확인일로 백필된 위치는 새주소 배치로 잡히면 안 됨
+        st = Store(self.db)
+        self._normal_batch(st, "A", "37.1", "127.1", "2026-07-13 09:00:00")
+        tail = self._item("T", "37.9", "127.9", confirm="20260713")
+        st.register_locations_baseline([tail])
+        st.record_run("2026-07-13 16:00:00", 0, 1, st.count_active(), True, "rebaseline")
+        batches = st.recent_location_batches(2)
+        self.assertIn("37.1,127.1", batches)
+        self.assertNotIn("37.9,127.9", batches)
+        st.close()
+
+    def test_batch_beyond_window_excluded(self):
+        st = Store(self.db)
+        self._normal_batch(st, "OLD", "37.1", "127.1", "2026-07-01 09:00:00")
+        self._normal_batch(st, "NEW", "37.2", "127.2", "2026-07-13 09:00:00")
+        self.assertEqual(set(st.recent_location_batches(2)), {"37.2,127.2"})
+        st.close()
+
+    def test_empty_runs_returns_empty(self):
+        st = Store(self.db)
+        self.assertEqual(st.recent_location_batches(2), {})
+        st.close()
+
+    def test_current_ts_included_before_record_run(self):
+        # run_pipeline 은 record_run 을 표시 이후 호출 → current_ts 로 이번 배치를 인정
+        st = Store(self.db)
+        it = self._item("A", "37.1", "127.1")
+        st.upsert([it], "2026-07-13 09:00:00")
+        st.register_locations([it], "2026-07-13 09:00:00")
+        # 아직 record_run 안 함
+        self.assertEqual(st.recent_location_batches(2), {})
+        self.assertEqual(
+            st.recent_location_batches(2, current_ts="2026-07-13 09:00:00"),
+            {"37.1,127.1": "2026-07-13 09:00:00"})
+        st.close()
+
+    def test_active_listings_sets_batch_from_dict(self):
+        st = Store(self.db)
+        self._normal_batch(st, "A", "37.1", "127.1", "2026-07-13 09:00:00")
+        batches = st.recent_location_batches(2)
+        rows = {r["article_no"]: r for r in st.active_listings(new_loc_keys=batches)}
+        self.assertTrue(rows["A"]["is_new_location"])
+        self.assertEqual(rows["A"]["new_location_batch"], "2026-07-13 09:00:00")
+        st.close()
+
+    def test_active_listings_set_backward_compat(self):
+        st = Store(self.db)
+        it = self._item("A", "37.1", "127.1")
+        st.upsert([it], "2026-07-13 09:00:00")
+        newloc = st.register_locations([it], "2026-07-13 09:00:00")
+        rows = {r["article_no"]: r for r in st.active_listings(new_loc_keys=newloc)}
+        self.assertTrue(rows["A"]["is_new_location"])
+        self.assertIsNone(rows["A"]["new_location_batch"])
+        st.close()
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
