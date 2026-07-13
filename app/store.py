@@ -244,6 +244,33 @@ class Store:
             "SELECT loc_key FROM seen_locations WHERE first_seen_at=?", (row[0],))
         return {r[0] for r in cur.fetchall()}
 
+    def recent_location_batches(self, days: int,
+                                current_ts: str | None = None) -> dict:
+        """실제 정상 수집 배치 기준 최근 N일의 새 위치 → 배치시각 맵 {loc_key: batch_ts}.
+
+        가짜 새주소(rebaseline 백필) 배제: first_seen_at 이 정상 수집 run_at
+        (runs.note IN ('generated','skip_empty'))과 정확히 일치하는 위치만 포함.
+        current_ts: 진행 중인 이번 수집의 run_ts(아직 runs 에 없음)를 정상 배치로 인정.
+        anchor(최근 정상 배치)에서 days 만큼 역산한 창 안의 위치만 반환.
+        """
+        batch_ts = [r[0] for r in self.conn.execute(
+            "SELECT run_at FROM runs WHERE note IN ('generated','skip_empty')")]
+        if current_ts:
+            batch_ts.append(current_ts)
+        if not batch_ts:
+            return {}
+        anchor = max(batch_ts)
+        batch_set = set(batch_ts)
+        out: dict = {}
+        for r in self.conn.execute(
+            "SELECT loc_key, first_seen_at FROM seen_locations "
+            "WHERE julianday(?) - julianday(first_seen_at) <= ?",
+            (anchor, days),
+        ):
+            if r["first_seen_at"] in batch_set:
+                out[r["loc_key"]] = r["first_seen_at"]
+        return out
+
     def deactivate_stale(self, keep_days: int, now_ts: str):
         """삭제(더 이상 목격 안 됨) 매물 비활성화.
 
@@ -285,7 +312,7 @@ class Store:
         self.conn.commit()
 
     def active_listings(self, new_ids: set[str] | None = None,
-                        new_loc_keys: set | None = None,
+                        new_loc_keys: set | dict | None = None,
                         solo_window_days: int = 30) -> list[dict]:
         """표시용 목록. 신규 우선, 그다음 최초 발견 최신순.
 
@@ -302,6 +329,7 @@ class Store:
         """
         new_ids = new_ids or set()
         new_loc_keys = new_loc_keys or set()
+        loc_batch = new_loc_keys if isinstance(new_loc_keys, dict) else {}
         loc_count: dict = {}
         for r in self.conn.execute(
             "SELECT lat, lng, COUNT(*) c FROM listings "
@@ -331,6 +359,7 @@ class Store:
             r["is_new"] = r["article_no"] in new_ids
             r["loc_count"] = loc_count.get((r["lat"], r["lng"]), 1)
             r["is_new_location"] = f"{r['lat']},{r['lng']}" in new_loc_keys
+            r["new_location_batch"] = loc_batch.get(f"{r['lat']},{r['lng']}")
             # 자신도 윈도우 안이어야 함(밖이면 카운트에 자신이 빠져 오판 가능)
             r["is_precise_solo"] = bool(
                 r["lat"] and r["lng"] and r["last_seen_at"] >= cutoff

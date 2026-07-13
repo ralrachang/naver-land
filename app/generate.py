@@ -76,6 +76,7 @@ a.row.new{border-color:var(--new)}
 .price{color:var(--price);font-weight:700;font-size:1.05rem}
 .link{color:var(--link);font-size:.75rem;margin-top:4px}
 .empty{text-align:center;color:var(--muted);padding:48px 0}
+.batch{margin:16px 4px 4px;color:var(--muted);font-size:.82rem;font-weight:700}
 .more{max-width:900px;margin:0 auto 40px;padding:0 12px;text-align:center}
 .more button{cursor:pointer;border:1px solid var(--line);background:var(--card);color:var(--fg);border-radius:10px;padding:10px 20px;font-size:.9rem;font-family:inherit}
 footer{max-width:900px;margin:0 auto;padding:16px;color:var(--muted);font-size:.75rem;text-align:center}
@@ -91,7 +92,7 @@ footer{max-width:900px;margin:0 auto;padding:16px;color:var(--muted);font-size:.
   <span>표시 <b id="curcount">@@TOTAL@@</b>건 / 전체 @@TOTAL@@건</span>
   <span>이번 신규 <b style="color:var(--new)">@@NEWCOUNT@@</b>건</span>
 </div>
-<div class="note">💡 <b>🆕 새 주소</b> = 이전엔 없던 위치에 새로 등장한 매물(가장 최근 수집분, 기본 켜짐) · <b>💎 정밀단독</b> = 최근 30일 광고 이력 전체(목록에서 빠진 광고 포함)에서 같은 위치 광고가 1개뿐 · <b>🎯 단독</b> = 현재 목록 기준 같은 위치 광고 1개 · <b>💰 가격인하</b> = 등록 후 가격이 내려간 매물(급매 신호). 네이버가 지번은 공개 안 해 주소는 동 단위이며, 매물을 눌러 상세를 확인하세요.</div>
+<div class="note">💡 <b>🆕 새 주소</b> = 이전엔 없던 위치에 새로 등장한 매물(최근 2일 수집분, 수집분별로 묶어 표시, 기본 켜짐) · <b>💎 정밀단독</b> = 최근 30일 광고 이력 전체(목록에서 빠진 광고 포함)에서 같은 위치 광고가 1개뿐 · <b>🎯 단독</b> = 현재 목록 기준 같은 위치 광고 1개 · <b>💰 가격인하</b> = 등록 후 가격이 내려간 매물(급매 신호). 네이버가 지번은 공개 안 해 주소는 동 단위이며, 매물을 눌러 상세를 확인하세요.</div>
 <div class="filters" id="filters"></div>
 <main id="list"></main>
 <div class="more" id="more" style="display:none"><button type="button">더 보기</button></div>
@@ -153,8 +154,21 @@ footer{max-width:900px;margin:0 auto;padding:16px;color:var(--muted);font-size:.
     var f = filtered();
     document.getElementById('curcount').textContent = f.length;
     if (!f.length){ listEl.innerHTML = '<div class="empty">표시할 매물이 없습니다.</div>'; moreEl.style.display='none'; return; }
-    var slice = f.slice(0, shown), h = '';
-    for (var i=0;i<slice.length;i++){ h += rowHtml(slice[i]); }
+    var grouped = newLocOnly;  // 🆕 필터 ON 일 때만 수집분별 헤더
+    if (grouped){
+      f = f.slice().sort(function(a,b){ var x=a.nlbt||'', y=b.nlbt||''; return x<y?1:(x>y?-1:0); });  // 최신 배치 먼저
+    }
+    var bcount = {};
+    if (grouped){ for (var k=0;k<f.length;k++){ var bk=f[k].nlbt||''; bcount[bk]=(bcount[bk]||0)+1; } }
+    var slice = f.slice(0, shown), h = '', lastB = null;
+    for (var i=0;i<slice.length;i++){
+      var x = slice[i];
+      if (grouped){
+        var bk2 = x.nlbt||'';
+        if (bk2 !== lastB){ lastB = bk2; h += '<div class="batch">── '+esc(x.nlb||'이전 수집')+' ('+(bcount[bk2]||0)+') ──</div>'; }
+      }
+      h += rowHtml(x);
+    }
     listEl.innerHTML = h;
     if (f.length > shown){ moreEl.style.display='block'; moreBtn.textContent = '더 보기 ('+(f.length-shown)+'건 남음)'; }
     else { moreEl.style.display='none'; }
@@ -166,6 +180,18 @@ footer{max-width:900px;margin:0 auto;padding:16px;color:var(--muted);font-size:.
 </body>
 </html>
 """
+
+
+def _batch_label(ts: str | None) -> str:
+    """배치시각 '2026-07-13 09:00:03' → '7.13 오전'(hour<12=오전, else 오후). 불량이면 ''."""
+    if not ts:
+        return ""
+    try:
+        dt = datetime.strptime(ts, "%Y-%m-%d %H:%M:%S")
+    except (ValueError, TypeError):
+        return ""
+    ampm = "오전" if dt.hour < 12 else "오후"
+    return f"{dt.month}.{dt.day} {ampm}"
 
 
 def _fmt_confirm(ymd: str) -> str:
@@ -186,6 +212,8 @@ def _build_listings(rows: list[dict]) -> list[dict]:
             "c": _fmt_confirm(r.get("confirm_ymd") or ""),
             "n": bool(r.get("is_new")),
             "nl": bool(r.get("is_new_location")),  # 이전엔 없던 위치에 새로 등장
+            "nlb": _batch_label(r.get("new_location_batch")),  # 수집분 라벨 "7.13 오전"
+            "nlbt": r.get("new_location_batch") or "",         # 그룹 정렬키(원본 시각)
             "u": ARTICLE_URL.format(no=r.get("article_no")),
             "g": r.get("gu") or "기타",
             "s": r.get("loc_count"),  # 같은 위경도(=같은 건물) 광고 수. 1=진짜 단독

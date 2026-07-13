@@ -57,7 +57,9 @@ def run_pipeline(cfg, rebuild_regions: bool = False, dry_run: bool | None = None
 
         # 4) 저장 + 신규판별 + 새 위치 등록
         res = st.upsert(items, run_ts)
-        new_loc_keys = st.register_locations(items, run_ts)
+        st.register_locations(items, run_ts)  # 새 위치 기록(부작용)
+        new_loc_keys = st.recent_location_batches(
+            cfg.site.new_location_window_days, current_ts=run_ts)
         # 목록 정리: 전체스캔=마지막 목격 기준(삭제 매물), early_stop=올라온 지 기준(신규 피드).
         if full_scan:
             st.deactivate_stale(cfg.site.keep_days, run_ts)
@@ -127,7 +129,7 @@ def rebaseline(cfg, dry_run: bool | None = None) -> dict:
 
         # 배지는 마지막 '일반' 수집 기준 그대로 유지한 채 사이트만 갱신
         new_ids = st.latest_batch_ids()
-        new_loc_keys = st.latest_location_batch()
+        new_loc_keys = st.recent_location_batches(cfg.site.new_location_window_days)
         rows = st.active_listings(new_ids=new_ids, new_loc_keys=new_loc_keys,
                                   solo_window_days=cfg.site.solo_window_days)
         generated = generate.generate(cfg, rows, len(new_ids), run_dt=now)
@@ -150,7 +152,7 @@ def regenerate(cfg, dry_run: bool | None = None) -> dict:
     st = store.Store(cfg.db_path)
     try:
         new_ids = st.latest_batch_ids()
-        new_loc_keys = st.latest_location_batch()
+        new_loc_keys = st.recent_location_batches(cfg.site.new_location_window_days)
         rows = st.active_listings(new_ids=new_ids, new_loc_keys=new_loc_keys,
                                   solo_window_days=cfg.site.solo_window_days)
         generated = generate.generate(cfg, rows, len(new_ids), run_dt=now)
