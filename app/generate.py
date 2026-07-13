@@ -92,7 +92,7 @@ footer{max-width:900px;margin:0 auto;padding:16px;color:var(--muted);font-size:.
   <span>표시 <b id="curcount">@@TOTAL@@</b>건 / 전체 @@TOTAL@@건</span>
   <span>이번 신규 <b style="color:var(--new)">@@NEWCOUNT@@</b>건</span>
 </div>
-<div class="note">💡 <b>🆕 새 주소</b> = 이전엔 없던 위치에 새로 등장한 매물(가장 최근 수집분, 기본 켜짐) · <b>💎 정밀단독</b> = 최근 30일 광고 이력 전체(목록에서 빠진 광고 포함)에서 같은 위치 광고가 1개뿐 · <b>🎯 단독</b> = 현재 목록 기준 같은 위치 광고 1개 · <b>💰 가격인하</b> = 등록 후 가격이 내려간 매물(급매 신호). 네이버가 지번은 공개 안 해 주소는 동 단위이며, 매물을 눌러 상세를 확인하세요.</div>
+<div class="note">💡 <b>🆕 새 주소</b> = 이전엔 없던 위치에 새로 등장한 매물(최근 2일 수집분, 수집분별로 묶어 표시, 기본 켜짐) · <b>💎 정밀단독</b> = 최근 30일 광고 이력 전체(목록에서 빠진 광고 포함)에서 같은 위치 광고가 1개뿐 · <b>🎯 단독</b> = 현재 목록 기준 같은 위치 광고 1개 · <b>💰 가격인하</b> = 등록 후 가격이 내려간 매물(급매 신호). 네이버가 지번은 공개 안 해 주소는 동 단위이며, 매물을 눌러 상세를 확인하세요.</div>
 <div class="filters" id="filters"></div>
 <main id="list"></main>
 <div class="more" id="more" style="display:none"><button type="button">더 보기</button></div>
