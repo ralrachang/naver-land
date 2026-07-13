@@ -51,25 +51,33 @@
 새 메서드:
 
 ```python
-def recent_location_batches(self, days: int) -> dict[str, str]:
+def recent_location_batches(self, days: int, current_ts: str | None = None) -> dict[str, str]:
     """실제 정상 수집 배치 기준 최근 N일의 새 위치 → 배치시각 맵.
 
     반환: {loc_key: batch_ts}. 가짜 새주소(rebaseline 백필) 배제를 위해
     first_seen_at 이 정상 수집 run_at 과 일치하는 위치만 포함한다.
+    current_ts: 진행 중인 이번 수집의 run_ts. 이 시각은 아직 runs 에 기록되기
+    전이므로(run_pipeline 은 record_run 을 표시 이후에 호출) 정상 배치로 함께 인정한다.
     """
 ```
 
 동작:
 1. 정상 배치 시각 집합 조회:
-   `SELECT run_at FROM runs WHERE note IN ('generated','skip_empty')`
-2. anchor = 그중 MAX(run_at). 없으면 빈 dict 반환(첫 수집 전 등).
+   `SELECT run_at FROM runs WHERE note IN ('generated','skip_empty')`.
+   `current_ts` 가 주어지면 이 집합에 추가한다(이번 수집분이 표시에서 누락되지 않도록).
+2. anchor = 그중 MAX. 없으면 빈 dict 반환(첫 수집 전 등).
 3. cutoff = anchor 에서 `days` 일 역산(`julianday` 비교).
-4. `seen_locations` 에서 `first_seen_at >= cutoff` **AND** `first_seen_at IN (정상 run_at 집합)`
+4. `seen_locations` 에서 `first_seen_at >= cutoff` **AND** `first_seen_at IN (정상 배치 집합)`
    인 (loc_key, first_seen_at) 을 뽑아 `{loc_key: first_seen_at}` 로 반환.
 
+> run_pipeline 은 `record_run` 을 표시(active_listings) **이후**에 호출하므로, current_ts 를
+> 넘기지 않으면 방금 등록한 이번 배치의 새 위치가 다음 수집 때까지 화면에서 빠진다.
+> regenerate/rebaseline 은 새 정상 배치를 만들지 않으므로 current_ts 없이 호출한다.
+
 `active_listings` 시그니처 확장:
-- 기존 `new_loc_keys: set` 파라미터를 `new_loc_batches: dict[str,str] | set | None` 로 받도록 확장.
-  하위호환을 위해 set 이 들어오면 배치시각 없이 `is_new_location` 만 세팅.
+- **파라미터 이름은 `new_loc_keys` 그대로 유지**하되 타입만 `set | dict | None` 로 확장
+  (기존 테스트/호출부가 `new_loc_keys=` 키워드를 쓰므로 이름 변경 금지).
+  하위호환: set 이 들어오면 배치시각 없이 `is_new_location` 만 세팅.
 - 각 행에 세팅:
   - `is_new_location`: `f"{lat},{lng}"` 가 맵/셋에 존재.
   - `new_location_batch`: 맵일 때 해당 loc 의 배치시각(문자열), 아니면 `None`.
@@ -83,8 +91,8 @@ def recent_location_batches(self, days: int) -> dict[str, str]:
 `window = cfg.site.new_location_window_days`.
 
 - `run_pipeline`: 새 위치 **기록**은 기존대로 `st.register_locations(items, run_ts)` 유지(부작용 필요).
-  표시용으로만 `batches = st.recent_location_batches(window)` 를 새로 조회해
-  `active_listings(new_ids=..., new_loc_batches=batches, ...)` 로 전달.
+  표시용으로만 `batches = st.recent_location_batches(window, current_ts=run_ts)` 를 새로 조회해
+  `active_listings(new_ids=..., new_loc_keys=batches, ...)` 로 전달(이번 배치 누락 방지 위해 current_ts 필수).
 - `regenerate`: `latest_location_batch()` → `recent_location_batches(window)`.
 - `rebaseline`: `latest_location_batch()` → `recent_location_batches(window)`.
   (rebaseline 이 배지를 만들지 않는 성질은 그대로 유지 — 백필 위치가 배치로 안 잡히므로.)
