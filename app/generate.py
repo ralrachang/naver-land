@@ -76,6 +76,7 @@ a.row.new{border-color:var(--new)}
 .price{color:var(--price);font-weight:700;font-size:1.05rem}
 .link{color:var(--link);font-size:.75rem;margin-top:4px}
 .empty{text-align:center;color:var(--muted);padding:48px 0}
+.batch{margin:16px 4px 4px;color:var(--muted);font-size:.82rem;font-weight:700}
 .more{max-width:900px;margin:0 auto 40px;padding:0 12px;text-align:center}
 .more button{cursor:pointer;border:1px solid var(--line);background:var(--card);color:var(--fg);border-radius:10px;padding:10px 20px;font-size:.9rem;font-family:inherit}
 footer{max-width:900px;margin:0 auto;padding:16px;color:var(--muted);font-size:.75rem;text-align:center}
@@ -153,8 +154,21 @@ footer{max-width:900px;margin:0 auto;padding:16px;color:var(--muted);font-size:.
     var f = filtered();
     document.getElementById('curcount').textContent = f.length;
     if (!f.length){ listEl.innerHTML = '<div class="empty">표시할 매물이 없습니다.</div>'; moreEl.style.display='none'; return; }
-    var slice = f.slice(0, shown), h = '';
-    for (var i=0;i<slice.length;i++){ h += rowHtml(slice[i]); }
+    var grouped = newLocOnly;  // 🆕 필터 ON 일 때만 수집분별 헤더
+    if (grouped){
+      f = f.slice().sort(function(a,b){ var x=a.nlbt||'', y=b.nlbt||''; return x<y?1:(x>y?-1:0); });  // 최신 배치 먼저
+    }
+    var bcount = {};
+    if (grouped){ for (var k=0;k<f.length;k++){ var bk=f[k].nlbt||''; bcount[bk]=(bcount[bk]||0)+1; } }
+    var slice = f.slice(0, shown), h = '', lastB = null;
+    for (var i=0;i<slice.length;i++){
+      var x = slice[i];
+      if (grouped){
+        var bk2 = x.nlbt||'';
+        if (bk2 !== lastB){ lastB = bk2; h += '<div class="batch">── '+esc(x.nlb||'이전 수집')+' ('+(bcount[bk2]||0)+') ──</div>'; }
+      }
+      h += rowHtml(x);
+    }
     listEl.innerHTML = h;
     if (f.length > shown){ moreEl.style.display='block'; moreBtn.textContent = '더 보기 ('+(f.length-shown)+'건 남음)'; }
     else { moreEl.style.display='none'; }

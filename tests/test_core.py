@@ -554,5 +554,32 @@ class TestBatchLabel(unittest.TestCase):
         self.assertEqual(out[0]["nlbt"], "")
 
 
+class TestGenerateGrouping(unittest.TestCase):
+    def _cfg(self):
+        from app.config import Config, CrawlCfg, SiteCfg, DeployCfg
+        root = Path(tempfile.mkdtemp())
+        for sub in ("data", "site", "logs"):
+            (root / sub).mkdir()
+        return Config(crawl=CrawlCfg(),
+                      site=SiteCfg(title="t", subtitle="s"),
+                      deploy=DeployCfg(enabled=False), regions=[], root=root)
+
+    def test_batch_header_js_and_label_embedded(self):
+        from datetime import datetime, timezone, timedelta
+        from app import generate
+        cfg = self._cfg()
+        rows = [{"address": "서울 강남", "price_text": "10억", "re_type": "건물",
+                 "confirm_ymd": "20260708", "is_new": False, "is_new_location": True,
+                 "article_no": "A", "gu": "강남구", "loc_count": 1, "feature_desc": "",
+                 "is_precise_solo": False, "is_price_cut": False,
+                 "new_location_batch": "2026-07-13 09:00:03"}]
+        ok = generate.generate(cfg, rows, 1, run_dt=datetime(
+            2026, 7, 13, 9, 0, tzinfo=timezone(timedelta(hours=9))))
+        self.assertTrue(ok)
+        html_txt = (cfg.site_dir / "index.html").read_text(encoding="utf-8")
+        self.assertIn('class="batch"', html_txt)  # 그룹 헤더 렌더 JS 존재
+        self.assertIn("7.13 오전", html_txt)        # 배치 라벨 임베드
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
