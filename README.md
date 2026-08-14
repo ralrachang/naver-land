@@ -13,7 +13,7 @@
 - **💰 가격 인하 감지(급매 신호)**: 재목격 시 저장된 가격과 비교해 내려갔으면
   이전가→현재가와 할인율(%)을 표시. 네이버 `priceChangeState=DECREASE` 신호도 반영.
   최근 인하된 매물은 올라온 지 오래됐어도 피드에 유지됩니다.
-- 실행: 하루 2회(기본 09:00 / 16:00 KST), Hostinger VPS의 cron
+- 실행: 하루 3회(기본 09:00 / 13:00 / 16:00 KST), Hostinger VPS의 cron
 - 데이터 소스: `new.land.naver.com` 내부 API (로그인 불필요)
 - 스택: **Python 표준 라이브러리만** (서드파티 의존성 0). git 필요.
 
@@ -104,15 +104,15 @@ cd /opt/naver-land && python3 run.py --dry-run
 ```
 정상이면 `site/index.html` 생성 + 로그에 `[DRY_RUN] 커밋 생성됨`.
 
-### 5. cron 등록 (하루 2회)
+### 5. cron 등록 (하루 3회)
 ```bash
 crontab -e
 ```
 `deploy/crontab.txt` 의 한 줄을 붙여넣기:
 ```
-0 9,16 * * *  cd /opt/naver-land && python3 run.py >> logs/cron.log 2>&1
+0 9,13,16 * * *  cd /opt/naver-land && python3 run.py >> logs/cron.log 2>&1
 ```
-(VPS가 UTC면 `0 0,7 * * *`)
+(VPS가 UTC면 `0 0,4,7 * * *`)
 
 ### 6. (선택) Docker
 ```bash
@@ -130,7 +130,7 @@ Hostinger VPS는 **데이터센터 IP**라, 네이버가 봇으로 판단해 차
 - 브라우저 유사 헤더 + 정상 토큰 사용
 - 요청 간 지연(≥1초)+지터, 지수 백오프 재시도
 - **최신순 조회 + 이미 본 매물 조기중단**으로 일일 요청량 최소화
-- 하루 2회 저빈도 실행
+- 하루 3회 저빈도 실행
 
 그럼에도 차단되면 로그에 `차단 추정`이 남고 **사이트는 직전 정상본을 유지**합니다.
 차단 시 대응:

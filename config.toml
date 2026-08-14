@@ -12,12 +12,12 @@ max_pages_per_region = 75         # 동별 최대 페이지(안전장치). 큰 �
 max_retries = 3                   # 실패 시 재시도 횟수
 timeout_sec = 20
 early_stop = true                 # true=신규 위주(최신순, 이미 본 매물 나오면 조기중단).
-                                  # 서울 전체를 하루 2회 돌아도 요청이 적어 차단 위험↓·빠름.
+                                  # 서울 전체를 하루 3회 돌아도 요청이 적어 차단 위험↓·빠름.
                                   # 목적이 '신규 단독 매물 체크'라 권장. false=전체 스캔(현재 시장 전부).
 
 [site]
 title = "네이버 부동산 매매 매물 (토지·건물)"
-subtitle = "강남·서초·송파 · 하루 2회 자동 수집"
+subtitle = "서울 전체 · 하루 3회 자동 수집"
 timezone = "Asia/Seoul"
 keep_days = 14                    # 목록 유지 기간(0=무제한).
                                   # early_stop=true(신규 위주): 올라온 지 N일 지난 매물은 목록에서 제외

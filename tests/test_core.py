@@ -522,8 +522,17 @@ class TestRecentBatches(unittest.TestCase):
 class TestBatchLabel(unittest.TestCase):
     def test_morning_afternoon(self):
         from app.generate import _batch_label
-        self.assertEqual(_batch_label("2026-07-13 09:00:03"), "7.13 오전")
-        self.assertEqual(_batch_label("2026-07-12 16:00:00"), "7.12 오후")
+        self.assertEqual(_batch_label("2026-07-13 09:00:03"), "7.13 오전 9시")
+        self.assertEqual(_batch_label("2026-07-12 16:00:00"), "7.12 오후 4시")
+
+    def test_same_day_afternoon_batches_differ(self):
+        """13시·16시 수집분이 같은 라벨로 뭉치면 그룹 헤더가 겹친다."""
+        from app.generate import _batch_label
+        self.assertEqual(_batch_label("2026-07-13 13:00:00"), "7.13 오후 1시")
+        self.assertNotEqual(_batch_label("2026-07-13 13:00:00"),
+                            _batch_label("2026-07-13 16:00:00"))
+        self.assertEqual(_batch_label("2026-07-13 00:10:00"), "7.13 오전 12시")
+        self.assertEqual(_batch_label("2026-07-13 12:10:00"), "7.13 오후 12시")
 
     def test_empty_or_bad(self):
         from app.generate import _batch_label
@@ -539,7 +548,7 @@ class TestBatchLabel(unittest.TestCase):
                  "is_precise_solo": False, "is_price_cut": False,
                  "new_location_batch": "2026-07-13 09:00:03"}]
         out = _build_listings(rows)
-        self.assertEqual(out[0]["nlb"], "7.13 오전")
+        self.assertEqual(out[0]["nlb"], "7.13 오전 9시")
         self.assertEqual(out[0]["nlbt"], "2026-07-13 09:00:03")
 
     def test_build_listings_no_batch(self):
@@ -608,7 +617,7 @@ class TestPipelineRegenerate(unittest.TestCase):
         res = pipeline.regenerate(cfg, dry_run=True)
         self.assertTrue(res["ok"])
         data = json.loads((cfg.site_dir / "data.json").read_text(encoding="utf-8"))
-        self.assertEqual(data["listings"][0]["nlb"], "7.13 오전")
+        self.assertEqual(data["listings"][0]["nlb"], "7.13 오전 9시")
         self.assertEqual(data["listings"][0]["nl"], True)
 
 

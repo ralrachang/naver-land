@@ -183,7 +183,11 @@ footer{max-width:900px;margin:0 auto;padding:16px;color:var(--muted);font-size:.
 
 
 def _batch_label(ts: str | None) -> str:
-    """배치시각 '2026-07-13 09:00:03' → '7.13 오전'(hour<12=오전, else 오후). 불량이면 ''."""
+    """배치시각 '2026-07-13 09:00:03' → '7.13 오전 9시'. 불량이면 ''.
+
+    하루 3회(09/13/16시) 수집이라 오전·오후만으로는 13시·16시 수집분이 같은 라벨이
+    돼 그룹 헤더가 겹친다 → 시(時)까지 붙인다.
+    """
     if not ts:
         return ""
     try:
@@ -191,7 +195,8 @@ def _batch_label(ts: str | None) -> str:
     except (ValueError, TypeError):
         return ""
     ampm = "오전" if dt.hour < 12 else "오후"
-    return f"{dt.month}.{dt.day} {ampm}"
+    hour12 = dt.hour % 12 or 12
+    return f"{dt.month}.{dt.day} {ampm} {hour12}시"
 
 
 def _fmt_confirm(ymd: str) -> str:
@@ -212,7 +217,7 @@ def _build_listings(rows: list[dict]) -> list[dict]:
             "c": _fmt_confirm(r.get("confirm_ymd") or ""),
             "n": bool(r.get("is_new")),
             "nl": bool(r.get("is_new_location")),  # 이전엔 없던 위치에 새로 등장
-            "nlb": _batch_label(r.get("new_location_batch")),  # 수집분 라벨 "7.13 오전"
+            "nlb": _batch_label(r.get("new_location_batch")),  # 수집분 라벨 "7.13 오전 9시"
             "nlbt": r.get("new_location_batch") or "",         # 그룹 정렬키(원본 시각)
             "u": ARTICLE_URL.format(no=r.get("article_no")),
             "g": r.get("gu") or "기타",
