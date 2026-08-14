@@ -377,6 +377,17 @@ class Store:
         return self.conn.execute(
             "SELECT COUNT(*) FROM listings WHERE is_active=1").fetchone()[0]
 
+    def last_collect_ts(self) -> str | None:
+        """마지막으로 크롤에 성공한 시각('YYYY-MM-DD HH:MM:SS'). 없으면 None.
+
+        사이트의 '마지막 수집' 표기용. 재생성(--regenerate)은 크롤을 안 하므로
+        현재 시각을 찍으면 안 된다(수집한 적 없는 시각이 표시됨).
+        토큰 실패·차단으로 끝난 run(ok=0)은 제외.
+        """
+        row = self.conn.execute(
+            "SELECT MAX(run_at) FROM runs WHERE ok=1").fetchone()
+        return row[0] if row and row[0] else None
+
     def latest_batch_ids(self) -> set[str]:
         """가장 최근에 처음 발견된 배치의 article_no 집합(재생성 시 NEW 표시용)."""
         row = self.conn.execute(

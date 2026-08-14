@@ -14,6 +14,16 @@ log = logging.getLogger("naver_land.pipeline")
 KST = timezone(timedelta(hours=9))
 
 
+def _kst_dt(ts: str | None) -> datetime | None:
+    """'YYYY-MM-DD HH:MM:SS' → KST datetime. 값이 없거나 형식이 깨졌으면 None."""
+    if not ts:
+        return None
+    try:
+        return datetime.strptime(ts, "%Y-%m-%d %H:%M:%S").replace(tzinfo=KST)
+    except (ValueError, TypeError):
+        return None
+
+
 def run_pipeline(cfg, rebuild_regions: bool = False, dry_run: bool | None = None) -> dict:
     now = datetime.now(KST)
     run_ts = now.strftime("%Y-%m-%d %H:%M:%S")
@@ -147,15 +157,22 @@ def rebaseline(cfg, dry_run: bool | None = None) -> dict:
 
 
 def regenerate(cfg, dry_run: bool | None = None) -> dict:
-    """크롤 없이 기존 DB로 사이트만 재생성 + 배포(템플릿 변경 즉시 반영용)."""
-    now = datetime.now(KST)
+    """크롤 없이 기존 DB로 사이트만 재생성 + 배포(템플릿 변경 즉시 반영용).
+
+    '마지막 수집' 표기는 재생성 시각이 아니라 DB에 남은 마지막 실제 수집 시각을 쓴다
+    (재생성은 크롤을 하지 않으므로 현재 시각을 찍으면 없던 수집을 표시하게 된다).
+    """
     st = store.Store(cfg.db_path)
     try:
+        run_dt = _kst_dt(st.last_collect_ts())
+        if run_dt is None:  # 수집 이력이 없는 첫 재생성
+            run_dt = datetime.now(KST)
+            log.warning("수집 이력 없음 — '마지막 수집'을 현재 시각으로 표기")
         new_ids = st.latest_batch_ids()
         new_loc_keys = st.recent_location_batches(cfg.site.new_location_window_days)
         rows = st.active_listings(new_ids=new_ids, new_loc_keys=new_loc_keys,
                                   solo_window_days=cfg.site.solo_window_days)
-        generated = generate.generate(cfg, rows, len(new_ids), run_dt=now)
+        generated = generate.generate(cfg, rows, len(new_ids), run_dt=run_dt)
         if generated:
             deploy.deploy(cfg, dry_run=dry_run)
         total = st.count_active()

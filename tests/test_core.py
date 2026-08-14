@@ -620,6 +620,49 @@ class TestPipelineRegenerate(unittest.TestCase):
         self.assertEqual(data["listings"][0]["nlb"], "7.13 오전 9시")
         self.assertEqual(data["listings"][0]["nl"], True)
 
+    def test_regenerate_shows_last_collect_time_not_now(self):
+        """재생성은 크롤을 안 하므로 '마지막 수집'은 마지막 실제 수집 시각이어야 한다."""
+        from app import pipeline
+        cfg = self._cfg()
+        st = Store(cfg.db_path)
+        it = {"article_no": "A", "address": "서울 강남", "sido": "서울특별시",
+              "gu": "강남구", "dong": "개포동", "price_text": "10억",
+              "price_manwon": 100000, "re_type": "건물", "article_name": "빌딩",
+              "confirm_ymd": "20260708", "same_addr_cnt": None, "feature_desc": "",
+              "area": 100, "floor": "", "lat": "37.1", "lng": "127.1"}
+        st.upsert([it], "2026-07-13 09:00:00")
+        st.record_run("2026-07-13 09:00:00", 1, 0, 1, True, "generated")
+        st.record_run("2026-07-13 13:00:00", 0, 0, 1, False, "blocked: 429")  # 실패는 무시
+        st.close()
+        self.assertTrue(pipeline.regenerate(cfg, dry_run=True)["ok"])
+        html_txt = (cfg.site_dir / "index.html").read_text(encoding="utf-8")
+        self.assertIn("2026-07-13 09:00", html_txt)
+
+    def test_regenerate_without_history_falls_back_to_now(self):
+        """수집 이력이 없으면(첫 재생성) 현재 시각으로라도 생성은 되어야 한다."""
+        from app import pipeline
+        cfg = self._cfg()
+        st = Store(cfg.db_path)
+        it = {"article_no": "A", "address": "서울 강남", "sido": "서울특별시",
+              "gu": "강남구", "dong": "개포동", "price_text": "10억",
+              "price_manwon": 100000, "re_type": "건물", "article_name": "빌딩",
+              "confirm_ymd": "20260708", "same_addr_cnt": None, "feature_desc": "",
+              "area": 100, "floor": "", "lat": "37.1", "lng": "127.1"}
+        st.upsert([it], "2026-07-13 09:00:00")
+        st.close()
+        self.assertTrue(pipeline.regenerate(cfg, dry_run=True)["ok"])
+
+    def test_last_collect_ts(self):
+        cfg = self._cfg()
+        st = Store(cfg.db_path)
+        self.assertIsNone(st.last_collect_ts())
+        st.record_run("2026-07-13 09:00:00", 1, 0, 1, True, "generated")
+        st.record_run("2026-07-13 16:00:00", 0, 0, 1, False, "token_fail")
+        self.assertEqual(st.last_collect_ts(), "2026-07-13 09:00:00")
+        st.record_run("2026-07-14 09:00:00", 0, 0, 1, True, "skip_empty")
+        self.assertEqual(st.last_collect_ts(), "2026-07-14 09:00:00")
+        st.close()
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
