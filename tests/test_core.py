@@ -256,6 +256,117 @@ class TestPreciseSolo(unittest.TestCase):
         st.close()
 
 
+class TestCoordJitter(unittest.TestCase):
+    """네이버가 같은 건물 좌표를 소수점 6자리에서 ±1~2(≈0.1~0.2m) 흔들어 보내는 현상.
+
+    2026-08-20 실측: 하루 154건 발생(그 전에는 하루 0~3건). 좌표를 문자열 완전일치로
+    묶던 로직은 이걸 '광고가 1개뿐인 처음 보는 좌표'로 오인해 그날 새 위치 206개 중
+    154개, 💎정밀단독 1,537건 중 150건을 가짜로 만들었다(같은 건물에 광고 이력이
+    18~28개인데도 정밀단독). → 같은 건물 판정은 ~1m 이내 좌표를 하나로 묶는다.
+    """
+    BASE = ("37.547761", "127.042881")   # 성수동1가 실제 사례
+    JIT = ("37.547761", "127.042882")    # 경도 끝자리 +1 (≈0.1m) = 같은 건물
+    FAR = ("37.548761", "127.042881")    # ≈111m 떨어진 다른 건물
+
+    def setUp(self):
+        self.tmp = tempfile.mkdtemp()
+        self.db = Path(self.tmp) / "t.db"
+
+    def _item(self, ano, coord):
+        return {"article_no": ano, "address": "서울특별시 성동구 성수동1가",
+                "sido": "서울특별시", "gu": "성동구", "dong": "성수동1가",
+                "price_text": "140억", "price_manwon": 1400000, "re_type": "건물",
+                "article_name": "빌딩", "confirm_ymd": "20260820", "same_addr_cnt": None,
+                "price_change_state": "", "feature_desc": "", "area": 228,
+                "floor": "", "lat": coord[0], "lng": coord[1]}
+
+    def _normal_batch(self, st, ano, coord, ts):
+        it = self._item(ano, coord)
+        st.upsert([it], ts)
+        new_keys = st.register_locations([it], ts)
+        st.record_run(ts, 1, 0, st.count_active(), True, "generated")
+        return new_keys
+
+    def test_jitter_counts_as_same_building(self):
+        st = Store(self.db)
+        st.upsert([self._item("A", self.BASE), self._item("B", self.JIT)],
+                  "2026-08-20 13:00:00")
+        rows = {r["article_no"]: r for r in st.active_listings()}
+        self.assertEqual(rows["A"]["loc_count"], 2)
+        self.assertEqual(rows["B"]["loc_count"], 2)
+        self.assertFalse(rows["A"]["is_precise_solo"])
+        self.assertFalse(rows["B"]["is_precise_solo"])
+        st.close()
+
+    def test_far_coord_stays_separate_building(self):
+        st = Store(self.db)
+        st.upsert([self._item("A", self.BASE), self._item("F", self.FAR)],
+                  "2026-08-20 13:00:00")
+        rows = {r["article_no"]: r for r in st.active_listings()}
+        self.assertEqual(rows["A"]["loc_count"], 1)
+        self.assertTrue(rows["A"]["is_precise_solo"])
+        self.assertTrue(rows["F"]["is_precise_solo"])
+        st.close()
+
+    def test_jitter_history_blocks_fake_precise_solo(self):
+        # 목록에서 빠진 옛 광고(같은 건물, 정확좌표)가 있으면 지터 좌표 신규도 단독 아님
+        st = Store(self.db)
+        st.upsert([self._item("OLD", self.BASE)], "2026-08-01 09:00:00")
+        st.upsert([self._item("NEW2", self.JIT)], "2026-08-20 13:00:00")
+        st.deactivate_by_age(14, "2026-08-20 13:00:00")
+        rows = {r["article_no"]: r for r in st.active_listings(solo_window_days=30)}
+        self.assertNotIn("OLD", rows)
+        self.assertFalse(rows["NEW2"]["is_precise_solo"])
+        st.close()
+
+    def test_jitter_is_not_a_new_address(self):
+        # 오래전부터 알던 건물의 좌표가 오늘 끝자리만 흔들려 들어와도 새 주소 아님
+        st = Store(self.db)
+        self._normal_batch(st, "A", self.BASE, "2026-08-01 09:00:00")
+        new_keys = self._normal_batch(st, "B", self.JIT, "2026-08-20 13:00:00")
+        self.assertEqual(new_keys, set())            # 이미 아는 건물 → 새 주소 아님
+        batches = st.recent_location_batches(2)
+        self.assertEqual(batches, {})                # 표시 창(2일)에 아무것도 안 뜸
+        rows = {r["article_no"]: r for r in st.active_listings(new_loc_keys=batches)}
+        self.assertFalse(rows["B"]["is_new_location"])
+        st.close()
+
+    def test_jitter_inherits_the_buildings_own_batch(self):
+        # 창 안에서 새 주소가 된 건물이면, 그 건물의 지터 좌표 광고도 '그 건물이
+        # 처음 뜬 수집분'으로 묶인다(오늘 수집분의 새 주소로 중복 등장하지 않음)
+        st = Store(self.db)
+        self._normal_batch(st, "A", self.BASE, "2026-08-19 09:00:00")
+        self._normal_batch(st, "B", self.JIT, "2026-08-20 13:00:00")
+        batches = st.recent_location_batches(2)
+        self.assertEqual(batches["37.547761,127.042882"], "2026-08-19 09:00:00")
+        st.close()
+
+    def test_genuinely_new_building_is_still_a_new_address(self):
+        st = Store(self.db)
+        self._normal_batch(st, "A", self.BASE, "2026-08-19 09:00:00")
+        new_keys = self._normal_batch(st, "F", self.FAR, "2026-08-20 13:00:00")
+        self.assertEqual(new_keys, {"37.548761,127.042881"})
+        batches = st.recent_location_batches(2)
+        self.assertEqual(batches.get("37.548761,127.042881"), "2026-08-20 13:00:00")
+        rows = {r["article_no"]: r for r in st.active_listings(new_loc_keys=batches)}
+        self.assertTrue(rows["F"]["is_new_location"])
+        st.close()
+
+    def test_jitter_pair_of_a_new_building_groups_together(self):
+        # 처음 보는 건물에 지터 좌표 광고 2개가 같이 들어오면 둘 다 새 주소 + 단독 아님
+        st = Store(self.db)
+        st.record_run("2026-08-20 13:00:00", 0, 0, 0, True, "generated")
+        items = [self._item("A", self.BASE), self._item("B", self.JIT)]
+        st.upsert(items, "2026-08-20 13:00:00")
+        st.register_locations(items, "2026-08-20 13:00:00")
+        batches = st.recent_location_batches(2)
+        rows = {r["article_no"]: r for r in st.active_listings(new_loc_keys=batches)}
+        self.assertTrue(rows["A"]["is_new_location"])
+        self.assertTrue(rows["B"]["is_new_location"])
+        self.assertFalse(rows["A"]["is_precise_solo"])
+        st.close()
+
+
 class TestRebaseline(unittest.TestCase):
     """전체 재스캔(rebaseline): 위치 기억 완성 + 신규 피드 비오염."""
     def setUp(self):

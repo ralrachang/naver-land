@@ -15,6 +15,63 @@ def _confirm_to_ts(ymd: str | None) -> str | None:
         return f"{ymd[:4]}-{ymd[4:6]}-{ymd[6:]} 00:00:00"
     return None
 
+# 같은 건물로 볼 좌표 오차(도). 네이버는 같은 건물 광고라도 좌표를 소수점 6자리에서
+# ±1~2(≈0.1~0.2m) 흔들어 보낼 때가 있다(2026-08-20 하루 154건 발생, 그 전엔 0~3건).
+# 문자열 완전일치로 묶으면 같은 건물이 '광고 1개짜리 처음 보는 좌표'로 쪼개져
+# 💎정밀단독·🆕새주소가 가짜로 양산된다. 실측상 지터는 0.2m, 다른 건물의 대표 좌표는
+# 3m 밖이라 임계를 0.3~3.3m 어디로 잡아도 병합 결과가 같다 → 중간값 1.1m 사용.
+COORD_EPS = 1.0e-5
+
+
+def building_keys(coords) -> dict:
+    """(lat,lng) 문자열 쌍들 → {(lat,lng): 건물키}. COORD_EPS 이내는 한 건물.
+
+    격자 버킷 + union-find. 대표 좌표는 정렬 최소값이라 같은 입력이면 항상 같은 키가
+    나온다. 숫자로 못 읽는 좌표(마스킹/빈값)는 자기 자신이 키.
+    """
+    keys: dict = {}
+    pts = []
+    for raw in set(coords):
+        try:
+            pts.append((float(raw[0]), float(raw[1]), raw))
+        except (TypeError, ValueError):
+            keys[raw] = f"{raw[0]},{raw[1]}"
+    pts.sort(key=lambda p: p[2])
+    parent = list(range(len(pts)))
+
+    def find(x):
+        while parent[x] != x:
+            parent[x] = parent[parent[x]]
+            x = parent[x]
+        return x
+
+    bucket: dict = {}
+    for i, (la, ln, _) in enumerate(pts):
+        bucket.setdefault((int(la / COORD_EPS), int(ln / COORD_EPS)), []).append(i)
+    for (bx, by), idxs in bucket.items():
+        for dx in (-1, 0, 1):
+            for dy in (-1, 0, 1):
+                for j in bucket.get((bx + dx, by + dy), ()):
+                    for i in idxs:
+                        if i == j:
+                            continue
+                        if (abs(pts[i][0] - pts[j][0]) <= COORD_EPS
+                                and abs(pts[i][1] - pts[j][1]) <= COORD_EPS):
+                            ri, rj = find(i), find(j)
+                            if ri != rj:
+                                parent[max(ri, rj)] = min(ri, rj)
+    for i, (_, _, raw) in enumerate(pts):
+        rep = pts[find(i)][2]
+        keys[raw] = f"{rep[0]},{rep[1]}"
+    return keys
+
+
+def _split_loc(loc_key: str) -> tuple:
+    """'lat,lng' → ('lat','lng')."""
+    lat, _, lng = loc_key.partition(",")
+    return lat, lng
+
+
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS listings (
     article_no   TEXT PRIMARY KEY,
@@ -217,21 +274,32 @@ class Store:
         return added
 
     def register_locations(self, items: list[dict], run_ts: str) -> set:
-        """관측된 매물의 위치를 seen_locations 에 등록. 처음 보는 위치만 run_ts 로 기록.
-        반환: 이번에 처음 등장한 위치(loc_key) 집합 = '새 주소'."""
-        new_keys = set()
-        for it in items:
-            lat, lng = it.get("lat"), it.get("lng")
-            if not (lat and lng):
-                continue
+        """관측된 매물의 위치를 seen_locations 에 등록. 처음 보는 좌표만 run_ts 로 기록.
+
+        반환: 이번에 처음 등장한 '건물'의 loc_key 집합 = '새 주소'. 이미 아는 건물의
+        좌표가 끝자리만 흔들려 들어온 경우(지터)는 이력에는 남기되 새 주소로 치지
+        않는다 — 안 그러면 오래된 건물이 매번 새 주소로 뜬다.
+        """
+        known = [_split_loc(r[0]) for r in
+                 self.conn.execute("SELECT loc_key FROM seen_locations")]
+        incoming = [(it["lat"], it["lng"]) for it in items
+                    if it.get("lat") and it.get("lng")]
+        bkey = building_keys(known + incoming)
+        known_buildings = {bkey[c] for c in known}
+        inserted = []
+        for lat, lng in incoming:
             key = f"{lat},{lng}"
             cur = self.conn.execute(
                 "INSERT OR IGNORE INTO seen_locations(loc_key, first_seen_at) VALUES (?,?)",
                 (key, run_ts))
             if cur.rowcount:
-                new_keys.add(key)
+                inserted.append((key, bkey[(lat, lng)]))
         self.conn.commit()
-        log.info("새 주소(이전에 없던 위치): %d개", len(new_keys))
+        new_buildings = {b for _, b in inserted if b not in known_buildings}
+        new_keys = {k for k, b in inserted if b in new_buildings}
+        jitter = len(inserted) - len(new_keys)
+        log.info("새 주소(이전에 없던 위치): %d곳%s", len(new_buildings),
+                 f" / 이미 아는 건물의 좌표 지터 {jitter}개 흡수" if jitter else "")
         return new_keys
 
     def latest_location_batch(self) -> set:
@@ -248,8 +316,10 @@ class Store:
                                 current_ts: str | None = None) -> dict:
         """실제 정상 수집 배치 기준 최근 N일의 새 위치 → 배치시각 맵 {loc_key: batch_ts}.
 
-        가짜 새주소(rebaseline 백필) 배제: first_seen_at 이 정상 수집 run_at
-        (runs.note IN ('generated','skip_empty'))과 정확히 일치하는 위치만 포함.
+        판정 단위는 좌표가 아니라 건물(끝자리 지터 병합) — 이미 아는 건물의 좌표가
+        흔들려 들어온 것은 그 건물의 최초 목격 시각이 옛날이라 자동으로 빠진다.
+        가짜 새주소(rebaseline 백필) 배제: 건물의 최초 목격 시각이 정상 수집 run_at
+        (runs.note IN ('generated','skip_empty'))과 정확히 일치하는 건물만 포함.
         current_ts: 진행 중인 이번 수집의 run_ts(아직 runs 에 없음)를 정상 배치로 인정.
         anchor(최근 정상 배치)에서 days 만큼 역산한 창 안의 위치만 반환.
         """
@@ -261,14 +331,23 @@ class Store:
             return {}
         anchor = max(batch_ts)
         batch_set = set(batch_ts)
+        cutoff = (datetime.strptime(anchor, "%Y-%m-%d %H:%M:%S")
+                  - timedelta(days=days)).strftime("%Y-%m-%d %H:%M:%S")
+        locs = [(r["loc_key"], r["first_seen_at"]) for r in
+                self.conn.execute("SELECT loc_key, first_seen_at FROM seen_locations")]
+        bkey = building_keys([_split_loc(k) for k, _ in locs])
+        first: dict = {}       # 건물 → 최초 목격 시각
+        members: dict = {}     # 건물 → 소속 loc_key 들(지터 좌표 포함)
+        for loc_key, ts in locs:
+            b = bkey[_split_loc(loc_key)]
+            members.setdefault(b, []).append(loc_key)
+            if b not in first or ts < first[b]:
+                first[b] = ts
         out: dict = {}
-        for r in self.conn.execute(
-            "SELECT loc_key, first_seen_at FROM seen_locations "
-            "WHERE julianday(?) - julianday(first_seen_at) <= ?",
-            (anchor, days),
-        ):
-            if r["first_seen_at"] in batch_set:
-                out[r["loc_key"]] = r["first_seen_at"]
+        for b, ts in first.items():
+            if ts in batch_set and ts >= cutoff:
+                for k in members[b]:
+                    out[k] = ts
         return out
 
     def deactivate_stale(self, keep_days: int, now_ts: str):
@@ -316,8 +395,9 @@ class Store:
                         solo_window_days: int = 30) -> list[dict]:
         """표시용 목록. 신규 우선, 그다음 최초 발견 최신순.
 
-        - loc_count: 같은 위경도(=같은 건물/토지)의 '활성' 광고 수(단순 판정, 🎯단독).
-          네이버 sameAddrCnt는 토지/건물에서 부정확하므로 위경도로 직접 센다.
+        - loc_count: 같은 건물(=위경도, 끝자리 지터 COORD_EPS 이내는 한 건물)의 '활성'
+          광고 수(단순 판정, 🎯단독). 네이버 sameAddrCnt는 토지/건물에서 부정확하므로
+          위경도로 직접 센다.
         - is_precise_solo(💎정밀단독): 최근 solo_window_days일 내 목격된 광고 '이력
           전체'(목록에서 빠진 비활성 포함)에서 같은 좌표 광고가 자기 자신뿐일 때만 True.
           롤링으로 옛 광고가 빠져 생기는 가짜 단독을 막는다. 면적으로 물건을 나누지
@@ -330,13 +410,18 @@ class Store:
         new_ids = new_ids or set()
         new_loc_keys = new_loc_keys or set()
         loc_batch = new_loc_keys if isinstance(new_loc_keys, dict) else {}
+        # 좌표 → 건물 키(끝자리 지터 병합). 광고 수는 좌표가 아니라 건물 단위로 센다.
+        bkey = building_keys([(r["lat"], r["lng"]) for r in self.conn.execute(
+            "SELECT DISTINCT lat, lng FROM listings "
+            "WHERE lat IS NOT NULL AND lat!=''")])
         loc_count: dict = {}
         for r in self.conn.execute(
             "SELECT lat, lng, COUNT(*) c FROM listings "
             "WHERE is_active=1 AND lat IS NOT NULL AND lat!='' GROUP BY lat, lng"
         ):
-            loc_count[(r["lat"], r["lng"])] = r["c"]
-        # 정밀단독용 좌표별 이력 카운트 — 기준 시각은 DB의 최근 목격 시각(재생성 시에도 동일 판정).
+            k = bkey[(r["lat"], r["lng"])]
+            loc_count[k] = loc_count.get(k, 0) + r["c"]
+        # 정밀단독용 건물별 이력 카운트 — 기준 시각은 DB의 최근 목격 시각(재생성 시에도 동일 판정).
         window_count: dict = {}
         ref = self.conn.execute("SELECT MAX(last_seen_at) FROM listings").fetchone()[0]
         cutoff = ""
@@ -350,20 +435,22 @@ class Store:
                 "AND julianday(?) - julianday(last_seen_at) <= ? GROUP BY lat, lng",
                 (ref, solo_window_days),
             ):
-                window_count[(r["lat"], r["lng"])] = r["c"]
+                k = bkey[(r["lat"], r["lng"])]
+                window_count[k] = window_count.get(k, 0) + r["c"]
         cur = self.conn.execute(
             "SELECT * FROM listings WHERE is_active=1 ORDER BY first_seen_at DESC, price_manwon DESC"
         )
         rows = [dict(r) for r in cur.fetchall()]
         for r in rows:
             r["is_new"] = r["article_no"] in new_ids
-            r["loc_count"] = loc_count.get((r["lat"], r["lng"]), 1)
+            bk = bkey.get((r["lat"], r["lng"]))
+            r["loc_count"] = loc_count.get(bk, 1)
             r["is_new_location"] = f"{r['lat']},{r['lng']}" in new_loc_keys
             r["new_location_batch"] = loc_batch.get(f"{r['lat']},{r['lng']}")
             # 자신도 윈도우 안이어야 함(밖이면 카운트에 자신이 빠져 오판 가능)
             r["is_precise_solo"] = bool(
                 r["lat"] and r["lng"] and r["last_seen_at"] >= cutoff
-                and window_count.get((r["lat"], r["lng"]), 0) == 1)
+                and window_count.get(bk, 0) == 1)
             own_cut = (r.get("prev_price_manwon") is not None
                        and r.get("price_manwon") is not None
                        and r["price_manwon"] < r["prev_price_manwon"])
