@@ -32,6 +32,17 @@ solo_window_days = 30             # 💎 정밀단독: 최근 N일 내 목격된
 new_location_window_days = 2      # 🆕 새 주소를 최근 N일 수집분까지 수집분별 헤더로 그룹 표시.
                                   # 정상 수집(run) 배치만 인정 → --rebaseline 백필은 새주소로 안 뜸.
 
+[watch]
+# 🔔 새 주소 실시간 감시기(watch.py). 이 PC의 Claude Code `/watch`(= /loop 10m /watch-tick)가
+# 10분마다 SSH로 `--scan`을 부르고, 새 주소 알림을 카톡 나와의 채팅(PlayMCP)으로 보낸다.
+# 구(區) 단위 최신순 조회라 서울 한 바퀴가 25요청(약 40초). 요청 간격은 [crawl] 값 재사용.
+max_pages = 5                     # 구당 최대 페이지(이미 본 매물이 있는 페이지에서 중단)
+gap_reset_min = 60                # 직전 스캔이 이보다 오래됐으면 워밍업(기록만, 알림 없음).
+                                  # 아침 첫 틱은 조용하고 두 번째 틱부터 알림 — 밤새 매물은 09시 홈페이지가 보여줌.
+alert_ttl_min = 180               # 이 시간 넘게 못 보낸 알림은 폐기(루프가 꺼져 있던 동안 쌓인 것 방지)
+max_alerts_per_tick = 15          # 한 번에 내보낼 알림 상한(홍수 방지, 나머지는 다음 틱)
+block_pause_min = 30              # 403/429 차단 감지 시 휴식(안내 카톡 하루 1회)
+
 [deploy]
 enabled = false                   # true면 git push 수행. VPS에서 GH_TOKEN 설정 후 켜기
 repo = ""                         # 예: "username/naver-land-site"

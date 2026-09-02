@@ -125,6 +125,48 @@ docker run --rm -e GH_TOKEN=$GH_TOKEN -v $PWD/data:/opt/naver-land/data naver-la
 
 ---
 
+## 🔔 새 주소 실시간 카톡 알림 (업무 시간, 10분 간격)
+
+하루 3회 수집과 별개로, **새 주소 매물이 뜨면 10분 안에 카카오톡 나와의 채팅으로 링크**를 받는다.
+설계: `docs/superpowers/specs/2026-09-02-kakao-realtime-alert-design.md`.
+
+```
+[이 PC · Claude Code]  /watch  (= /loop 10m /watch-tick)
+   │ ssh sise-vps "python3 watch.py --scan"   ──►  [VPS] app/watch.py  (구 단위 최신순 25요청 ≈ 40초)
+   │ ◄── JSON {alerts:[{id, message}], ...}         ├ data/watch.db      감시기 자체 DB
+   │ 카톡 나에게 보내기(PlayMCP MemoChat) × N        └ data/listings.db   읽기 전용(seen_locations)
+   └ ssh sise-vps "python3 watch.py --ack 1,2"
+```
+
+**쓰는 법(매일 아침)**
+1. 이 프로젝트 폴더에서 Claude Code 를 열고 `/watch` 입력. (PlayMCP 커넥터가 연결된 계정이어야 한다.)
+2. 첫 틱은 **워밍업**(기록만, 알림 없음). 두 번째 틱(10분 뒤)부터 새 주소가 뜨면 카톡이 온다.
+3. 08:00~17:00 밖의 틱은 자동으로 건너뛴다. 끝낼 땐 세션을 닫으면 된다(VPS 쪽은 루프가 부를 때만 돈다).
+
+**판정** — "새 주소" = 좌표(1.1m 지터 병합)가 홈페이지 DB의 `seen_locations` 에도, 감시기의
+`watch_locations` 에도 없는 건물. 같은 스캔에서 같은 새 건물의 두 번째 매물은 알리지 않는다.
+직전 스캔이 `gap_reset_min`(60분) 넘게 지났으면 다시 워밍업(밤새·주말 누적 홍수 방지).
+
+**메시지(≤200자, 감시기가 완성본을 만들고 Claude 는 그대로 전달)**
+```
+🆕 새주소 · 강남구 청담동
+상가건물 230억 · 대지255/연868㎡ · 5/B1
+압구정로데오역 도보 1분 삼거리 노출 건물
+https://m.land.naver.com/article/info/2647384345
+```
+
+**직접 확인**
+```bash
+python3 watch.py --status                 # 마지막 스캔·대기열·오늘 발송 수
+python3 watch.py --scan --verbose         # 한 바퀴(로그를 stderr 에도)
+python3 watch.py --ack 12,13              # 발송 완료 처리
+```
+차단(403/429)이 감지되면 `block_pause_min`(30분) 쉬고 안내 카톡을 하루 1회 보낸다.
+`alert_ttl_min`(180분) 넘게 못 보낸 알림은 폐기, 한 틱에 최대 `max_alerts_per_tick`(15)건.
+설정은 `config.toml [watch]`, 명령 절차는 `.claude/commands/watch-tick.md`.
+
+---
+
 ## ⚠️ 데이터센터 IP 차단 대응 (중요)
 
 Hostinger VPS는 **데이터센터 IP**라, 네이버가 봇으로 판단해 차단(401/403/429)할
@@ -152,9 +194,11 @@ Hostinger VPS는 **데이터센터 IP**라, 네이버가 봇으로 판단해 차
 
 ```
 config.toml         설정
-run.py              엔트리포인트
-app/                config·client·regions·crawler·store·generate·deploy·pipeline
-data/               regions.json(지역캐시), listings.db(SQLite)
+run.py              엔트리포인트(하루 3회 수집·사이트 생성)
+watch.py            🔔 새 주소 실시간 감시기 CLI(--scan/--ack/--status)
+app/                config·client·regions·crawler·store·generate·deploy·pipeline·watch
+.claude/commands/   /watch(10분 루프 시작), /watch-tick(스캔→카톡 발송→ack 절차)
+data/               regions.json(지역캐시), listings.db(SQLite), watch.db(감시기)
 site/               생성물(index.html, data.json) → GitHub Pages로 배포
 logs/               실행 로그
 deploy/             crontab 예시, Dockerfile

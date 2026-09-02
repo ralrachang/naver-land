@@ -137,3 +137,9 @@ class Client:
         result = self.get_json("/api/articles", params)
         self._sleep()  # 정중한 크롤링
         return result
+
+    def article_detail(self, article_no: str) -> dict:
+        """매물 상세. 구 단위 목록엔 동 이름이 없어 `articleDetail.sectionName` 등으로 보충."""
+        result = self.get_json(f"/api/articles/{article_no}")
+        self._sleep()
+        return result

@@ -44,12 +44,23 @@ class DeployCfg:
 
 
 @dataclass
+class WatchCfg:
+    """🔔 새 주소 실시간 감시기(watch.py) 설정. 요청 간격은 [crawl] 값을 재사용."""
+    max_pages: int = 5            # 구당 최대 페이지(이미 본 매물이 있는 페이지에서 중단)
+    gap_reset_min: int = 60       # 직전 스캔이 이보다 오래됐으면 워밍업(기록만, 알림 없음)
+    alert_ttl_min: int = 180      # 이 시간 넘게 못 보낸 알림은 폐기
+    max_alerts_per_tick: int = 15  # 한 번에 내보낼 알림 상한(홍수 방지)
+    block_pause_min: int = 30     # 403/429 차단 감지 시 휴식
+
+
+@dataclass
 class Config:
     crawl: CrawlCfg
     site: SiteCfg
     deploy: DeployCfg
     regions: list[dict]
     root: Path = ROOT
+    watch: WatchCfg = field(default_factory=WatchCfg)
 
     @property
     def data_dir(self) -> Path:
@@ -71,6 +82,11 @@ class Config:
     def regions_cache(self) -> Path:
         return self.data_dir / "regions.json"
 
+    @property
+    def watch_db_path(self) -> Path:
+        """감시기 자체 DB — 홈페이지 DB(listings.db)와 분리."""
+        return self.data_dir / "watch.db"
+
 
 def load(path: str | os.PathLike | None = None) -> Config:
     p = Path(path) if path else DEFAULT_CONFIG
@@ -83,6 +99,8 @@ def load(path: str | os.PathLike | None = None) -> Config:
                       if k in SiteCfg.__dataclass_fields__})
     deploy = DeployCfg(**{k: v for k, v in raw.get("deploy", {}).items()
                           if k in DeployCfg.__dataclass_fields__})
+    watch = WatchCfg(**{k: v for k, v in raw.get("watch", {}).items()
+                        if k in WatchCfg.__dataclass_fields__})
 
     # 환경변수 오버라이드(민감정보/운영 토글)
     if os.environ.get("DEPLOY_ENABLED"):
@@ -91,7 +109,7 @@ def load(path: str | os.PathLike | None = None) -> Config:
         deploy.repo = os.environ["DEPLOY_REPO"]
 
     regions = raw.get("regions", [])
-    cfg = Config(crawl=crawl, site=site, deploy=deploy, regions=regions)
+    cfg = Config(crawl=crawl, site=site, deploy=deploy, regions=regions, watch=watch)
     for d in (cfg.data_dir, cfg.site_dir, cfg.logs_dir):
         d.mkdir(parents=True, exist_ok=True)
     return cfg
