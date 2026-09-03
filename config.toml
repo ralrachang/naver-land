@@ -42,6 +42,7 @@ gap_reset_min = 60                # 직전 스캔이 이보다 오래됐으면 �
 alert_ttl_min = 180               # 이 시간 넘게 못 보낸 알림은 폐기(루프가 꺼져 있던 동안 쌓인 것 방지)
 max_alerts_per_tick = 15          # 한 번에 내보낼 알림 상한(홍수 방지, 나머지는 다음 틱)
 block_pause_min = 30              # 403/429 차단 감지 시 휴식(안내 카톡 하루 1회)
+discount_pct = 15                 # 💰 이미 아는 매물의 가격이 직전 대비 이 %만큼 떨어지면 카톡 알림
 
 [deploy]
 enabled = false                   # true면 git push 수행. VPS에서 GH_TOKEN 설정 후 켜기

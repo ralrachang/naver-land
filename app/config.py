@@ -51,6 +51,7 @@ class WatchCfg:
     alert_ttl_min: int = 180      # 이 시간 넘게 못 보낸 알림은 폐기
     max_alerts_per_tick: int = 15  # 한 번에 내보낼 알림 상한(홍수 방지)
     block_pause_min: int = 30     # 403/429 차단 감지 시 휴식
+    discount_pct: int = 15        # 💰 이미 아는 매물의 가격이 직전 대비 이 %만큼 떨어지면 알림
 
 
 @dataclass

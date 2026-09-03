@@ -1,4 +1,5 @@
-"""🔔 새 주소 실시간 감시기 — 구(區) 단위 최신순 조회로 새 매물을 찾아 '새 주소'면 카톡 알림 대기열에 넣는다.
+"""🔔 새 주소 실시간 감시기 — 구(區) 단위 최신순 조회로 새 매물을 찾아 '새 주소'면, 이미 아는
+매물의 가격이 큰 폭(기본 15%)으로 떨어지면 '가격인하'로 카톡 알림 대기열에 넣는다.
 
 홈페이지 파이프라인과 완전히 분리된다:
 - 자체 DB `data/watch.db`(watch_seen / watch_locations / watch_alerts / watch_state)만 쓴다.
@@ -6,6 +7,9 @@
 
 실측(2026-09-02): `/api/articles`는 구 코드로도 최신순 조회가 돼 서울 한 바퀴가 25요청(약 40초).
 구 단위 응답엔 동 이름이 없어 알림 건에 한해 상세 API로 보충한다.
+
+가격인하는 매물 하나의 직전 관측가 대비 이번 관측가만 비교한다(누적 아님 — 홈페이지 store.py의
+prev_price_manwon 관행과 동일). 가격이 바뀔 때마다 watch_seen 의 기준가를 최신값으로 갱신한다.
 """
 from __future__ import annotations
 
@@ -18,6 +22,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from . import client as client_mod
+from .crawler import parse_price_manwon
 from .store import _split_loc, building_keys
 
 log = logging.getLogger("naver_land.watch")
@@ -31,7 +36,9 @@ LOCK_STALE_SEC = 300       # 5분 넘은 잠금 파일은 죽은 프로세스로
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS watch_seen (
     article_no    TEXT PRIMARY KEY,
-    first_seen_at TEXT NOT NULL
+    first_seen_at TEXT NOT NULL,
+    price_manwon  INTEGER,
+    price_text    TEXT
 );
 CREATE TABLE IF NOT EXISTS watch_locations (
     loc_key       TEXT PRIMARY KEY,
@@ -39,7 +46,7 @@ CREATE TABLE IF NOT EXISTS watch_locations (
 );
 CREATE TABLE IF NOT EXISTS watch_alerts (
     id         INTEGER PRIMARY KEY AUTOINCREMENT,
-    kind       TEXT NOT NULL,            -- new_address | notice
+    kind       TEXT NOT NULL,            -- new_address | discount | notice
     article_no TEXT,
     created_at TEXT NOT NULL,
     message    TEXT NOT NULL,
@@ -93,6 +100,7 @@ class WatchStore:
         self.conn.row_factory = sqlite3.Row
         self.conn.executescript(SCHEMA)
         self.conn.commit()
+        self._migrate()
         self.main: sqlite3.Connection | None = None
         if main_db_path and Path(main_db_path).exists():
             uri = Path(main_db_path).resolve().as_uri() + "?mode=ro"
@@ -108,14 +116,35 @@ class WatchStore:
         if self.main is not None:
             self.main.close()
 
+    def _migrate(self):
+        """기존 watch.db(가격 컬럼 도입 전)에 컬럼 추가(하위호환)."""
+        cols = {r[1] for r in self.conn.execute("PRAGMA table_info(watch_seen)")}
+        for col, typ in (("price_manwon", "INTEGER"), ("price_text", "TEXT")):
+            if col not in cols:
+                self.conn.execute(f"ALTER TABLE watch_seen ADD COLUMN {col} {typ}")
+        self.conn.commit()
+
     # -- 매물 --
     def seen_ids(self) -> set[str]:
         return {r[0] for r in self.conn.execute("SELECT article_no FROM watch_seen")}
 
-    def mark_seen(self, article_nos, ts: str):
+    def seen_prices(self) -> dict[str, tuple[int | None, str | None]]:
+        """article_no -> (직전 관측가 만원, 직전 관측가 텍스트). 가격인하 판정 기준가."""
+        return {r[0]: (r[1], r[2]) for r in
+                self.conn.execute("SELECT article_no, price_manwon, price_text FROM watch_seen")}
+
+    def mark_seen(self, items, ts: str):
+        """items: [(article_no, price_manwon, price_text), ...] — 처음 보는 매물만 기록."""
         self.conn.executemany(
-            "INSERT OR IGNORE INTO watch_seen(article_no, first_seen_at) VALUES (?,?)",
-            [(a, ts) for a in article_nos])
+            "INSERT OR IGNORE INTO watch_seen(article_no, first_seen_at, price_manwon, price_text) "
+            "VALUES (?,?,?,?)",
+            [(ano, ts, pm, pt) for ano, pm, pt in items])
+        self.conn.commit()
+
+    def update_prices(self, updates):
+        """updates: [(price_manwon, price_text, article_no), ...] — 이미 아는 매물의 기준가 갱신."""
+        self.conn.executemany(
+            "UPDATE watch_seen SET price_manwon=?, price_text=? WHERE article_no=?", updates)
         self.conn.commit()
 
     def prune_seen(self, days: int, now: datetime):
@@ -254,15 +283,23 @@ def _area_text(it: dict) -> str:
     return ""
 
 
-def format_message(it: dict, limit: int = MAX_MSG_CHARS) -> str:
+def format_message(it: dict, kind: str = "new_address", limit: int = MAX_MSG_CHARS) -> str:
     """카톡 메시지 완성본(≤limit자). Claude 는 이 문자열을 수정 없이 그대로 보낸다.
 
-    형식: 🆕 새주소 · 구 동 / 종류 가격 · 면적 · 층 / 특징(예산에 맞춰 잘라 …) / 네이버 링크
+    new_address: 🆕 새주소 · 구 동 / 종류 가격 · 면적 · 층 / 특징(예산에 맞춰 잘라 …) / 네이버 링크
+    discount:    💰 N%↓ · 구 동 / 종류 가격(이전 가격) · 면적 · 층 / 특징(…) / 네이버 링크
     """
     where = " ".join(x for x in (it.get("gu"), it.get("dong")) if x)
-    head = f"🆕 새주소 · {where}" if where else "🆕 새주소"
+    if kind == "discount":
+        pct = it.get("discount_pct", 0)
+        head = f"💰 {pct}%↓ · {where}" if where else f"💰 {pct}%↓"
+    else:
+        head = f"🆕 새주소 · {where}" if where else "🆕 새주소"
+    price = (it.get("price_text") or "").strip()
+    if kind == "discount" and it.get("prev_price_text"):
+        price = f"{price}(이전 {it['prev_price_text']})"
     kind_price = " ".join(x for x in ((it.get("sub_type") or it.get("re_type") or "").strip(),
-                                      (it.get("price_text") or "").strip()) if x)
+                                      price) if x)
     line2 = " · ".join(x for x in (kind_price, _area_text(it), (it.get("floor") or "").strip()) if x)
     url = ARTICLE_URL.format(no=it["article_no"])
     lines = [x for x in (head, line2) if x]
@@ -281,6 +318,7 @@ def format_message(it: dict, limit: int = MAX_MSG_CHARS) -> str:
 # 스캔
 # ---------------------------------------------------------------------------
 def _extract(a: dict, gu_code: str, gu_name: str) -> dict:
+    price_text = a.get("dealOrWarrantPrc", "") or ""
     return {
         "article_no": str(a.get("articleNo", "")),
         "gu_code": gu_code,
@@ -288,7 +326,8 @@ def _extract(a: dict, gu_code: str, gu_name: str) -> dict:
         "dong": "",
         "re_type": a.get("realEstateTypeName", "") or "",
         "sub_type": a.get("articleRealEstateTypeName", "") or "",
-        "price_text": a.get("dealOrWarrantPrc", "") or "",
+        "price_text": price_text,
+        "price_manwon": parse_price_manwon(price_text),
         "area1": a.get("area1"),
         "area2": a.get("area2"),
         "floor": a.get("floorInfo", "") or "",
@@ -324,7 +363,7 @@ def _now_kst(now: datetime | None) -> datetime:
 def _result(ws: WatchStore, w, now: datetime, **extra) -> dict:
     expired = ws.expire(w.alert_ttl_min, now)
     out = {"ok": True, "time": now.strftime(TS), "warmup": False, "scanned": 0,
-           "new_listings": 0, "new_addresses": 0, "queued": 0,
+           "new_listings": 0, "new_addresses": 0, "discounts": 0, "queued": 0,
            "alerts": ws.pending(w.max_alerts_per_tick),
            "pending_total": ws.pending_count(), "expired": expired}
     out.update(extra)
@@ -378,9 +417,12 @@ def _scan_locked(cfg, ws: WatchStore, now: datetime, client) -> dict:
                                    jitter=cfg.crawl.request_jitter_sec,
                                    retries=cfg.crawl.max_retries,
                                    timeout=cfg.crawl.timeout_sec)
-    seen = ws.seen_ids()
+    seen_prices = ws.seen_prices()
+    seen = set(seen_prices)
     new_items: list[dict] = []
     observed: set[str] = set()
+    price_updates: list[tuple] = []
+    discount_hits: list[dict] = []
     try:
         client.get_token()
         for code, name in gus:
@@ -397,6 +439,19 @@ def _scan_locked(cfg, ws: WatchStore, now: datetime, client) -> dict:
                         continue
                     if ano in seen:
                         hit_seen = True
+                        old_price, old_text = seen_prices[ano]
+                        new_price = parse_price_manwon(a.get("dealOrWarrantPrc", "") or "")
+                        if new_price is not None and new_price != old_price:
+                            new_text = a.get("dealOrWarrantPrc", "") or ""
+                            price_updates.append((new_price, new_text, ano))
+                            if old_price and new_price < old_price:
+                                pct = (old_price - new_price) / old_price * 100
+                                if pct >= w.discount_pct:
+                                    it = _extract(a, code, name)
+                                    it["prev_price_text"] = old_text
+                                    it["discount_pct"] = round(pct)
+                                    discount_hits.append(it)
+                            seen_prices[ano] = (new_price, new_text)  # 같은 틱 내 중복 처리 방지
                         continue
                     if ano in observed:
                         continue
@@ -417,7 +472,9 @@ def _scan_locked(cfg, ws: WatchStore, now: datetime, client) -> dict:
         # 이번에 본 것은 기록하지 않는다 → 재개 후 스캔이 알림을 만든다
         return _result(ws, w, now, error=f"blocked: {e}")
 
-    ws.mark_seen([it["article_no"] for it in new_items], now_ts)
+    ws.mark_seen([(it["article_no"], it["price_manwon"], it["price_text"]) for it in new_items], now_ts)
+    if price_updates:
+        ws.update_prices(price_updates)
 
     incoming = [(it["lat"], it["lng"]) for it in new_items if it["lat"] and it["lng"]]
     known = ws.known_coords()
@@ -436,19 +493,25 @@ def _scan_locked(cfg, ws: WatchStore, now: datetime, client) -> dict:
 
     queued = 0
     if warmup:
-        log.info("워밍업(직전 스캔 %s) — 기록만, 알림 없음: 새 매물 %d / 새 주소 %d",
-                 last or "없음", len(new_items), len(new_addr))
+        log.info("워밍업(직전 스캔 %s) — 기록만, 알림 없음: 새 매물 %d / 새 주소 %d / 가격인하 %d",
+                 last or "없음", len(new_items), len(new_addr), len(discount_hits))
     else:
         for it in new_addr:
             _fill_dong(client, it)
             ws.add_alert("new_address", it["article_no"], format_message(it), now_ts)
             queued += 1
+        for it in discount_hits:
+            _fill_dong(client, it)
+            ws.add_alert("discount", it["article_no"], format_message(it, kind="discount"), now_ts)
+            queued += 1
     ws.set_state("last_scan_at", now_ts)
     ws.prune_seen(SEEN_KEEP_DAYS, now)
-    log.info("스캔 완료: 구 %d개, 새 매물 %d, 새 주소 %d, 알림 추가 %d%s",
-             len(gus), len(new_items), len(new_addr), queued, " (워밍업)" if warmup else "")
+    log.info("스캔 완료: 구 %d개, 새 매물 %d, 새 주소 %d, 가격인하 %d, 알림 추가 %d%s",
+             len(gus), len(new_items), len(new_addr), len(discount_hits), queued,
+             " (워밍업)" if warmup else "")
     return _result(ws, w, now, warmup=warmup, scanned=len(gus),
-                   new_listings=len(new_items), new_addresses=len(new_addr), queued=queued)
+                   new_listings=len(new_items), new_addresses=len(new_addr),
+                   discounts=len(discount_hits), queued=queued)
 
 
 def ack(cfg, ids, now: datetime | None = None) -> dict:

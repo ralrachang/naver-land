@@ -166,6 +166,35 @@ class TestScan(WatchBase):
         W.scan(self.cfg, now=T0 + timedelta(minutes=20), client=client)
         self.assertEqual([c for c in client.calls if c[0] == GN], [(GN, 1), (GN, 2)])
 
+    def test_price_drop_over_threshold_triggers_discount_alert(self):
+        self.warmup()  # A: 230억
+        client = FakeClient({GN: [[art("A", "37.510000", "127.040000",
+                                        dealOrWarrantPrc="190억")]]})
+        res = W.scan(self.cfg, now=T0 + timedelta(minutes=10), client=client)
+        self.assertFalse(res["warmup"])
+        self.assertEqual(res["discounts"], 1)
+        self.assertEqual(len(res["alerts"]), 1)
+        alert = res["alerts"][0]
+        self.assertEqual(alert["kind"], "discount")
+        self.assertEqual(alert["message"].split("\n")[0], "💰 17%↓ · 강남구")
+        self.assertIn("190억(이전 230억)", alert["message"])
+        ws = W.WatchStore(self.cfg.watch_db_path, self.cfg.db_path)
+        self.assertEqual(ws.seen_prices()["A"], (1900000, "190억"))
+        ws.close()
+
+    def test_price_drop_below_threshold_no_alert_but_baseline_updates(self):
+        self.warmup()  # A: 230억
+        client = FakeClient({GN: [[art("A", "37.510000", "127.040000",
+                                        dealOrWarrantPrc="210억")]]})   # -8.7%, threshold 미달
+        res = W.scan(self.cfg, now=T0 + timedelta(minutes=10), client=client)
+        self.assertEqual(res["discounts"], 0)
+        self.assertEqual(res["alerts"], [])
+        # 다음 하락은 갱신된 기준가(210억) 대비로 계산된다(누적 아님)
+        client2 = FakeClient({GN: [[art("A", "37.510000", "127.040000",
+                                         dealOrWarrantPrc="180억")]]})  # 210억 대비 -14.3%, 미달
+        res2 = W.scan(self.cfg, now=T0 + timedelta(minutes=20), client=client2)
+        self.assertEqual(res2["discounts"], 0)
+
     def test_gap_resets_to_warmup(self):
         self.warmup()
         client = FakeClient({GN: [[art("N1", "37.520000", "127.050000")]]})
@@ -270,6 +299,15 @@ class TestMessage(unittest.TestCase):
         self.assertLessEqual(len(msg), W.MAX_MSG_CHARS)
         self.assertTrue(msg.endswith("https://m.land.naver.com/article/info/123"))
         self.assertIn("…", msg)
+
+    def test_discount_kind(self):
+        it = self.item(price_text="190억", discount_pct=17, prev_price_text="230억")
+        msg = W.format_message(it, kind="discount")
+        self.assertEqual(msg.split("\n"), [
+            "💰 17%↓ · 강남구 청담동",
+            "상가건물 190억(이전 230억) · 대지255/연868㎡ · 5/B1",
+            "압구정로데오역 도보 1분 삼거리 노출 건물",
+            "https://m.land.naver.com/article/info/123"])
 
     def test_land_without_area2_floor_dong(self):
         msg = W.format_message(self.item(dong="", sub_type="", re_type="토지", area2=0,
