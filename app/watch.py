@@ -22,6 +22,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from . import client as client_mod
+from . import watch_vum
 from .crawler import parse_price_manwon
 from .store import _split_loc, building_keys
 
@@ -506,12 +507,28 @@ def _scan_locked(cfg, ws: WatchStore, now: datetime, client) -> dict:
             queued += 1
     ws.set_state("last_scan_at", now_ts)
     ws.prune_seen(SEEN_KEEP_DAYS, now)
+    vum: dict = {}
+    if w.vum_enabled:
+        vum_last = ws.get_state("vum_last_scan_at")
+        vum_warm = True
+        if vum_last:
+            try:
+                vum_warm = (now - datetime.strptime(vum_last, TS)) > timedelta(minutes=w.gap_reset_min)
+            except ValueError:
+                vum_warm = True
+        try:
+            vum = watch_vum.scan(ws, gus, int(w.vum_size), now_ts, vum_warm)
+            ws.set_state("vum_last_scan_at", now_ts)
+            queued += vum["vum_queued"]
+        except Exception as e:  # 밸류맵 장애가 네이버 감시를 막지 않게 격리
+            log.exception("밸류맵 스캔 실패: %s", e)
+            vum = {"vum_error": f"{type(e).__name__}: {e}"[:120]}
     log.info("스캔 완료: 구 %d개, 새 매물 %d, 새 주소 %d, 가격인하 %d, 알림 추가 %d%s",
              len(gus), len(new_items), len(new_addr), len(discount_hits), queued,
              " (워밍업)" if warmup else "")
     return _result(ws, w, now, warmup=warmup, scanned=len(gus),
                    new_listings=len(new_items), new_addresses=len(new_addr),
-                   discounts=len(discount_hits), queued=queued)
+                   discounts=len(discount_hits), queued=queued, **vum)
 
 
 def ack(cfg, ids, now: datetime | None = None) -> dict:

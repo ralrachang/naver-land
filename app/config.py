@@ -52,6 +52,8 @@ class WatchCfg:
     max_alerts_per_tick: int = 15  # 한 번에 내보낼 알림 상한(홍수 방지)
     block_pause_min: int = 30     # 403/429 차단 감지 시 휴식
     discount_pct: int = 15        # 💰 이미 아는 매물의 가격이 직전 대비 이 %만큼 떨어지면 알림
+    vum_enabled: bool = True      # 🏢 밸류맵(valueupmap.com) 신규 매물도 같은 틱에서 감시
+    vum_size: int = 40            # 구당 최신순 조회 건수(이미 본 id 는 건너뜀)
 
 
 @dataclass

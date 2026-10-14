@@ -62,7 +62,7 @@ class FakeClient:
 def make_cfg(tmp: str) -> Config:
     cfg = Config(crawl=CrawlCfg(request_delay_sec=0, request_jitter_sec=0),
                  site=SiteCfg(), deploy=DeployCfg(), regions=[], root=Path(tmp),
-                 watch=WatchCfg())
+                 watch=WatchCfg(vum_enabled=False))
     for d in (cfg.data_dir, cfg.logs_dir):
         d.mkdir(parents=True, exist_ok=True)
     leaves = [
