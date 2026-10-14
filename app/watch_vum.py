@@ -2,8 +2,8 @@
 
 비로그인 내부 API `/api/plus/item-groups`(구 코드 + sort=LATEST)를 구 단위로 부른다(실측 2026-10-14).
 항목은 '건물(필지) 그룹'이다 — id = 그룹, itemCount = 그 건물의 매매 광고 수.
-알림 조건: ① 처음 보는 그룹 id  ② 이미 아는 그룹인데 itemCount 가 늘어남(같은 건물에 광고 추가).
-정렬 순서를 믿지 않고 id/itemCount 비교만 쓴다. 가격인하는 그룹 최저가가 광고 증감에 흔들려 제외.
+알림 조건: 지금까지 본 최대 그룹 id 보다 큰 새 그룹(= 이전에 광고가 없던 새 건물)만.
+재등장한 옛 건물·광고 추가·가격인하는 알리지 않는다.
 지번은 pnu(19자리: 법정동10 + 구분1 + 본번4 + 부번4)에서 복원한다 — 네이버와 달리 번지까지 나온다.
 """
 from __future__ import annotations
@@ -98,11 +98,19 @@ def format_message(g: dict, added: int = 0, limit: int = 200) -> str:
 
 
 def scan(ws, gus, size: int, now_ts: str, warmup: bool, sleep_sec: float = 1.0) -> dict:
-    """ws: watch.WatchStore. 알림은 ws.add_alert 로 큐에 넣는다(warmup 이면 기록만)."""
+    """ws: watch.WatchStore. 알림은 ws.add_alert 로 큐에 넣는다(warmup 이면 기록만).
+
+    '새 주소' = 건물 그룹 id 가 지금까지 본 최대 id(vum_max_id)보다 큰 것만. 그룹 id 는 생성 순으로
+    늘어나므로, 예전에 광고 이력이 있던 건물이 최신순 목록에 다시 올라와도(낮은 id) 알리지 않는다.
+    기존 건물에 광고가 추가된 경우도 알리지 않는다.
+    """
     ws.conn.executescript(SCHEMA)
     known = {r[0]: r[1] for r in ws.conn.execute("SELECT group_id, item_count FROM vum_seen")}
+    max_id = int(ws.get_state("vum_max_id") or 0)
+    if not max_id and known:
+        max_id = max(int(k) for k in known if k.isdigit())
     new_groups: list[dict] = []
-    grew: list[tuple[dict, int]] = []
+    skipped_old = 0
     upserts: dict[str, int] = {}
     failed = 0
     for code, name in gus:
@@ -116,12 +124,12 @@ def scan(ws, gus, size: int, now_ts: str, warmup: bool, sleep_sec: float = 1.0) 
             gid = str(g.get("id", ""))
             if not gid or gid in upserts:
                 continue
-            cnt = int(g.get("itemCount") or 0)
             if gid not in known:
-                new_groups.append(g)
-            elif cnt > (known[gid] or 0):
-                grew.append((g, cnt - (known[gid] or 0)))
-            upserts[gid] = cnt
+                if gid.isdigit() and int(gid) > max_id:
+                    new_groups.append(g)
+                else:
+                    skipped_old += 1   # 이미 이력이 있던 건물이 다시 올라온 것 — 새 주소 아님
+            upserts[gid] = int(g.get("itemCount") or 0)
         time.sleep(sleep_sec)
     if gus and failed == len(gus):
         raise RuntimeError("밸류맵 전 구 조회 실패")
@@ -129,16 +137,16 @@ def scan(ws, gus, size: int, now_ts: str, warmup: bool, sleep_sec: float = 1.0) 
         "INSERT INTO vum_seen(group_id, item_count, first_seen_at) VALUES (?,?,?) "
         "ON CONFLICT(group_id) DO UPDATE SET item_count=excluded.item_count",
         [(gid, c, now_ts) for gid, c in upserts.items()])
+    ids = [int(k) for k in upserts if k.isdigit()]
+    if ids:
+        ws.set_state("vum_max_id", str(max(max_id, max(ids))))
     ws.conn.commit()
     queued = 0
     if not warmup:
         for g in new_groups:
             ws.add_alert("vum_new", str(g["id"]), format_message(g), now_ts)
             queued += 1
-        for g, n in grew:
-            ws.add_alert("vum_added", str(g["id"]), format_message(g, added=n), now_ts)
-            queued += 1
-    log.info("밸류맵 스캔: 구 %d(실패 %d), 새 건물 %d, 광고추가 %d, 알림 %d%s",
-             len(gus), failed, len(new_groups), len(grew), queued, " (워밍업)" if warmup else "")
-    return {"vum_new": len(new_groups), "vum_added": len(grew),
+    log.info("밸류맵 스캔: 구 %d(실패 %d), 새 건물 %d, 재등장(제외) %d, 알림 %d%s",
+             len(gus), failed, len(new_groups), skipped_old, queued, " (워밍업)" if warmup else "")
+    return {"vum_new": len(new_groups), "vum_added": 0,
             "vum_queued": queued, "vum_failed": failed}
