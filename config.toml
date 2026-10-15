@@ -44,7 +44,7 @@ max_alerts_per_tick = 15          # 한 번에 내보낼 알림 상한(홍수 �
 block_pause_min = 30              # 403/429 차단 감지 시 휴식(안내 카톡 하루 1회)
 discount_pct = 15                 # 💰 이미 아는 매물의 가격이 직전 대비 이 %만큼 떨어지면 카톡 알림
 vum_enabled = true                # 🏢 밸류맵 신규 매물(건물 단위)도 같은 틱에서 감시 → 카톡
-vum_size = 40                     # 밸류맵 구당 최신순 조회 건수(구 25요청, 이미 본 id 는 건너뜀)
+vum_size = 40                     # 밸류맵 구당 최신순 조회 건수(구 25요청, 이미 본 주소(pnu)는 알리지 않음)
 
 [deploy]
 enabled = false                   # true면 git push 수행. VPS에서 GH_TOKEN 설정 후 켜기

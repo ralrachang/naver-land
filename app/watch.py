@@ -556,3 +556,24 @@ def status(cfg, now: datetime | None = None) -> dict:
                 "gus": len(gu_list(cfg.regions_cache))}
     finally:
         ws.close()
+
+
+def vum_seed(cfg, now: datetime | None = None) -> dict:
+    """밸류맵 전체 주소(pnu)를 '이미 아는 주소'로 한 번 심는다. 스캔과 같은 잠금을 써서 겹치지 않는다."""
+    now = _now_kst(now)
+    gus = gu_list(cfg.regions_cache)
+    if not gus:
+        return {"ok": False, "error": "regions cache missing"}
+    ws = WatchStore(cfg.watch_db_path, cfg.db_path)
+    try:
+        lock = _Lock(Path(cfg.data_dir) / "watch.lock", stale_sec=3600)
+        if not lock.acquire():
+            return {"ok": False, "error": "scan_running — 잠시 후 다시 실행"}
+        try:
+            out = watch_vum.seed(ws, gus, now.strftime(TS))
+            out["time"] = now.strftime(TS)
+            return out
+        finally:
+            lock.release()
+    finally:
+        ws.close()

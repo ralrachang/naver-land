@@ -4,6 +4,7 @@
     python3 watch.py --scan          # 한 바퀴 스캔 + 미발송 알림 대기열 JSON
     python3 watch.py --ack 12,13     # 카톡 발송 완료 처리
     python3 watch.py --status        # 상태 JSON
+    python3 watch.py --vum-seed      # 밸류맵 전체 주소 이력 1회 시딩(알림 없음, 수 분 소요)
     python3 watch.py --scan --verbose   # 로그를 stderr 에도
 
 이 PC 의 Claude Code 에서 `/watch`(= /loop 10m /watch-tick) 가 SSH 로 이 명령을 부른다.
@@ -42,6 +43,7 @@ def main(argv=None) -> int:
     ap.add_argument("--scan", action="store_true", help="한 바퀴 스캔 + 대기열 반환")
     ap.add_argument("--ack", default=None, help="발송 완료 처리할 알림 id(쉼표 구분)")
     ap.add_argument("--status", action="store_true")
+    ap.add_argument("--vum-seed", action="store_true", help="밸류맵 현재 전체 주소를 '아는 주소'로 기록")
     ap.add_argument("--verbose", action="store_true", help="로그를 stderr 에도 출력")
     args = ap.parse_args(argv)
 
@@ -56,6 +58,8 @@ def main(argv=None) -> int:
             out = watch.scan(cfg)
         elif args.status:
             out = watch.status(cfg)
+        elif args.vum_seed:
+            out = watch.vum_seed(cfg)
         else:
             ap.print_help(sys.stderr)
             return 2

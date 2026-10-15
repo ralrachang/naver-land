@@ -1,9 +1,10 @@
 """🏢 밸류맵(valueupmap.com) 신규 매물 감시 — watch.py 틱에 얹혀 같은 알림 대기열로 카톡을 보낸다.
 
 비로그인 내부 API `/api/plus/item-groups`(구 코드 + sort=LATEST)를 구 단위로 부른다(실측 2026-10-14).
-항목은 '건물(필지) 그룹'이다 — id = 그룹, itemCount = 그 건물의 매매 광고 수.
-알림 조건: 지금까지 본 최대 그룹 id 보다 큰 새 그룹(= 이전에 광고가 없던 새 건물)만.
-재등장한 옛 건물·광고 추가·가격인하는 알리지 않는다.
+항목은 '건물(필지) 그룹'이고 itemCount = 그 건물의 매매 광고 수다. 주의: `id` 는 건물 고유 id 가 아니라
+광고가 갱신·추가될 때마다 새로 붙는 값이다(2026-10-15 실측: id 가 방금 생성돼도 광고 8개·조회수 1813).
+알림 조건: 지금까지 한 번도 본 적 없는 주소(pnu)만. pnu 이력은 `--vum-seed` 로 전체를 한 번 심어 둔다.
+광고 갱신/추가·재등장한 옛 건물·가격인하는 알리지 않는다.
 지번은 pnu(19자리: 법정동10 + 구분1 + 본번4 + 부번4)에서 복원한다 — 네이버와 달리 번지까지 나온다.
 """
 from __future__ import annotations
@@ -22,6 +23,10 @@ UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
       "(KHTML, like Gecko) Chrome/124 Safari/537.36")
 
 SCHEMA = """
+CREATE TABLE IF NOT EXISTS vum_pnu (
+    pnu           TEXT PRIMARY KEY,
+    first_seen_at TEXT NOT NULL
+);
 CREATE TABLE IF NOT EXISTS vum_seen (
     group_id      TEXT PRIMARY KEY,
     item_count    INTEGER,
@@ -30,22 +35,39 @@ CREATE TABLE IF NOT EXISTS vum_seen (
 """
 
 
-def fetch_gu(code: str, size: int, timeout: int = 20, retries: int = 2) -> list[dict]:
+def _get_page(code: str, size: int, page: int, timeout: int = 20, retries: int = 2) -> dict:
     q = urllib.parse.urlencode({
         "areaUnitType": "PYEONG", "dealTypes": "SALES", "districtCode": code,
         "isSearched": "false", "isSelectedThreeDepth": "false",
-        "page": 0, "size": size, "sort": "LATEST"})
+        "page": page, "size": size, "sort": "LATEST"})
     last: Exception | None = None
     for i in range(retries + 1):
         try:
             req = urllib.request.Request(f"{API}?{q}",
                                          headers={"User-Agent": UA, "Accept": "application/json"})
             with urllib.request.urlopen(req, timeout=timeout) as r:
-                return json.loads(r.read().decode("utf-8")).get("contents") or []
+                return json.loads(r.read().decode("utf-8"))
         except Exception as e:  # noqa: BLE001
             last = e
             time.sleep(1.5 * (i + 1))
     raise RuntimeError(f"{code}: {last}")
+
+
+def fetch_gu(code: str, size: int, timeout: int = 20, retries: int = 2) -> list[dict]:
+    """구의 최신순 첫 페이지."""
+    return _get_page(code, size, 0, timeout, retries).get("contents") or []
+
+
+def fetch_gu_all(code: str, size: int = 200, sleep_sec: float = 0.5, max_pages: int = 60) -> list[dict]:
+    """구의 전체 목록(hasNext 가 꺼질 때까지 페이징). 시딩 전용 — 평시 틱에선 쓰지 않는다."""
+    out: list[dict] = []
+    for page in range(max_pages):
+        d = _get_page(code, size, page)
+        out.extend(d.get("contents") or [])
+        if not d.get("hasNext"):
+            break
+        time.sleep(sleep_sec)
+    return out
 
 
 def jibun(pnu: str) -> str:
@@ -97,21 +119,47 @@ def format_message(g: dict, added: int = 0, limit: int = 200) -> str:
     return "\n".join((head, line2[:room] + "…", url))
 
 
+def seed(ws, gus, now_ts: str, size: int = 200, sleep_sec: float = 0.5) -> dict:
+    """현재 밸류맵에 올라 있는 모든 주소(pnu)를 '이미 아는 주소'로 기록한다(알림 없음).
+
+    한 구라도 실패하면 seeded 표시를 하지 않고 예외를 던진다(다시 돌리면 이어서 채운다).
+    """
+    ws.conn.executescript(SCHEMA)
+    total = 0
+    failed: list[str] = []
+    for code, name in gus:
+        try:
+            contents = fetch_gu_all(code, size, sleep_sec)
+        except Exception as e:  # noqa: BLE001
+            failed.append(name)
+            log.warning("밸류맵 시딩 실패 %s(%s): %s", name, code, e)
+            continue
+        ws.conn.executemany(
+            "INSERT OR IGNORE INTO vum_pnu(pnu, first_seen_at) VALUES (?,?)",
+            [(str(g["pnu"]), now_ts) for g in contents if g.get("pnu")])
+        ws.conn.commit()
+        total += len(contents)
+        time.sleep(sleep_sec)
+    if failed:
+        raise RuntimeError("밸류맵 시딩 실패 구: " + ",".join(failed))
+    ws.set_state("vum_pnu_seeded", now_ts)
+    n = ws.conn.execute("SELECT COUNT(*) FROM vum_pnu").fetchone()[0]
+    log.info("밸류맵 시딩 완료: 구 %d, 그룹 %d, 주소 %d", len(gus), total, n)
+    return {"ok": True, "gus": len(gus), "groups": total, "pnu_total": n}
+
+
 def scan(ws, gus, size: int, now_ts: str, warmup: bool, sleep_sec: float = 1.0) -> dict:
     """ws: watch.WatchStore. 알림은 ws.add_alert 로 큐에 넣는다(warmup 이면 기록만).
 
-    '새 주소' = 건물 그룹 id 가 지금까지 본 최대 id(vum_max_id)보다 큰 것만. 그룹 id 는 생성 순으로
-    늘어나므로, 예전에 광고 이력이 있던 건물이 최신순 목록에 다시 올라와도(낮은 id) 알리지 않는다.
-    기존 건물에 광고가 추가된 경우도 알리지 않는다.
+    '새 주소' = 지금까지 한 번도 본 적 없는 pnu. 그룹 id 는 광고가 갱신될 때마다 새로 붙어 신규 판정에
+    쓸 수 없다. 시딩(`--vum-seed`)이 끝나기 전에는 이력이 불완전하므로 기록만 하고 알리지 않는다.
     """
     ws.conn.executescript(SCHEMA)
-    known = {r[0]: r[1] for r in ws.conn.execute("SELECT group_id, item_count FROM vum_seen")}
-    max_id = int(ws.get_state("vum_max_id") or 0)
-    if not max_id and known:
-        max_id = max(int(k) for k in known if k.isdigit())
+    seeded = bool(ws.get_state("vum_pnu_seeded"))
+    known = {r[0] for r in ws.conn.execute("SELECT pnu FROM vum_pnu")}
     new_groups: list[dict] = []
     skipped_old = 0
-    upserts: dict[str, int] = {}
+    found: set[str] = set()
     failed = 0
     for code, name in gus:
         try:
@@ -121,32 +169,27 @@ def scan(ws, gus, size: int, now_ts: str, warmup: bool, sleep_sec: float = 1.0) 
             log.warning("밸류맵 조회 실패 %s(%s): %s", name, code, e)
             continue
         for g in contents:
-            gid = str(g.get("id", ""))
-            if not gid or gid in upserts:
+            pnu = str(g.get("pnu", ""))
+            if not pnu or pnu in found:
                 continue
-            if gid not in known:
-                if gid.isdigit() and int(gid) > max_id:
-                    new_groups.append(g)
-                else:
-                    skipped_old += 1   # 이미 이력이 있던 건물이 다시 올라온 것 — 새 주소 아님
-            upserts[gid] = int(g.get("itemCount") or 0)
+            found.add(pnu)
+            if pnu in known:
+                skipped_old += 1   # 이미 광고가 있던 주소 — 광고 갱신/추가일 뿐 새 주소 아님
+            else:
+                new_groups.append(g)
         time.sleep(sleep_sec)
     if gus and failed == len(gus):
         raise RuntimeError("밸류맵 전 구 조회 실패")
-    ws.conn.executemany(
-        "INSERT INTO vum_seen(group_id, item_count, first_seen_at) VALUES (?,?,?) "
-        "ON CONFLICT(group_id) DO UPDATE SET item_count=excluded.item_count",
-        [(gid, c, now_ts) for gid, c in upserts.items()])
-    ids = [int(k) for k in upserts if k.isdigit()]
-    if ids:
-        ws.set_state("vum_max_id", str(max(max_id, max(ids))))
+    ws.conn.executemany("INSERT OR IGNORE INTO vum_pnu(pnu, first_seen_at) VALUES (?,?)",
+                        [(p, now_ts) for p in found])
     ws.conn.commit()
     queued = 0
-    if not warmup:
+    if not warmup and seeded:
         for g in new_groups:
-            ws.add_alert("vum_new", str(g["id"]), format_message(g), now_ts)
+            ws.add_alert("vum_new", str(g["pnu"]), format_message(g), now_ts)
             queued += 1
-    log.info("밸류맵 스캔: 구 %d(실패 %d), 새 건물 %d, 재등장(제외) %d, 알림 %d%s",
-             len(gus), failed, len(new_groups), skipped_old, queued, " (워밍업)" if warmup else "")
+    log.info("밸류맵 스캔: 구 %d(실패 %d), 새 주소 %d, 기존 주소(제외) %d, 알림 %d%s%s",
+             len(gus), failed, len(new_groups), skipped_old, queued,
+             " (워밍업)" if warmup else "", "" if seeded else " (시딩 전 — 알림 보류)")
     return {"vum_new": len(new_groups), "vum_added": 0,
-            "vum_queued": queued, "vum_failed": failed}
+            "vum_queued": queued, "vum_failed": failed, "vum_seeded": seeded}
